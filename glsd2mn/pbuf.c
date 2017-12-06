@@ -40,7 +40,7 @@ static int site_outputed = 0;
 void
 pbuf_add(const XML_Char *cdata, int len)
 {
-	if (pbuf_offset + 1 >= PBUF_SIZE)
+	if (pbuf_offset + len + 1 >= PBUF_SIZE)
 		exit(EX__BASE);
 	
 	memcpy(pbuf + pbuf_offset, cdata, len);
