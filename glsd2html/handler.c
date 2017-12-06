@@ -33,6 +33,7 @@ static int listtype_order = 0;
 static int docgroup_depth = 0;
 
 static int in_import = 0;
+static int in_item = 0;
 
 #define HTML_START \
 	"<!doctype html>\n" \
@@ -78,6 +79,10 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		in_import = 1;
 		import(attr);
 		break;
+	case ELEMENT_ITEM:
+		in_item = 1;
+		output("<li>");
+		break;
 	case ELEMENT_LIST:
 		newline();
 		listtype_order = 0;
@@ -119,11 +124,6 @@ el_end_handler(void *data, const XML_Char *name)
 			return;
 		}
 		switch((int)pre_element) {
-		case ELEMENT_ITEM:
-			output("<li>");
-			pbuf_output();
-			outputln("</li>");
-			break;
 		case ELEMENT_TITLE:
 			switch(docgroup_depth) {
 			case 1:
@@ -226,15 +226,25 @@ el_end_handler(void *data, const XML_Char *name)
 				newline();
 				break;
 			}
-			newline();
-			output("<p style=\"font-size: 18px;\">");
-			pbuf_flush();
-			outputln("</p>");
+			if (in_item) {
+				output("<p style=\"font-size: 18px;\">");
+				pbuf_flush();
+				output("</p>");
+			}
+			else {
+				newline();
+				output("<p style=\"font-size: 18px;\">");
+				pbuf_flush();
+				outputln("</p>");
+			}	
 			break;
 		}
 		break;
 	case ELEMENT_ACCESS:
 		pbuf_add("</a>", 4);
+		break;
+	case ELEMENT_ITEM:
+		outputln("</li>");
 		break;
 	case ELEMENT_LIST:
 		if (listtype_order)
