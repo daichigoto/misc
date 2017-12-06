@@ -34,6 +34,8 @@ static int docgroup_depth = 0;
 
 static char access_ref[BUFSIZ];
 
+static int in_item = 0;
+
 void
 el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 {
@@ -57,6 +59,9 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		break;
 	case ELEMENT_IMPORT:
 		import(attr);
+		break;
+	case ELEMENT_ITEM:
+		in_item = 1;
 		break;
 	case ELEMENT_LIST:
 		newline();
@@ -141,8 +146,18 @@ el_end_handler(void *data, const XML_Char *name)
 			if (pbuf_startwith("[POST:")) {
 				break;
 			}
-			newline();
-			pbuf_flushln();
+			if (in_item) {
+				if (listtype_order)
+					output("1. ");
+				else
+					output("- ");
+				pbuf_outputln();
+				in_item = 0;
+			}
+			else {
+				newline();
+				pbuf_flushln();
+			}
 			break;
 		}
 		break;
