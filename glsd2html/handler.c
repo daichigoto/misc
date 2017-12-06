@@ -230,6 +230,7 @@ el_end_handler(void *data, const XML_Char *name)
 				output("<p style=\"font-size: 18px;\">");
 				pbuf_flush();
 				output("</p>");
+				in_item = 0;
 			}
 			else {
 				newline();
