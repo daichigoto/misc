@@ -106,6 +106,9 @@ import_text_sourcecode(const XML_Char **attr)
 	FILE *fp;
 	char buf[BUFSIZ] = {'\0'};
 
+	pbuf_add("コード: ", 11);
+	pbuf_addln(caption, strlen(caption));
+
 	fp = fopen(filename, "r");
 	if (NULL == fp)
 		return;
