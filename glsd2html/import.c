@@ -148,6 +148,10 @@ import_text_sourcecode(const XML_Char **attr)
 		pbuf_add(buf, strlen(buf) - 1);
 	}
 	pbuf_add("</code></pre>", 13);
+	pbuf_newline();
+	pbuf_add("<p class=\"text-center\">", 23);
+	pbuf_add(caption, strlen(caption));
+	pbuf_add("</p>", 4);
 	fclose(fp);
 }
 
