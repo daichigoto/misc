@@ -153,7 +153,6 @@ import_image(const XML_Char **attr, char *img_type)
 		image_process("index.top.jpg", name, IMAGE_ZIPFILE, 400);
 		image_process(filename, namel, IMAGE_ZIPFILE, 800);
 		image_process(namel, name, IMAGE_ZIPFILE, 400);
-//		rm("index.top.jpg");
 		rm(namel);
 		rm(name);
 		index_image_generated = 1;
@@ -198,6 +197,16 @@ import_text_sourcecode(const XML_Char **attr)
 {
 	FILE *fp;
 	char buf[BUFSIZ] = {'\0'};
+	int depth;
+
+	newline();
+	depth = get_docgroup_depth();
+	if (6 <= depth)
+		depth = 5;
+	for (int i = 0; i <= depth + 1; i++)
+		putchar('#');
+	putchar(' ');
+	outputln(caption);
 
 	fp = fopen(filename, "r");
 	if (NULL == fp)

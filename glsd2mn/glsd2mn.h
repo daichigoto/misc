@@ -59,6 +59,7 @@ typedef enum el {
 void el_start_handler(void *, const XML_Char *, const XML_Char **);
 void el_end_handler(void *, const XML_Char *);
 void el_chardata_handler(void *, const XML_Char *, int len);
+int get_docgroup_depth(void);
 
 int element_is(const XML_Char *);
 

@@ -29,11 +29,11 @@
 
 static ELEMENT cur_element;
 static ELEMENT pre_element;
-static int listtype_order = 0;
-static int docgroup_depth = 0;
 
 static char access_ref[BUFSIZ];
 
+static int listtype_order = 0;
+static int docgroup_depth = 0;
 static int in_item = 0;
 
 void
@@ -179,4 +179,10 @@ void
 el_chardata_handler(void *data, const XML_Char *cdata, int len)
 {
 	pbuf_add(cdata, len);
+}
+
+int
+get_docgroup_depth(void)
+{
+	return(docgroup_depth);
 }
