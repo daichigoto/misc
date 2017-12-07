@@ -175,6 +175,7 @@ el_end_handler(void *data, const XML_Char *name)
 		pbuf_add(")", 1);
 		break;
 	case ELEMENT_LIST:
+		in_item = 0;
 		break;
 	case ELEMENT_DOCGROUP:
 		docgroup_depth--;	
