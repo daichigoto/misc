@@ -48,6 +48,29 @@ pbuf_add(const XML_Char *cdata, int len)
 }
 
 void
+pbuf_addln(const XML_Char *cdata, int len)
+{
+	if (pbuf_offset + len + 2 >= PBUF_SIZE)
+		exit(EX__BASE);
+	
+	memcpy(pbuf + pbuf_offset, cdata, len);
+	pbuf_offset += len;
+
+	*(pbuf + pbuf_offset) = '\n';
+	++pbuf_offset;
+}
+
+void
+pbuf_newline()
+{
+	if (pbuf_offset + 1 >= PBUF_SIZE)
+		exit(EX__BASE);
+	
+	*(pbuf + pbuf_offset) = '\n';
+	++pbuf_offset;
+}
+
+void
 pbuf_output(void)
 {
 	pbuf_entitycompaction();

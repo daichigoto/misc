@@ -199,14 +199,14 @@ import_text_sourcecode(const XML_Char **attr)
 	char buf[BUFSIZ] = {'\0'};
 	int depth;
 
-	newline();
 	depth = get_docgroup_depth();
 	if (6 <= depth)
 		depth = 5;
 	for (int i = 0; i <= depth + 1; i++)
-		putchar('#');
-	putchar(' ');
-	outputln(caption);
+		pbuf_add("#", 1);
+	pbuf_add(" ", 1);
+	pbuf_addln(caption, strlen(caption));
+	pbuf_newline();
 
 	fp = fopen(filename, "r");
 	if (NULL == fp)
