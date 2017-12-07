@@ -109,6 +109,10 @@ import_image(const XML_Char **attr, char *img_type)
 	pbuf_add("class=\"img-responsive\" ", 23);
 	pbuf_add("style=\"margin: 0 auto;\" ", 24);
 	pbuf_add("/>", 2);
+	pbuf_newline();
+	pbuf_add("<p class=\"text-center\">", 23);
+	pbuf_add(caption, strlen(caption));
+	pbuf_add("</p>", 4);
 }
 
 static void
