@@ -76,6 +76,8 @@ import(const XML_Char **attr)
 
 	if (0 == strcmp(type, "image/jpeg"))
 		import_image_jpeg(attr);
+	else if (0 == strcmp(type, "image/jpg"))
+		import_image_jpeg(attr);
 	else if (0 == strcmp(type, "image/png"))
 		import_image_png(attr);
 	else if (0 == strcmp(type, "text/sourcecode"))
