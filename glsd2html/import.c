@@ -40,6 +40,10 @@ static char type[BUFSIZ];
 static char filename[BUFSIZ];
 static char caption[BUFSIZ];
 
+static int img_counter = 1;
+static int tbl_counter = 1;
+static int src_counter = 1;
+
 void
 import(const XML_Char **attr)
 {
@@ -86,7 +90,7 @@ import_image(const XML_Char **attr, char *img_type)
 {
 	const int max_width = 400;
 	int w, h;
-	char buf[BUFSIZ];
+	char buf[BUFSIZ], numbuf[BUFSIZ];
 	IMAGE_SIZE siz;
 	
 	siz = image_size(filename);
@@ -99,8 +103,9 @@ import_image(const XML_Char **attr, char *img_type)
 		w = siz.width;
 		h = siz.height;
 	}
-	snprintf(buf, BUFSIZ, "width=\"%d\" height=\"%d\" ", w, h);
+//	snprintf(buf, BUFSIZ, "width=\"%d\" height=\"%d\" ", w, h);
 
+	pbuf_addln("<br>", 4);
 	pbuf_add("<img src=\"", 10);
 	pbuf_add(filename, strlen(filename));
 	pbuf_add("\" ", 2);
@@ -111,10 +116,16 @@ import_image(const XML_Char **attr, char *img_type)
 	pbuf_add("class=\"img-responsive\" ", 23);
 	pbuf_add("style=\"margin: 0 auto;\" ", 24);
 	pbuf_add("/>", 2);
-	pbuf_newline();
+
+	snprintf(numbuf, sizeof(numbuf), "%d", img_counter);
 	pbuf_add("<p class=\"text-center\">", 23);
+	pbuf_add("図", 3);
+	pbuf_add(numbuf, strlen(numbuf));
+	++img_counter;
+	pbuf_add(" ", 1);
 	pbuf_add(caption, strlen(caption));
-	pbuf_add("</p>", 4);
+	pbuf_addln("</p>", 4);
+	pbuf_addln("<br>", 4);
 }
 
 static void
@@ -133,7 +144,7 @@ static void
 import_text_sourcecode(const XML_Char **attr)
 {
 	FILE *fp;
-	char buf[BUFSIZ] = {'\0'};
+	char buf[BUFSIZ], numbuf[BUFSIZ];
 
 	fp = fopen(filename, "r");
 	if (NULL == fp)
@@ -146,15 +157,23 @@ import_text_sourcecode(const XML_Char **attr)
 			firstline = 0;
 		else
 			pbuf_add("\n", 1);
-		pbuf_add("    ", 4);
 		pbuf_add(buf, strlen(buf) - 1);
 	}
+
+	fclose(fp);
+
 	pbuf_add("</code></pre>", 13);
 	pbuf_newline();
+
+	snprintf(numbuf, sizeof(numbuf), "%d", src_counter);
 	pbuf_add("<p class=\"text-center\">", 23);
+	pbuf_add("リスト", 9);
+	pbuf_add(numbuf, strlen(numbuf));
+	++src_counter;
+	pbuf_add(" ", 1);
 	pbuf_add(caption, strlen(caption));
-	pbuf_add("</p>", 4);
-	fclose(fp);
+	pbuf_addln("</p>", 4);
+	pbuf_addln("<br>", 4);
 }
 
 static void
@@ -167,15 +186,16 @@ static void
 import_text_Xsv(const XML_Char **attr, const char delim)
 {
 	FILE *fp;
-	char buf[BUFSIZ] = {'\0'};
+	char buf[BUFSIZ], numbuf[BUFSIZ];
 	char *p;
 
 	fp = fopen(filename, "r");
 	if (NULL == fp)
 		return;
-
-	pbuf_addln("<table class=\"table table-striped\">", 35);
 	
+	pbuf_addln("<br>", 4);
+	pbuf_addln("<table class=\"table table-striped\">", 35);
+
 	int firstline = 1;
 	while (NULL != fgets(buf, sizeof(buf) - 1, fp)) {
 		pbuf_add("<tr>", 4);
@@ -233,6 +253,17 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 	fclose(fp);
 
 	pbuf_addln("</table>", 8);
+
+	snprintf(numbuf, sizeof(numbuf), "%d", tbl_counter);
+	pbuf_add("<p class=\"text-center\">", 23);
+	pbuf_add("表", 3);
+	pbuf_add(numbuf, strlen(numbuf));
+	++tbl_counter;
+	pbuf_add(" ", 1);
+	pbuf_add(caption, strlen(caption));
+	pbuf_addln("</p>", 4);
+	pbuf_addln("<br>", 4);
+
 }
 
 static void
