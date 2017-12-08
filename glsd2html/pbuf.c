@@ -27,7 +27,7 @@
 
 #include "glsd2html.h"
 
-#define PBUF_SIZE	1024 * 8
+#define PBUF_SIZE	1024 * 64
 
 static void pbuf_entitycompaction(void);
 
