@@ -64,6 +64,8 @@ int get_docgroup_depth(void);
 int element_is(const XML_Char *);
 
 void pbuf_add(const XML_Char *, int);
+void pbuf_addln(const XML_Char *, int);
+void pbuf_newline(void);
 void pbuf_output(void);
 void pbuf_outputln(void);
 void pbuf_trimoutput(int, int);
