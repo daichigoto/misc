@@ -34,6 +34,7 @@ static int listtype_order_index = 1;
 static int docgroup_depth = 0;
 
 static char access_ref[BUFSIZ];
+static char quote_ref[BUFSIZ];
 
 static int in_item = 0;
 
@@ -80,6 +81,17 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 			newline();
 		docgroup_depth++;	
 		break;
+	case ELEMENT_QUOTE:
+		newline();
+		for (int i = 0; attr[i]; i += 2)
+			if (0 == strcmp(attr[i], "ref")) {
+				strncpy(quote_ref, attr[i+1],
+					sizeof(quote_ref));
+				break;
+			}
+		break;
+	default:
+		break;
 	}
 }
 
@@ -122,6 +134,16 @@ el_end_handler(void *data, const XML_Char *name)
 		case ELEMENT_FIRSTEDITION:
 			break;
 		case ELEMENT_LASTMODIFIED:
+			break;
+		case ELEMENT_QUOTE:
+			output("引用: ");
+			if ('\0' != quote_ref[0])
+				outputln(quote_ref);
+			else
+				newline();
+			output("　　  ");
+			pbuf_flushln();
+			memset(quote_ref, '\0', sizeof(quote_ref));
 			break;
 		default:
 			if (pbuf_startwith("[MJ:")) {

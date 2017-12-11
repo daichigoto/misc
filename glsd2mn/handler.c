@@ -123,6 +123,10 @@ el_end_handler(void *data, const XML_Char *name)
 			break;
 		case ELEMENT_LASTMODIFIED:
 			break;
+		case ELEMENT_QUOTE:
+			output("> ");
+			pbuf_outputln();
+			break;
 		default:
 			if (pbuf_startwith("[MJ:")) {
 				pbuf_xxx_linkoutputln();

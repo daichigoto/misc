@@ -54,6 +54,8 @@ element_is(const XML_Char *name)
 		return ELEMENT_LASTMODIFIED;
 	if (0 == strcmp(name, "docgroup"))
 		return ELEMENT_DOCGROUP;
+	if (0 == strcmp(name, "quote"))
+		return ELEMENT_QUOTE;
 
 	return ELEMENT_UNKOWN;
 }

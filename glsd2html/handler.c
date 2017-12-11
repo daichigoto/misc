@@ -35,6 +35,8 @@ static int docgroup_depth = 0;
 static int in_import = 0;
 static int in_item = 0;
 
+static char quote_ref[BUFSIZ];
+
 #define HTML_START \
 	"<!doctype html>\n" \
 	"<html lang=\"ja\">\n" \
@@ -105,6 +107,15 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 	case ELEMENT_DOCUMENT:
 		outputln(HTML_START);
 		newline();
+		break;
+	case ELEMENT_QUOTE:
+		newline();
+		for (int i = 0; attr[i]; i += 2)
+			if (0 == strcmp(attr[i], "ref")) {
+				strncpy(quote_ref, attr[i+1], 
+					sizeof(quote_ref));
+				break;
+			}
 		break;
 	default:
 		break;
@@ -177,6 +188,19 @@ el_end_handler(void *data, const XML_Char *name)
 		case ELEMENT_FIRSTEDITION:
 			break;
 		case ELEMENT_LASTMODIFIED:
+			break;
+		case ELEMENT_QUOTE:
+			output("<blockquote");
+			if ('\0' != quote_ref[0]) {
+				output(" cite=\"");
+				output(quote_ref);
+				output("\">");
+			}
+			else
+				output("\">");
+			pbuf_flush();
+			outputln("<blockquote>");
+			memset(quote_ref, '\0', sizeof(quote_ref));
 			break;
 		default:
 			if (pbuf_startwith("[MJ:")) {
