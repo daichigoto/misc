@@ -56,6 +56,8 @@ element_is(const XML_Char *name)
 		return ELEMENT_DOCGROUP;
 	if (0 == strcmp(name, "quote"))
 		return ELEMENT_QUOTE;
+	if (0 == strcmp(name, "document"))
+		return ELEMENT_DOCUMENT;
 
 	return ELEMENT_UNKOWN;
 }

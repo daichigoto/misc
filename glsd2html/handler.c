@@ -199,7 +199,7 @@ el_end_handler(void *data, const XML_Char *name)
 			else
 				output("\">");
 			pbuf_flush();
-			outputln("<blockquote>");
+			outputln("</blockquote>");
 			memset(quote_ref, '\0', sizeof(quote_ref));
 			break;
 		default:
