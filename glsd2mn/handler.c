@@ -79,6 +79,9 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 			newline();
 		docgroup_depth++;	
 		break;
+	case ELEMENT_QUOTE:
+		newline();
+		break;
 	}
 }
 
