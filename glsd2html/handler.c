@@ -34,6 +34,7 @@ static int docgroup_depth = 0;
 
 static int in_import = 0;
 static int in_item = 0;
+static int in_quote = 0;
 
 static char quote_ref[BUFSIZ];
 
@@ -109,6 +110,7 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		newline();
 		break;
 	case ELEMENT_QUOTE:
+		in_quote = 1;
 		newline();
 		for (int i = 0; attr[i]; i += 2)
 			if (0 == strcmp(attr[i], "ref")) {
@@ -134,6 +136,29 @@ el_end_handler(void *data, const XML_Char *name)
 			pbuf_flushln();
 			return;
 		}
+		if (in_item) {
+			output("<p style=\"font-size: 18px;\">");
+			pbuf_flush();
+			output("</p>");
+			in_item = 0;
+			return;
+		}
+		if (in_quote) {
+			output("<blockquote");
+			if ('\0' != quote_ref[0]) {
+				output(" cite=\"");
+				output(quote_ref);
+				output("\">");
+			}
+			else
+				output(">");
+			pbuf_flush();
+			outputln("</blockquote>");
+			memset(quote_ref, '\0', sizeof(quote_ref));
+			in_quote = 0;
+			return;
+		}
+
 		switch((int)pre_element) {
 		case ELEMENT_TITLE:
 			switch(docgroup_depth) {
@@ -189,19 +214,6 @@ el_end_handler(void *data, const XML_Char *name)
 			break;
 		case ELEMENT_LASTMODIFIED:
 			break;
-		case ELEMENT_QUOTE:
-			output("<blockquote");
-			if ('\0' != quote_ref[0]) {
-				output(" cite=\"");
-				output(quote_ref);
-				output("\">");
-			}
-			else
-				output("\">");
-			pbuf_flush();
-			outputln("</blockquote>");
-			memset(quote_ref, '\0', sizeof(quote_ref));
-			break;
 		default:
 			if (pbuf_startwith("[MJ:")) {
 				output("<p>");
@@ -250,18 +262,10 @@ el_end_handler(void *data, const XML_Char *name)
 				newline();
 				break;
 			}
-			if (in_item) {
-				output("<p style=\"font-size: 18px;\">");
-				pbuf_flush();
-				output("</p>");
-				in_item = 0;
-			}
-			else {
-				newline();
-				output("<p style=\"font-size: 18px;\">");
-				pbuf_flush();
-				outputln("</p>");
-			}	
+			newline();
+			output("<p style=\"font-size: 18px;\">");
+			pbuf_flush();
+			outputln("</p>");
 			break;
 		}
 		break;

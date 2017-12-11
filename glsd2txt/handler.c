@@ -37,6 +37,7 @@ static char access_ref[BUFSIZ];
 static char quote_ref[BUFSIZ];
 
 static int in_item = 0;
+static int in_quote = 0;
 
 void
 el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
@@ -82,6 +83,7 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		docgroup_depth++;	
 		break;
 	case ELEMENT_QUOTE:
+		in_quote = 1;
 		newline();
 		for (int i = 0; attr[i]; i += 2)
 			if (0 == strcmp(attr[i], "ref")) {
@@ -101,6 +103,19 @@ el_end_handler(void *data, const XML_Char *name)
 	cur_element = element_is(name);
 	switch((int)cur_element) {
 	case ELEMENT_P:
+		if (in_quote) {
+			output("引用: ");
+			if ('\0' != quote_ref[0])
+				outputln(quote_ref);
+			else
+				newline();
+			output("　　  ");
+			pbuf_flushln();
+			memset(quote_ref, '\0', sizeof(quote_ref));
+			in_quote = 0;
+			return;
+		}
+
 		switch((int)pre_element) {
 		case ELEMENT_ITEM:
 			if (listtype_order)
@@ -134,16 +149,6 @@ el_end_handler(void *data, const XML_Char *name)
 		case ELEMENT_FIRSTEDITION:
 			break;
 		case ELEMENT_LASTMODIFIED:
-			break;
-		case ELEMENT_QUOTE:
-			output("引用: ");
-			if ('\0' != quote_ref[0])
-				outputln(quote_ref);
-			else
-				newline();
-			output("　　  ");
-			pbuf_flushln();
-			memset(quote_ref, '\0', sizeof(quote_ref));
 			break;
 		default:
 			if (pbuf_startwith("[MJ:")) {
