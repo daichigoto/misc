@@ -38,6 +38,10 @@ static void import_text_tsv(const XML_Char **);
 
 #define MAPPING_FILE	"mapping.txt"
 
+#define IMAGE_WIDTH_LARGE	800
+#define IMAGE_WIDTH_NORMAL	600
+#define IMAGE_WIDTH_TOP		600
+
 static char mapping_buf[1024 * 16];
 static char *mapping_buf_p = mapping_buf;
 static int mapping_buf_len = 0;
@@ -150,18 +154,23 @@ import_image(const XML_Char **attr, char *img_type)
 	pbuf_add("|", 1);
 
 	if (!index_image_generated) {
-		image_process(filename, namel, IMAGE_ZIPFILE, 800);
-		image_process(namel, "index.top.jpg", "/dev/null", 600);
-		image_process("index.top.jpg", name, IMAGE_ZIPFILE, 400);
-		image_process(filename, namel, IMAGE_ZIPFILE, 800);
-		image_process(namel, name, IMAGE_ZIPFILE, 400);
+		image_process(filename, namel,
+				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
+		image_process(namel, "index.top.jpg", 
+				"/dev/null", IMAGE_WIDTH_TOP);
+		image_process("index.top.jpg", name,
+				IMAGE_ZIPFILE, IMAGE_WIDTH_TOP);
+		image_process(namel, name, 
+				IMAGE_ZIPFILE, IMAGE_WIDTH_NORMAL);
 		rm(namel);
 		rm(name);
 		index_image_generated = 1;
 	}
 	else {
-		image_process(filename, namel, IMAGE_ZIPFILE, 800);
-		image_process(namel, name, IMAGE_ZIPFILE, 400);
+		image_process(filename, namel, 
+				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
+		image_process(namel, name, 
+				IMAGE_ZIPFILE, IMAGE_WIDTH_NORMAL);
 		rm(namel);
 		rm(name);
 	}
