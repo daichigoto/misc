@@ -114,6 +114,7 @@ import_image(const XML_Char **attr, char *img_type)
 {
 	char name[BUFSIZ] = {'\0'};
 	char namel[BUFSIZ] = {'\0'};
+	char escaped_caption[BUFSIZ] = {'\0'};
 	char *p, *p_name, *p_namel;
 
 	p = strstr(filename, "/");
@@ -185,9 +186,27 @@ import_image(const XML_Char **attr, char *img_type)
 		*mapping_buf_p++ = '\n';
 		++mapping_buf_len;
 	}
+
+	// Escape , to 、
+	for (int i = 0, j = 0; 
+	     '\0' != caption[i] && j < (int)sizeof(escaped_caption) - 4; 
+	     i++, j++) {
+		if (',' == caption[i]) {
+			// 「、」
+			escaped_caption[j++] = 0xe3;
+			escaped_caption[j++] = 0x80;
+			escaped_caption[j] = 0x81;
+			if (' ' == caption[i+1])
+				++i;
+		}
+		else
+			escaped_caption[j] = caption[i];
+	}
+
 	mapping_buf_len += snprintf(
 		mapping_buf_p, sizeof(mapping_buf) - mapping_buf_len, 
-		"%s,%s,%s,%s,", name, namel, caption, caption);
+		"%s,%s,%s,%s,", name, namel, 
+		escaped_caption, escaped_caption);
 	mapping_buf_p = mapping_buf + mapping_buf_len;
 }
 
