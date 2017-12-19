@@ -40,6 +40,9 @@ static void import_text_tsv(const XML_Char **);
 #define IMAGE_WIDTH_NORMAL	600
 #define IMAGE_WIDTH_TOP		600
 
+#define IMAGE_RESIZED_DIR	"images_resized"
+#define IMAGE_TOP_INDEX		"images_resized/index.top.jpg"
+
 static char type[BUFSIZ];
 static char filename[BUFSIZ];
 static char caption[BUFSIZ];
@@ -96,14 +99,20 @@ import_image(const XML_Char **attr, char *img_type)
 	char wh[BUFSIZ] = {'\0'};
 	char *p, *p_name, *p_namel;
 
-	p = strstr(filename, "/");
-	if (NULL == p)
-		p = filename;
-	else
+	mkdir(IMAGE_RESIZED_DIR, S_IRWXU|S_IRWXG|S_IRWXO);
+
+	strcpy(name, IMAGE_RESIZED_DIR);
+	strcpy(namel, IMAGE_RESIZED_DIR);
+	p = filename;
+	p_name = name + strlen(IMAGE_RESIZED_DIR);
+	p_namel = namel + strlen(IMAGE_RESIZED_DIR);
+
+	while ('/' != *p)
 		++p;
 
-	p_name = name;
-	p_namel = namel;
+	*p_name++ = '/';
+	*p_namel++ = '/';
+	++p;
 	while (48 <= *p && *p <= 57) {
 		*p_name++ = *p;
 		*p_namel++ = *p;
@@ -120,18 +129,14 @@ import_image(const XML_Char **attr, char *img_type)
 
 	if (!index_image_generated) {
 		s = image_process(filename, namel, IMAGE_WIDTH_LARGE);
-		image_process(namel, "images/index.top.jpg", IMAGE_WIDTH_TOP);
-		image_process("images/index.top.jpg", name, IMAGE_WIDTH_TOP);
+		image_process(namel, IMAGE_TOP_INDEX, IMAGE_WIDTH_TOP);
+		image_process(IMAGE_TOP_INDEX, name, IMAGE_WIDTH_TOP);
 		image_process(namel, name, IMAGE_WIDTH_NORMAL);
-		rm(namel);
-		rm(name);
 		index_image_generated = 1;
 	}
 	else {
 		s = image_process(filename, namel, IMAGE_WIDTH_LARGE);
 		image_process(namel, name, IMAGE_WIDTH_NORMAL);
-		rm(namel);
-		rm(name);
 	}
 
 	snprintf(wh, sizeof(wh), "width=%d,height=%d,", s.width, s.height);
