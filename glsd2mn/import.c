@@ -193,7 +193,6 @@ import_image(const XML_Char **attr, char *img_type)
 		escaped_caption, escaped_caption);
 	mapping_buf_p = mapping_buf + mapping_buf_len;
 
-fprintf(stderr,"%d\n",size.width);
 	if (350 >= size.width)
 		pbuf_add("|photo_right\n", 13);
 	else
