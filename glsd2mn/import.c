@@ -116,6 +116,7 @@ import_image(const XML_Char **attr, char *img_type)
 	char namel[BUFSIZ] = {'\0'};
 	char escaped_caption[BUFSIZ] = {'\0'};
 	char *p, *p_name, *p_namel;
+	IMAGE_SIZE size;
 
 	p = strstr(filename, "/");
 	if (NULL == p)
@@ -139,30 +140,13 @@ import_image(const XML_Char **attr, char *img_type)
 		++p;
 	}
 
-	pbuf_add("|photo_center\n", 14);
-	pbuf_add("|I@", 3);
-	pbuf_add(name, strlen(name));
-	pbuf_add(",", 1);
-
-	p = caption;
-	while ('\0' != *p) {
-		if ('|' == *p)
-			pbuf_add("｜", 3);
-		else
-			pbuf_add(p, 1);
-		++p;
-	}
-	pbuf_add("|", 1);
-
 	if (!index_image_generated) {
 		image_process(filename, namel,
 				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
 		image_process(namel, "index.top.jpg", 
 				"/dev/null", IMAGE_WIDTH_TOP);
-		image_process("index.top.jpg", name,
+		size = image_process("index.top.jpg", name,
 				IMAGE_ZIPFILE, IMAGE_WIDTH_TOP);
-		image_process(namel, name, 
-				IMAGE_ZIPFILE, IMAGE_WIDTH_NORMAL);
 		rm(namel);
 		rm(name);
 		index_image_generated = 1;
@@ -170,7 +154,7 @@ import_image(const XML_Char **attr, char *img_type)
 	else {
 		image_process(filename, namel, 
 				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
-		image_process(namel, name, 
+		size = image_process(namel, name, 
 				IMAGE_ZIPFILE, IMAGE_WIDTH_NORMAL);
 		rm(namel);
 		rm(name);
@@ -208,6 +192,25 @@ import_image(const XML_Char **attr, char *img_type)
 		"%s,%s,%s,%s,", name, namel, 
 		escaped_caption, escaped_caption);
 	mapping_buf_p = mapping_buf + mapping_buf_len;
+
+fprintf(stderr,"%d\n",size.width);
+	if (350 >= size.width)
+		pbuf_add("|photo_right\n", 13);
+	else
+		pbuf_add("|photo_center\n", 14);
+	pbuf_add("|I@", 3);
+	pbuf_add(name, strlen(name));
+	pbuf_add(",", 1);
+
+	p = caption;
+	while ('\0' != *p) {
+		if ('|' == *p)
+			pbuf_add("｜", 3);
+		else
+			pbuf_add(p, 1);
+		++p;
+	}
+	pbuf_add("|", 1);
 }
 
 static void

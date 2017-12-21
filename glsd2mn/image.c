@@ -32,27 +32,27 @@
 
 #define CONVCMD	"gm convert -resize %dx%d %s %s"
 
-void image_process(char *, char *, char *, int);
+static IMAGE_SIZE shrink(char *, char *, int);
 
-static void shrink(char *, char *, int);
-
-void
+IMAGE_SIZE
 image_process(char *file_in, char *file_ou, char *file_zip, int width)
 {
+	IMAGE_SIZE size;
+
 	/*
 	 * Shrink image.
 	 */
-	shrink(file_in, file_ou, width);
+	size = shrink(file_in, file_ou, width);
 
 	/*
 	 * Add the shrinked image into zip file.
 	 */
 	zip(file_zip, file_ou);
 
-	return;
+	return(size);
 }
 
-static void
+static IMAGE_SIZE
 shrink(char *file_in, char *file_ou, int width)
 {
 	FILE *fp;
@@ -60,10 +60,14 @@ shrink(char *file_in, char *file_ou, int width)
 	struct jpeg_error_mgr jpg_err;
 	int height, ori_width, ori_height;
 	char buf[BUFSIZ] = { '\0' };
+	IMAGE_SIZE size;
 
 	fp = fopen(file_in, "r");
-	if (NULL == fp)
-		return;
+	if (NULL == fp) {
+		size.width = 0;
+		size.height = 0;
+		return(size);
+	}
 
 	jpg.err = jpeg_std_error(&jpg_err);
 	jpeg_create_decompress(&jpg);
@@ -84,11 +88,15 @@ shrink(char *file_in, char *file_ou, int width)
 	 */
 	if (width >= ori_width) {
 		copy(file_in, file_ou);
-		return;
+		size.width = ori_width;
+		size.height = ori_height;
+		return(size);
 	}
 
 	snprintf(buf, BUFSIZ, CONVCMD, width, height, file_in, file_ou);
 	system(buf);
 
-	return;
+	size.width = width;
+	size.height = height;
+	return(size);
 }

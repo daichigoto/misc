@@ -36,7 +36,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20171215"
+#define VERSION			"20171221"
 #define IMAGE_ZIPFILE		"images.zip"
 
 typedef enum el {
@@ -56,6 +56,11 @@ typedef enum el {
 	ELEMENT_QUOTE,
 	ELEMENT_UNKOWN
 } ELEMENT;
+
+typedef struct image_size {
+	int width;
+	int height;
+} IMAGE_SIZE;
 
 void el_start_handler(void *, const XML_Char *, const XML_Char **);
 void el_end_handler(void *, const XML_Char *);
@@ -84,7 +89,7 @@ void pbuf_xxx_siteoutputln(void);
 void import(const XML_Char **);
 void import_finish(void);
 
-void image_process(char *, char *, char *, int);
+IMAGE_SIZE image_process(char *, char *, char *, int);
 
 void copy(char *, char *);
 void zip(char *, char *);
