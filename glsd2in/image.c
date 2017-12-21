@@ -73,20 +73,21 @@ shrink(char *file_in, char *file_ou, int width)
 	jpeg_destroy_decompress(&jpg);
 	fclose(fp);
 
-	size.width = width;
-	size.height = height;
-
 	/*
 	 * The image size is smaller than the specified size. So, 
 	 * copy the image without converting.
 	 */
 	if (width >= ori_width) {
 		copy(file_in, file_ou);
+		size.width = ori_width;
+		size.height = ori_height;
 		return(size);
 	}
 
 	snprintf(buf, BUFSIZ, CONVCMD, width, height, file_in, file_ou);
 	system(buf);
 
+	size.width = width;
+	size.height = height;
 	return(size);
 }

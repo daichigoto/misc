@@ -119,6 +119,7 @@ import_image(const XML_Char **attr, char *img_type)
 		++p;
 	}
 	*p_namel++ = 'l';
+
 	while ('\n' != *p && '\0' != *p && '.' != *p)
 		p++;
 	while ('\n' != *p && '\0' != *p) {
