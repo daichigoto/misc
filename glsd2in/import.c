@@ -26,6 +26,7 @@
  */
 
 #include "glsd2in.h"
+#include <time.h>
 
 static void import_image(const XML_Char **, char *);
 static void import_image_jpeg(const XML_Char **);
@@ -35,25 +36,24 @@ static void import_text_commandprompt(const XML_Char **);
 static void import_text_Xsv(const XML_Char **, const char);
 static void import_text_csv(const XML_Char **);
 static void import_text_tsv(const XML_Char **);
+static void get_date(void);
 
 #define IMAGE_WIDTH_LARGE	800
 #define IMAGE_WIDTH_NORMAL	600
 #define IMAGE_WIDTH_TOP		600
 
 #define IMAGE_RESIZED_DIR	"images_resized"
-#define IMAGE_TOP_INDEX		"images_resized/index.top.jpg"
 
 static char type[BUFSIZ];
-static char filename[BUFSIZ];
+static char filepath[BUFSIZ];
 static char caption[BUFSIZ];
-
-static int index_image_generated = 0;
+static char date[BUFSIZ];
 
 void
 import(const XML_Char **attr)
 {
 	memset(type, '\0', sizeof(type));
-	memset(filename, '\0', sizeof(filename));
+	memset(filepath, '\0', sizeof(filepath));
 	memset(caption, '\0', sizeof(caption));
 	
 	for (int i = 0; attr[i]; i += 2) {
@@ -63,9 +63,9 @@ import(const XML_Char **attr)
 			memcpy(type, attr[i+1], strlen(attr[i+1]));
 		}
 		else if (0 == strcmp(attr[i], "ref")) {
-			if (sizeof(filename) < strlen(attr[i+1]))
+			if (sizeof(filepath) < strlen(attr[i+1]))
 				return;
-			memcpy(filename, attr[i+1], strlen(attr[i+1]));
+			memcpy(filepath, attr[i+1], strlen(attr[i+1]));
 		}
 		else if (0 == strcmp(attr[i], "caption")) {
 			if (sizeof(caption) < strlen(attr[i+1]))
@@ -96,49 +96,74 @@ import_image(const XML_Char **attr, char *img_type)
 	IMAGE_SIZE s;
 	char name[BUFSIZ] = {'\0'};
 	char namel[BUFSIZ] = {'\0'};
+	char path[BUFSIZ] = {'\0'};
+	char pathl[BUFSIZ] = {'\0'};
 	char wh[BUFSIZ] = {'\0'};
-	char *p, *p_name, *p_namel;
+	char *p, *p_name, *p_namel, *p_path, *p_pathl, *p_date;
 
 	mkdir(IMAGE_RESIZED_DIR, S_IRWXU|S_IRWXG|S_IRWXO);
 
-	strcpy(name, IMAGE_RESIZED_DIR);
-	strcpy(namel, IMAGE_RESIZED_DIR);
-	p = filename;
-	p_name = name + strlen(IMAGE_RESIZED_DIR);
-	p_namel = namel + strlen(IMAGE_RESIZED_DIR);
+	p_name = name;
+	p_namel = namel;
+	strcpy(path, IMAGE_RESIZED_DIR);
+	strcpy(pathl, IMAGE_RESIZED_DIR);
+	p = filepath;
+	p_path = path + strlen(IMAGE_RESIZED_DIR);
+	p_pathl = pathl + strlen(IMAGE_RESIZED_DIR);
 
 	while ('/' != *p)
 		++p;
 
-	*p_name++ = '/';
-	*p_namel++ = '/';
+	*p_path++ = '/';
+	*p_pathl++ = '/';
 	++p;
+
+	strcpy(p_path, "linux_");
+	strcpy(p_pathl, "linux_");
+	strcpy(p_name, "linux_");
+	strcpy(p_namel, "linux_");
+	p_path += 6;
+	p_pathl += 6;
+	p_name += 6;
+	p_namel += 6;
+
+	get_date();
+
+	p_date = date;	
+	while ('\0' != *p_date) {
+		*p_path++ = *p_date;
+		*p_pathl++ = *p_date;
+		*p_name++ = *p_date;
+		*p_namel++ = *p_date;
+		++p_date;
+	}
+	*p_path++ = '_';
+	*p_pathl++ = '_';
+	*p_name++ = '_';
+	*p_namel++ = '_';
+
 	while (48 <= *p && *p <= 57) {
+		*p_path++ = *p;
+		*p_pathl++ = *p;
 		*p_name++ = *p;
 		*p_namel++ = *p;
 		++p;
 	}
+	*p_pathl++ = 'l';
 	*p_namel++ = 'l';
 
 	while ('\n' != *p && '\0' != *p && '.' != *p)
 		p++;
 	while ('\n' != *p && '\0' != *p) {
+		*p_path++ = *p;
+		*p_pathl++ = *p;
 		*p_name++ = *p;
 		*p_namel++ = *p;
 		++p;
 	}
 
-	if (!index_image_generated) {
-		s = image_process(filename, namel, IMAGE_WIDTH_LARGE);
-		image_process(namel, IMAGE_TOP_INDEX, IMAGE_WIDTH_TOP);
-		image_process(IMAGE_TOP_INDEX, name, IMAGE_WIDTH_TOP);
-		image_process(namel, name, IMAGE_WIDTH_NORMAL);
-		index_image_generated = 1;
-	}
-	else {
-		s = image_process(filename, namel, IMAGE_WIDTH_LARGE);
-		image_process(namel, name, IMAGE_WIDTH_NORMAL);
-	}
+	s = image_process(filepath, pathl, IMAGE_WIDTH_LARGE);
+	image_process(pathl, path, IMAGE_WIDTH_NORMAL);
 
 	snprintf(wh, sizeof(wh), "width=%d,height=%d,", s.width, s.height);
 
@@ -148,13 +173,22 @@ import_image(const XML_Char **attr, char *img_type)
 			   "width=\"50\">", 77);
 	pbuf_addln("  <tr>", 6);
 	pbuf_add("   <td>", 7);
-	pbuf_add("<a href=\"HTMLURL\" " 
-	         "onclick=\"window.open('HTMLURL','popup','", 58);
+	pbuf_add("<a href=\"https://news.mynavi.jp/itsearch/files/", 47);
+	pbuf_add(namel, 23);
+	pbuf_add("\" ", 2); 
+	pbuf_add("onclick=\"window.open('", 22);
+	pbuf_add("\"https://news.mynavi.jp/itsearch/files/", 39);
+	pbuf_add(namel, 23);
+	pbuf_add("\" ", 2); 
+	pbuf_add("','popup','", 11);
 	pbuf_add(wh, strlen(wh));
 	pbuf_add("scrollbars=yes,resizable=no,toolbar=no,"
 	         "directories=no,location=no,menubar=no,status=no,"
 		 "left=0,top=0'); return false\">", 117);
-	pbuf_add("<img src=\"IMAURL\"/>", 19);
+	pbuf_add("<img src=\"", 10);
+	pbuf_add("https://news.mynavi.jp/itsearch/files/", 38);
+	pbuf_add(name, 22);
+	pbuf_add("\"/>", 3);
 	pbuf_add("</a>", 4);
 	pbuf_addln("</td>", 5);
 	pbuf_addln("  </tr>", 7);
@@ -185,7 +219,7 @@ import_text_sourcecode(const XML_Char **attr)
 	FILE *fp;
 	char buf[BUFSIZ] = {'\0'};
 
-	fp = fopen(filename, "r");
+	fp = fopen(filepath, "r");
 	if (NULL == fp)
 		return;
 	int firstline = 1;
@@ -213,7 +247,7 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 	char buf[BUFSIZ] = {'\0'};
 	char *p;
 
-	fp = fopen(filename, "r");
+	fp = fopen(filepath, "r");
 	if (NULL == fp)
 		return;
 
@@ -300,4 +334,17 @@ static void
 import_text_tsv(const XML_Char **attr)
 {
 	import_text_Xsv(attr, '\t');
+}
+
+static void
+get_date(void)
+{
+	time_t t;
+	struct tm *tm;
+
+	t = time(NULL);
+	tm = localtime(&t);
+
+	snprintf(date, sizeof(date), "%4d%2d%2d", 
+		tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday);
 }
