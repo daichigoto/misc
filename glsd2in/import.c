@@ -118,14 +118,26 @@ import_image(const XML_Char **attr, char *img_type)
 	*p_pathl++ = '/';
 	++p;
 
-	strcpy(p_path, "linux_");
-	strcpy(p_pathl, "linux_");
-	strcpy(p_name, "linux_");
-	strcpy(p_namel, "linux_");
-	p_path += 6;
-	p_pathl += 6;
-	p_name += 6;
-	p_namel += 6;
+	if (p_flag) {
+		strcpy(p_path, "pwmgr_");
+		strcpy(p_pathl, "pwmgr_");
+		strcpy(p_name, "pwmgr_");
+		strcpy(p_namel, "pwmgr_");
+		p_path += 6;
+		p_pathl += 6;
+		p_name += 6;
+		p_namel += 6;
+	}
+	else {
+		strcpy(p_path, "linux_");
+		strcpy(p_pathl, "linux_");
+		strcpy(p_name, "linux_");
+		strcpy(p_namel, "linux_");
+		p_path += 6;
+		p_pathl += 6;
+		p_name += 6;
+		p_namel += 6;
+	}
 
 	get_date();
 
@@ -345,6 +357,6 @@ get_date(void)
 	t = time(NULL);
 	tm = localtime(&t);
 
-	snprintf(date, sizeof(date), "%4d%2d%2d", 
+	snprintf(date, sizeof(date), "%4d%02d%02d", 
 		tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday);
 }

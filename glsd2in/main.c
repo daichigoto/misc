@@ -36,10 +36,14 @@ main(int argc, char *argv[])
 	char buf[bufsize];
 	char *input = "/dev/stdin";
 
-	while ((ch = getopt(argc, argv, "hv")) != -1)
+	p_flag = 0;
+	while ((ch = getopt(argc, argv, "phv")) != -1)
 		switch (ch) {
 		case 'h':
 			usage();
+			break;
+		case 'p':
+			p_flag = 1;
 			break;
 		case 'v':
 			version();
