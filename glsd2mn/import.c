@@ -171,11 +171,11 @@ import_image(const XML_Char **attr, char *img_type)
 		++mapping_buf_len;
 	}
 
-	// Escape , to 、
-	//        | to ｜
+	// Escape treatment for the caption
 	for (int i = 0, j = 0; 
 	     '\0' != caption[i] && j < (int)sizeof(escaped_caption) - 4; 
 	     i++, j++) {
+		// Escape , to 、
 		if (',' == caption[i]) {
 			// 「、」
 			escaped_caption[j++] = 0xe3;
@@ -184,6 +184,7 @@ import_image(const XML_Char **attr, char *img_type)
 			if (' ' == caption[i+1])
 				++i;
 		}
+		// Escape | to ｜
 		else if ('|' == caption[i]) {
 			if (0 < j && ' ' == escaped_caption[j-1])
 				--j;
