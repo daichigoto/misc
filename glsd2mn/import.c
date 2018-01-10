@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2018 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -172,6 +172,7 @@ import_image(const XML_Char **attr, char *img_type)
 	}
 
 	// Escape , to 、
+	//        | to ｜
 	for (int i = 0, j = 0; 
 	     '\0' != caption[i] && j < (int)sizeof(escaped_caption) - 4; 
 	     i++, j++) {
@@ -180,6 +181,16 @@ import_image(const XML_Char **attr, char *img_type)
 			escaped_caption[j++] = 0xe3;
 			escaped_caption[j++] = 0x80;
 			escaped_caption[j] = 0x81;
+			if (' ' == caption[i+1])
+				++i;
+		}
+		else if ('|' == caption[i]) {
+			if (0 < j && ' ' == escaped_caption[j-1])
+				--j;
+			// 「｜」
+			escaped_caption[j++] = 0xef;
+			escaped_caption[j++] = 0xbd;
+			escaped_caption[j] = 0x9c;
 			if (' ' == caption[i+1])
 				++i;
 		}
