@@ -234,6 +234,11 @@ import_text_sourcecode(const XML_Char **attr)
 	fp = fopen(filepath, "r");
 	if (NULL == fp)
 		return;
+
+	pbuf_add("#### ", 5);
+	pbuf_addln(caption, strlen(caption));
+	pbuf_newline();
+
 	int firstline = 1;
 	while (NULL != fgets(buf, sizeof(buf) - 1, fp)) {
 		if (firstline)
