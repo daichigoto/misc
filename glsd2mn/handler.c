@@ -119,6 +119,7 @@ el_end_handler(void *data, const XML_Char *name)
 			pbuf_outputln();
 			break;
 		case ELEMENT_TITLE:
+			escaped_output = 0;
 			switch(docgroup_depth) {
 			case 1:
 				pbuf_outputln();
@@ -134,10 +135,12 @@ el_end_handler(void *data, const XML_Char *name)
 			}
 			break;
 		case ELEMENT_SHORTTITLE:
+			escaped_output = 0;
 			output("short=");
 			pbuf_outputln();
 			break;
 		case ELEMENT_AUTHOR:
+			escaped_output = 0;
 			output("author=");
 			pbuf_outputln();
 			break;
@@ -155,8 +158,8 @@ el_end_handler(void *data, const XML_Char *name)
 				break;
 			}
 			if (pbuf_startwith("[LEAD:")) {
-				output("lead=");
 				escaped_output = 0;
+				output("lead=");
 				pbuf_trimoutputln(6, 1);
 				break;
 			}
