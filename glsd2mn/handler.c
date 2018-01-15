@@ -156,6 +156,7 @@ el_end_handler(void *data, const XML_Char *name)
 			}
 			if (pbuf_startwith("[LEAD:")) {
 				output("lead=");
+				escaped_output = 0;
 				pbuf_trimoutputln(6, 1);
 				break;
 			}

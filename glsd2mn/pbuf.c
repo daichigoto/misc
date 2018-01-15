@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2018 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,8 @@
 #define PBUF_SIZE	1024 * 64
 
 static void pbuf_entitycompaction(void);
+static void pbuf_escaped_prints(char *);
+static void pbuf_escaped_printc(char);
 
 static char pbuf[PBUF_SIZE];
 static int pbuf_offset = 0;
@@ -74,7 +76,7 @@ void
 pbuf_output(void)
 {
 	pbuf_entitycompaction();
-	printf("%s", pbuf);
+	pbuf_escaped_prints(pbuf);
 }
 
 void
@@ -93,7 +95,7 @@ pbuf_trimoutput(int fw_offset, int bw_offset)
 	for (int i = 0; i < fw_offset; i++)
 		++p;
 	for (int i = 0; i < len; i++)
-		putchar(*p++);
+		pbuf_escaped_printc(*p++);
 }
 
 void
@@ -107,7 +109,7 @@ void
 pbuf_flush(void)
 {
 	pbuf_entitycompaction();
-	printf("%s", pbuf);
+	pbuf_escaped_prints(pbuf);
 	pbuf_reset();
 }
 
@@ -127,6 +129,7 @@ void
 pbuf_reset(void)
 {
 	pbuf_offset = 0;
+	escaped_output = 1;
 	memset(pbuf, '\0', PBUF_SIZE);
 }
 
@@ -136,12 +139,6 @@ pbuf_startwith(char *s)
 	if (0 == strncmp(pbuf, s, strlen(s)))
 		return 1;
 	return 0;
-}
-
-void
-pbuf_entitycompaction(void)
-{
-	// Nothing to do. libexpat does instead.
 }
 
 void
@@ -200,4 +197,38 @@ pbuf_xxx_siteoutputln(void)
 {
 	pbuf_xxx_siteoutput();
 	putchar('\n');
+}
+
+static void
+pbuf_entitycompaction(void)
+{
+	// Nothing to do. libexpat does instead.
+}
+
+static void
+pbuf_escaped_prints(char *s)
+{
+	char *p;
+
+	p = s;
+	while ('\0' != *p)
+		pbuf_escaped_printc(*p++);
+}
+
+static void
+pbuf_escaped_printc(char c)
+{
+	if (escaped_output) {
+		switch (c) {
+		case '_':
+			putchar('\\');
+			putchar('_');
+			break;
+		default:
+			putchar(c);
+			break;
+		}
+	}
+	else
+		putchar(c);
 }

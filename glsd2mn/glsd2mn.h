@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2018 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20171221"
+#define VERSION			"20180115"
 #define IMAGE_ZIPFILE		"images.zip"
 
 typedef enum el {
@@ -61,6 +61,8 @@ typedef struct image_size {
 	int width;
 	int height;
 } IMAGE_SIZE;
+
+int escaped_output;
 
 void el_start_handler(void *, const XML_Char *, const XML_Char **);
 void el_end_handler(void *, const XML_Char *);

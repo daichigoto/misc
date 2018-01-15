@@ -118,6 +118,8 @@ import_image(const XML_Char **attr, char *img_type)
 	char *p, *p_name, *p_namel;
 	IMAGE_SIZE size;
 
+	escaped_output = 0;
+
 	p = strstr(filename, "/");
 	if (NULL == p)
 		p = filename;
@@ -243,6 +245,8 @@ import_text_sourcecode(const XML_Char **attr)
 	char buf[BUFSIZ] = {'\0'};
 	int depth;
 
+	escaped_output = 0;
+
 	depth = get_docgroup_depth();
 	if (6 <= depth)
 		depth = 5;
@@ -279,6 +283,8 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 	FILE *fp;
 	char buf[BUFSIZ] = {'\0'};
 	char *p;
+
+	escaped_output = 0;
 
 	fp = fopen(filename, "r");
 	if (NULL == fp)
