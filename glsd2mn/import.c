@@ -145,12 +145,13 @@ import_image(const XML_Char **attr, char *img_type)
 	if (!index_image_generated) {
 		image_process(filename, namel,
 				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
-		image_process(namel, "index.top.jpg", 
-				"/dev/null", IMAGE_WIDTH_TOP);
-		size = image_process("index.top.jpg", name,
+		image_process(namel, "index.jpg", 
+				IMAGE_ZIPFILE, IMAGE_WIDTH_TOP);
+		size = image_process("index.jpg", name,
 				IMAGE_ZIPFILE, IMAGE_WIDTH_TOP);
 		rm(namel);
 		rm(name);
+		rm("index.jpg");
 		index_image_generated = 1;
 	}
 	else {
