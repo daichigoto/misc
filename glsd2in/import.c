@@ -40,6 +40,7 @@ static void get_date(void);
 
 #define IMAGE_WIDTH_LARGE	800
 #define IMAGE_WIDTH_NORMAL	600
+#define IMAGE_WIDTH_MOBILE	300
 #define IMAGE_WIDTH_TOP		600
 
 #define IMAGE_RESIZED_DIR	"images_resized"
@@ -96,47 +97,62 @@ import_image(const XML_Char **attr, char *img_type)
 	IMAGE_SIZE s;
 	char name[BUFSIZ] = {'\0'};
 	char namel[BUFSIZ] = {'\0'};
+	char namem[BUFSIZ] = {'\0'};
 	char path[BUFSIZ] = {'\0'};
 	char pathl[BUFSIZ] = {'\0'};
+	char pathm[BUFSIZ] = {'\0'};
 	char wh[BUFSIZ] = {'\0'};
-	char *p, *p_name, *p_namel, *p_path, *p_pathl, *p_date;
+	char *p, *p_name, *p_namel, *p_namem, 
+	     *p_path, *p_pathl, *p_pathm, *p_date;
 
 	mkdir(IMAGE_RESIZED_DIR, S_IRWXU|S_IRWXG|S_IRWXO);
 
 	p_name = name;
 	p_namel = namel;
+	p_namem = namem;
 	strcpy(path, IMAGE_RESIZED_DIR);
 	strcpy(pathl, IMAGE_RESIZED_DIR);
+	strcpy(pathm, IMAGE_RESIZED_DIR);
 	p = filepath;
 	p_path = path + strlen(IMAGE_RESIZED_DIR);
 	p_pathl = pathl + strlen(IMAGE_RESIZED_DIR);
+	p_pathm = pathm + strlen(IMAGE_RESIZED_DIR);
 
 	while ('/' != *p)
 		++p;
 
 	*p_path++ = '/';
 	*p_pathl++ = '/';
+	*p_pathm++ = '/';
 	++p;
 
 	if (p_flag) {
 		strcpy(p_path, "pwmgr_");
 		strcpy(p_pathl, "pwmgr_");
+		strcpy(p_pathm, "pwmgr_");
 		strcpy(p_name, "pwmgr_");
 		strcpy(p_namel, "pwmgr_");
+		strcpy(p_namem, "pwmgr_");
 		p_path += 6;
 		p_pathl += 6;
+		p_pathm += 6;
 		p_name += 6;
 		p_namel += 6;
+		p_namem += 6;
 	}
 	else {
 		strcpy(p_path, "linux_");
 		strcpy(p_pathl, "linux_");
+		strcpy(p_pathm, "linux_");
 		strcpy(p_name, "linux_");
 		strcpy(p_namel, "linux_");
+		strcpy(p_namem, "linux_");
 		p_path += 6;
 		p_pathl += 6;
+		p_pathm += 6;
 		p_name += 6;
 		p_namel += 6;
+		p_namem += 6;
 	}
 
 	get_date();
@@ -145,37 +161,48 @@ import_image(const XML_Char **attr, char *img_type)
 	while ('\0' != *p_date) {
 		*p_path++ = *p_date;
 		*p_pathl++ = *p_date;
+		*p_pathm++ = *p_date;
 		*p_name++ = *p_date;
 		*p_namel++ = *p_date;
+		*p_namem++ = *p_date;
 		++p_date;
 	}
 	*p_path++ = '_';
 	*p_pathl++ = '_';
+	*p_pathm++ = '_';
 	*p_name++ = '_';
 	*p_namel++ = '_';
+	*p_namem++ = '_';
 
 	while (48 <= *p && *p <= 57) {
 		*p_path++ = *p;
 		*p_pathl++ = *p;
+		*p_pathm++ = *p;
 		*p_name++ = *p;
 		*p_namel++ = *p;
+		*p_namem++ = *p;
 		++p;
 	}
 	*p_pathl++ = 'l';
 	*p_namel++ = 'l';
+	*p_pathm++ = 'm';
+	*p_namem++ = 'm';
 
 	while ('\n' != *p && '\0' != *p && '.' != *p)
 		p++;
 	while ('\n' != *p && '\0' != *p) {
 		*p_path++ = *p;
 		*p_pathl++ = *p;
+		*p_pathm++ = *p;
 		*p_name++ = *p;
 		*p_namel++ = *p;
+		*p_namem++ = *p;
 		++p;
 	}
 
 	s = image_process(filepath, pathl, IMAGE_WIDTH_LARGE);
 	image_process(pathl, path, IMAGE_WIDTH_NORMAL);
+	image_process(path, pathm, IMAGE_WIDTH_MOBILE);
 
 	snprintf(wh, sizeof(wh), "width=%d,height=%d,", s.width, s.height);
 
