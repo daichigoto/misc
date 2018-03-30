@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2018 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -49,6 +49,7 @@ static char type[BUFSIZ];
 static char filepath[BUFSIZ];
 static char caption[BUFSIZ];
 static char date[BUFSIZ];
+static int iphone_flag;
 
 void
 import(const XML_Char **attr)
@@ -56,7 +57,8 @@ import(const XML_Char **attr)
 	memset(type, '\0', sizeof(type));
 	memset(filepath, '\0', sizeof(filepath));
 	memset(caption, '\0', sizeof(caption));
-	
+
+	iphone_flag = 0;
 	for (int i = 0; attr[i]; i += 2) {
 		if (0 == strcmp(attr[i], "type")) {
 			if (sizeof(type) < strlen(attr[i+1]))
@@ -72,6 +74,9 @@ import(const XML_Char **attr)
 			if (sizeof(caption) < strlen(attr[i+1]))
 				return;
 			memcpy(caption, attr[i+1], strlen(attr[i+1]));
+		}
+		else if (0 == strcmp(attr[i], "iphone")) {
+			iphone_flag = 1;
 		}
 	}
 
@@ -201,8 +206,10 @@ import_image(const XML_Char **attr, char *img_type)
 	}
 
 	s = image_process(filepath, pathl, IMAGE_WIDTH_LARGE);
-	image_process(pathl, path, IMAGE_WIDTH_NORMAL);
-	image_process(path, pathm, IMAGE_WIDTH_MOBILE);
+	if (iphone_flag)
+		image_process(pathl, pathm, IMAGE_WIDTH_MOBILE);
+	else
+		image_process(pathl, path, IMAGE_WIDTH_NORMAL);
 
 	snprintf(wh, sizeof(wh), "width=%d,height=%d,", s.width, s.height);
 
@@ -226,7 +233,10 @@ import_image(const XML_Char **attr, char *img_type)
 		 "left=0,top=0'); return false\">", 117);
 	pbuf_add("<img src=\"", 10);
 	pbuf_add("https://news.mynavi.jp/itsearch/files/", 38);
-	pbuf_add(name, 22);
+	if (iphone_flag)
+		pbuf_add(namem, 23);
+	else
+		pbuf_add(name, 22);
 	pbuf_add("\"/>", 3);
 	pbuf_add("</a>", 4);
 	pbuf_addln("</td>", 5);
