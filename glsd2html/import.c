@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2018 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -36,9 +36,15 @@ static void import_text_Xsv(const XML_Char **, const char);
 static void import_text_csv(const XML_Char **);
 static void import_text_tsv(const XML_Char **);
 
+#define IMAGE_WIDTH_NORMAL	600
+#define IMAGE_WIDTH_MOBILE	300
+
+#define IMAGE_RESIZED_DIR	"images_resized"
+
 static char type[BUFSIZ];
 static char filename[BUFSIZ];
 static char caption[BUFSIZ];
+static int iphone_flag;
 
 static int img_counter = 1;
 static int tbl_counter = 1;
@@ -50,7 +56,8 @@ import(const XML_Char **attr)
 	memset(type, '\0', sizeof(type));
 	memset(filename, '\0', sizeof(filename));
 	memset(caption, '\0', sizeof(caption));
-	
+
+	iphone_flag = 0;
 	for (int i = 0; attr[i]; i += 2) {
 		if (0 == strcmp(attr[i], "type")) {
 			if (sizeof(type) < strlen(attr[i+1]))
@@ -66,6 +73,9 @@ import(const XML_Char **attr)
 			if (sizeof(caption) < strlen(attr[i+1]))
 				return;
 			memcpy(caption, attr[i+1], strlen(attr[i+1]));
+		}
+		else if (0 == strcmp(attr[i], "iphone")) {
+			iphone_flag = 1;
 		}
 	}
 
@@ -88,24 +98,33 @@ import(const XML_Char **attr)
 static void
 import_image(const XML_Char **attr, char *img_type)
 {
-	const int max_width = 400;
 	int w, h;
 	char buf[BUFSIZ], numbuf[BUFSIZ];
 	IMAGE_SIZE siz;
 	
 	siz = image_size(filename);
-	if (max_width < siz.width) {
-		w = max_width;
+	if (iphone_flag) {
+		w = IMAGE_WIDTH_MOBILE;
 		h = (int)((double)siz.height * 
-			(double)max_width / (double)siz.width);
+			(double)IMAGE_WIDTH_MOBILE / (double)siz.width);
+	}
+	else if (IMAGE_WIDTH_NORMAL < siz.width) {
+		w = IMAGE_WIDTH_NORMAL;
+		h = (int)((double)siz.height * 
+			(double)IMAGE_WIDTH_NORMAL / (double)siz.width);
 	}
 	else {
 		w = siz.width;
 		h = siz.height;
 	}
-//	snprintf(buf, BUFSIZ, "width=\"%d\" height=\"%d\" ", w, h);
+	snprintf(buf, BUFSIZ, "width=\"%d\" height=\"%d\" ", w, h);
 
 	pbuf_addln("<br>", 4);
+
+	pbuf_add("<a href=\"", 9);
+	pbuf_add(filename, strlen(filename));
+	pbuf_add("\"/>", 3);
+
 	pbuf_add("<img src=\"", 10);
 	pbuf_add(filename, strlen(filename));
 	pbuf_add("\" ", 2);
@@ -116,6 +135,8 @@ import_image(const XML_Char **attr, char *img_type)
 	pbuf_add("class=\"img-responsive\" ", 23);
 	pbuf_add("style=\"margin: 0 auto;\" ", 24);
 	pbuf_add("/>", 2);
+
+	pbuf_add("</a>", 4);
 
 	snprintf(numbuf, sizeof(numbuf), "%d", img_counter);
 	pbuf_add("<p class=\"text-center\">", 23);
