@@ -117,10 +117,14 @@ import_image(const XML_Char **attr, char *img_type)
 		w = siz.width;
 		h = siz.height;
 	}
-	snprintf(buf, BUFSIZ, "width=\"%d\" height=\"%d\" ", w, h);
+	snprintf(buf, BUFSIZ, "width=\"%dpx\" height=\"%dpx\" ", w, h);
 
 	pbuf_addln("<br>", 4);
 
+	pbuf_add("<div class=\"container\">", 23);
+	pbuf_add("<div class=\"row\">", 17);
+	pbuf_add("<div class=\"col-md-1\"></div>", 28);
+	pbuf_add("<div class=\"col-md-10\">", 22);
 	pbuf_add("<a href=\"", 9);
 	pbuf_add(filename, strlen(filename));
 	pbuf_add("\"/>", 3);
@@ -131,12 +135,15 @@ import_image(const XML_Char **attr, char *img_type)
 	pbuf_add("alt=\"", 5);
 	pbuf_add(caption, strlen(caption));
 	pbuf_add("\" ", 2);
-	pbuf_add(buf, strlen(buf));
+//	pbuf_add(buf, strlen(buf));
 	pbuf_add("class=\"img-responsive\" ", 23);
-	pbuf_add("style=\"margin: 0 auto;\" ", 24);
 	pbuf_add("/>", 2);
 
 	pbuf_add("</a>", 4);
+	pbuf_add("</div>", 6);
+	pbuf_add("<div class=\"col-md-1\"></div>", 28);
+	pbuf_add("</div>", 6);
+	pbuf_add("</div>", 6);
 
 	snprintf(numbuf, sizeof(numbuf), "%d", img_counter);
 	pbuf_add("<p class=\"text-center\">", 23);
