@@ -124,7 +124,7 @@ import_image(const XML_Char **attr, char *img_type)
 	pbuf_add("<div class=\"container\">", 23);
 	pbuf_add("<div class=\"row\">", 17);
 	pbuf_add("<div class=\"col-md-1\"></div>", 28);
-	pbuf_add("<div class=\"col-md-10\">", 22);
+	pbuf_add("<div class=\"col-md-10\">", 23);
 	pbuf_add("<a href=\"", 9);
 	pbuf_add(filename, strlen(filename));
 	pbuf_add("\"/>", 3);
