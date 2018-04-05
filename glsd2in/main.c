@@ -37,13 +37,17 @@ main(int argc, char *argv[])
 	char *input = "/dev/stdin";
 
 	p_flag = 0;
-	while ((ch = getopt(argc, argv, "phv")) != -1)
+	P_flag = 0;
+	while ((ch = getopt(argc, argv, "pPhv")) != -1)
 		switch (ch) {
 		case 'h':
 			usage();
 			break;
 		case 'p':
 			p_flag = 1;
+			break;
+		case 'P':
+			P_flag = 1;
 			break;
 		case 'v':
 			version();

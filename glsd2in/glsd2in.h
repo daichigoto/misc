@@ -36,7 +36,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20180330"
+#define VERSION			"20180405"
 
 typedef enum el {
 	ELEMENT_DOCUMENT,
@@ -100,3 +100,4 @@ void usage(void);
 void version(void);
 
 int p_flag;
+int P_flag;
