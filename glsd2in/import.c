@@ -146,18 +146,18 @@ import_image(const XML_Char **attr, char *img_type)
 		p_namem += 6;
 	}
 	if (P_flag) {
-		strcpy(p_path, "pwsh_");
-		strcpy(p_pathl, "pwsh_");
-		strcpy(p_pathm, "pwsh_");
-		strcpy(p_name, "pwsh_");
-		strcpy(p_namel, "pwsh_");
-		strcpy(p_namem, "pwsh_");
-		p_path += 5;
-		p_pathl += 5;
-		p_pathm += 5;
-		p_name += 5;
-		p_namel += 5;
-		p_namem += 5;
+		strcpy(p_path, "pwrsh_");
+		strcpy(p_pathl, "pwrsh_");
+		strcpy(p_pathm, "pwrsh_");
+		strcpy(p_name, "pwrsh_");
+		strcpy(p_namel, "pwrsh_");
+		strcpy(p_namem, "pwrsh_");
+		p_path += 6;
+		p_pathl += 6;
+		p_pathm += 6;
+		p_name += 6;
+		p_namel += 6;
+		p_namem += 6;
 	}
 	else {
 		strcpy(p_path, "linux_");
