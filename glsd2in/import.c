@@ -145,7 +145,7 @@ import_image(const XML_Char **attr, char *img_type)
 		p_namel += 6;
 		p_namem += 6;
 	}
-	if (P_flag) {
+	else if (P_flag) {
 		strcpy(p_path, "pwrsh_");
 		strcpy(p_pathl, "pwrsh_");
 		strcpy(p_pathm, "pwrsh_");
