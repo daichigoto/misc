@@ -36,7 +36,7 @@ static void import_text_Xsv(const XML_Char **, const char);
 static void import_text_csv(const XML_Char **);
 static void import_text_tsv(const XML_Char **);
 
-#define MAPPING_FILE	"mapping.txt"
+#define MAPPING_FILE		"mapping.txt"
 
 #define IMAGE_WIDTH_LARGE	800
 #define IMAGE_WIDTH_NORMAL	600
@@ -50,6 +50,7 @@ static int mapping_buf_initialized = 0;
 static char type[BUFSIZ];
 static char filename[BUFSIZ];
 static char caption[BUFSIZ];
+static int index_flag;
 
 static int index_image_generated = 0;
 
@@ -59,7 +60,8 @@ import(const XML_Char **attr)
 	memset(type, '\0', sizeof(type));
 	memset(filename, '\0', sizeof(filename));
 	memset(caption, '\0', sizeof(caption));
-	
+
+	index_flag = 0;
 	for (int i = 0; attr[i]; i += 2) {
 		if (0 == strcmp(attr[i], "type")) {
 			if (sizeof(type) < strlen(attr[i+1]))
@@ -75,6 +77,9 @@ import(const XML_Char **attr)
 			if (sizeof(caption) < strlen(attr[i+1]))
 				return;
 			memcpy(caption, attr[i+1], strlen(attr[i+1]));
+		}
+		else if (0 == strcmp(attr[i], "index")) {
+			index_flag = 1;
 		}
 	}
 
@@ -142,7 +147,7 @@ import_image(const XML_Char **attr, char *img_type)
 		++p;
 	}
 
-	if (!index_image_generated) {
+	if (index_flag || !index_image_generated) {
 		image_process(filename, namel,
 				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
 		image_process(namel, "index.jpg", 
