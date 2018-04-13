@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2018 Daichi GOTO
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,8 @@
 
 #include "glsd2mn.h"
 
-#define ZIPCMD	"zip -u %s %s > /dev/null"
+#define ZIPCMD_ADD	"zip -u %s %s > /dev/null"
+#define ZIPCMD_DEL	"zip -d %s %s > /dev/null"
 
 void copy(char *, char *);
 void zip(char *, char *);
@@ -63,7 +64,16 @@ zip(char *file_zip, char *file)
 {
 	char buf[BUFSIZ] = { '\0' };
 
-	snprintf(buf, BUFSIZ, ZIPCMD, file_zip, file);
+	/*
+	 * If the processing time interval is short, the zip command 
+	 * does not update the file. Therefore, delete it first.
+	 */
+	if (0 == strcmp("index.jpg", file)) {
+		snprintf(buf, BUFSIZ, ZIPCMD_DEL, file_zip, "index.jpg");
+		system(buf);
+	}
+
+	snprintf(buf, BUFSIZ, ZIPCMD_ADD, file_zip, file);
 	system(buf);
 }
 
