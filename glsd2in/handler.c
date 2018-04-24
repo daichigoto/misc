@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2018 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,7 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 				break;
 			}
 		}
-		pbuf_add("\" target=\"_blink\">", 18);
+		pbuf_add("\" target=\"_blank\">", 18);
 		break;
 	case ELEMENT_IMPORT:
 		import(attr);
