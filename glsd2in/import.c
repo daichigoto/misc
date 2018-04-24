@@ -312,7 +312,7 @@ static void
 import_text_Xsv(const XML_Char **attr, const char delim)
 {
 	FILE *fp;
-	char buf[BUFSIZ] = {'\0'};
+	char buf[1024 * 8] = {'\0'};
 	char *p;
 
 	fp = fopen(filepath, "r");
