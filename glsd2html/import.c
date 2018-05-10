@@ -214,7 +214,7 @@ static void
 import_text_Xsv(const XML_Char **attr, const char delim)
 {
 	FILE *fp;
-	char buf[BUFSIZ], numbuf[BUFSIZ];
+	char buf[1024 * 8], numbuf[BUFSIZ];
 	char *p;
 
 	fp = fopen(filename, "r");
