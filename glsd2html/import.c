@@ -172,7 +172,7 @@ static void
 import_text_sourcecode(const XML_Char **attr)
 {
 	FILE *fp;
-	char buf[BUFSIZ], numbuf[BUFSIZ];
+	char buf[BUFSIZ], numbuf[BUFSIZ], *buf_p;
 
 	fp = fopen(filename, "r");
 	if (NULL == fp)
@@ -185,7 +185,21 @@ import_text_sourcecode(const XML_Char **attr)
 			firstline = 0;
 		else
 			pbuf_add("\n", 1);
-		pbuf_add(buf, strlen(buf) - 1);
+		buf_p = buf;
+		while ('\0' != *buf_p && '\n' != *buf_p) {
+			switch (*buf_p) {
+			case '<':
+				pbuf_add("&lt;", 4);
+				break;
+			case '>':
+				pbuf_add("&gt;", 4);
+				break;
+			default:
+				pbuf_add(buf_p, 1);
+				break;
+			}
+			++buf_p;
+		}
 	}
 
 	fclose(fp);
