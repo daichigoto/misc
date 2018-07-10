@@ -40,7 +40,7 @@ static void import_text_tsv(const XML_Char **);
 
 #define IMAGE_WIDTH_LARGE	800
 #define IMAGE_WIDTH_NORMAL	600
-#define IMAGE_WIDTH_MOBILE	300
+#define IMAGE_WIDTH_MOBILE	360
 #define IMAGE_WIDTH_TOP		600
 
 static char mapping_buf[1024 * 16];
@@ -54,7 +54,7 @@ static char caption[BUFSIZ];
 static bool index_flag = false;
 static bool iphone_flag = false;
 
-static int index_image_generated = 0;
+static bool index_image_generated = false;
 
 void
 import(const XML_Char **attr)
@@ -151,7 +151,7 @@ import_image(const XML_Char **attr, char *img_type)
 		++p;
 	}
 
-	if (index_flag || !index_image_generated) {
+	if (index_flag && !index_image_generated) {
 		image_process(filename, namel,
 				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
 		image_process(namel, "index.jpg", 
@@ -165,7 +165,7 @@ import_image(const XML_Char **attr, char *img_type)
 		rm(namel);
 		rm(name);
 		rm("index.jpg");
-		index_image_generated = 1;
+		index_image_generated = true;
 	}
 	else {
 		image_process(filename, namel, 
