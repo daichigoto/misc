@@ -44,7 +44,7 @@ static void import_text_tsv(const XML_Char **);
 static char type[BUFSIZ];
 static char filename[BUFSIZ];
 static char caption[BUFSIZ];
-static int iphone_flag;
+static bool iphone_flag = false;
 
 static int img_counter = 1;
 static int tbl_counter = 1;
@@ -135,7 +135,7 @@ import_image(const XML_Char **attr, char *img_type)
 	pbuf_add("alt=\"", 5);
 	pbuf_add(caption, strlen(caption));
 	pbuf_add("\" ", 2);
-//	pbuf_add(buf, strlen(buf));
+	pbuf_add(buf, strlen(buf));
 	pbuf_add("class=\"img-responsive\" ", 23);
 	pbuf_add("/>", 2);
 
