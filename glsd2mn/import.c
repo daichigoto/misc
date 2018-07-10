@@ -40,6 +40,7 @@ static void import_text_tsv(const XML_Char **);
 
 #define IMAGE_WIDTH_LARGE	800
 #define IMAGE_WIDTH_NORMAL	600
+#define IMAGE_WIDTH_MOBILE	300
 #define IMAGE_WIDTH_TOP		600
 
 static char mapping_buf[1024 * 16];
@@ -50,7 +51,8 @@ static int mapping_buf_initialized = 0;
 static char type[BUFSIZ];
 static char filename[BUFSIZ];
 static char caption[BUFSIZ];
-static int index_flag;
+static bool index_flag = false;
+static bool iphone_flag = false;
 
 static int index_image_generated = 0;
 
@@ -61,7 +63,6 @@ import(const XML_Char **attr)
 	memset(filename, '\0', sizeof(filename));
 	memset(caption, '\0', sizeof(caption));
 
-	index_flag = 0;
 	for (int i = 0; attr[i]; i += 2) {
 		if (0 == strcmp(attr[i], "type")) {
 			if (sizeof(type) < strlen(attr[i+1]))
@@ -79,7 +80,10 @@ import(const XML_Char **attr)
 			memcpy(caption, attr[i+1], strlen(attr[i+1]));
 		}
 		else if (0 == strcmp(attr[i], "index")) {
-			index_flag = 1;
+			index_flag = true;
+		}
+		else if (0 == strcmp(attr[i], "iphone")) {
+			iphone_flag = true;
 		}
 	}
 
@@ -152,7 +156,11 @@ import_image(const XML_Char **attr, char *img_type)
 				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
 		image_process(namel, "index.jpg", 
 				IMAGE_ZIPFILE, IMAGE_WIDTH_TOP);
-		size = image_process("index.jpg", name,
+		if (iphone_flag)
+			size = image_process("index.jpg", name,
+				IMAGE_ZIPFILE, IMAGE_WIDTH_MOBILE);
+		else
+			size = image_process("index.jpg", name,
 				IMAGE_ZIPFILE, IMAGE_WIDTH_TOP);
 		rm(namel);
 		rm(name);
@@ -162,7 +170,11 @@ import_image(const XML_Char **attr, char *img_type)
 	else {
 		image_process(filename, namel, 
 				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
-		size = image_process(namel, name, 
+		if (iphone_flag)
+			size = image_process(namel, name, 
+				IMAGE_ZIPFILE, IMAGE_WIDTH_MOBILE);
+		else
+			size = image_process(namel, name, 
 				IMAGE_ZIPFILE, IMAGE_WIDTH_NORMAL);
 		rm(namel);
 		rm(name);
@@ -338,6 +350,8 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 			}
 			else if ('|' == *p)
 				pbuf_add("｜", 3);
+			else if ('*' == *p)
+				pbuf_add("&lowast;", 8);
 			else
  				pbuf_add(p, 1);
 			++p;

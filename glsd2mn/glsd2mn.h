@@ -27,6 +27,7 @@
 
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/stat.h>
@@ -36,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20180413"
+#define VERSION			"20180710"
 #define IMAGE_ZIPFILE		"images.zip"
 
 typedef enum el {
