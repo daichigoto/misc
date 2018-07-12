@@ -151,7 +151,7 @@ import_image(const XML_Char **attr, char *img_type)
 		++p;
 	}
 
-	if (index_flag && !index_image_generated) {
+	if (index_flag || !index_image_generated) {
 		image_process(filename, namel,
 				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
 		image_process(namel, "index.jpg", 
