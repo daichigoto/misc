@@ -226,7 +226,8 @@ import_image(const XML_Char **attr, char *img_type)
 	mapping_buf_p = mapping_buf + mapping_buf_len;
 
 	if (350 >= size.width)
-		pbuf_add("|photo_right\n", 13);
+//		pbuf_add("|photo_right\n", 13);
+		pbuf_add("|photo_center\n", 14);
 	else
 		pbuf_add("|photo_center\n", 14);
 	pbuf_add("|I@", 3);
