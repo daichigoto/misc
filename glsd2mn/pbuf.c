@@ -224,6 +224,10 @@ pbuf_escaped_printc(char c)
 			putchar('\\');
 			putchar('_');
 			break;
+		case '*':
+			putchar('\\');
+			putchar('*');
+			break;
 		default:
 			putchar(c);
 			break;
