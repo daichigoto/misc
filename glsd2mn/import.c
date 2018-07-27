@@ -63,6 +63,9 @@ import(const XML_Char **attr)
 	memset(filename, '\0', sizeof(filename));
 	memset(caption, '\0', sizeof(caption));
 
+	index_flag = false;
+	iphone_flag = false;
+
 	for (int i = 0; attr[i]; i += 2) {
 		if (0 == strcmp(attr[i], "type")) {
 			if (sizeof(type) < strlen(attr[i+1]))
@@ -151,7 +154,7 @@ import_image(const XML_Char **attr, char *img_type)
 		++p;
 	}
 
-	if (index_flag || !index_image_generated) {
+	if (!index_image_generated || index_flag) {
 		image_process(filename, namel,
 				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
 		image_process(namel, "index.jpg", 
