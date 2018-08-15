@@ -305,6 +305,7 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 	FILE *fp;
 	char buf[BUFSIZ] = {'\0'};
 	char *p;
+	bool emptycell;
 
 	escaped_output = 0;
 
@@ -321,6 +322,8 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 
 		int mode_inbq = 0;	
 		p = buf;
+
+		emptycell = true;
 		if (firstline)
 			pbuf_add("|*", 2);
 		else
@@ -331,10 +334,19 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 		}
 		while ('\n' != *p && '\0' != *p) {
 			if (delim == *p) {
-				if (firstline)
-					pbuf_add("|*", 2);
-				else
-					pbuf_add("|", 1);
+				if (firstline) {
+					if (emptycell)
+						pbuf_add(" |*", 3);
+					else
+						pbuf_add("|*", 2);
+				}
+				else {
+					if (emptycell)
+						pbuf_add(" |", 2);
+					else
+						pbuf_add("|", 1);
+				}
+				emptycell = true;
 			}
 			else if ('"' == *p) {
 				if (mode_inbq) {
@@ -342,24 +354,33 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 					    '\n' == *(p + 1) ||
 					    '\0' == *(p + 1))
 						mode_inbq = 0;
-					else
+					else {
 						pbuf_add("\"", 1);
+						emptycell = false;
+					}
 				}
 				else {
 					if (',' == *(p - 1))
 						mode_inbq = 1;
-					else
+					else {
 						pbuf_add("\"", 1);
+						emptycell = false;
+					}
 				}
 			}
-			else if ('|' == *p)
+			else if ('|' == *p) {
 				pbuf_add("｜", 3);
-			else if ('*' == *p)
+				emptycell = false;
+			}
+			else if ('*' == *p) {
 				pbuf_add("&lowast;", 8);
-			else
+				emptycell = false;
+			}
+			else {
  				pbuf_add(p, 1);
+				emptycell = false;
+			}
 			++p;
-
 		}
 		pbuf_add("|", 1);
 		if (firstline)
