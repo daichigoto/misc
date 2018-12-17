@@ -330,7 +330,7 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 		int mode_inbq = 0;	
 		p = buf;
 		if (firstline)
-			pbuf_add("   <th>", 7);
+			pbuf_add("   <th style=\"width:200px;\">", 28);
 		else
 			pbuf_add("   <td>", 7);
 		if ('"' == *p) {
