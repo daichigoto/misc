@@ -36,6 +36,7 @@ static int docgroup_count = 0;
 
 static int in_item = 0;
 static int in_quote = 0;
+static int done_import = 0;
 static int list_finished = 0;
 
 void
@@ -60,6 +61,7 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		break;
 	case ELEMENT_IMPORT:
 		import(attr);
+		done_import = 1;
 		break;
 	case ELEMENT_ITEM:
 		in_item = 1;
@@ -100,14 +102,21 @@ el_end_handler(void *data, const XML_Char *name)
 				output("1. ");
 			else
 				output("- ");
+			pbuf_escapeprocessing();
 			pbuf_outputln();
 			in_item = 0;
 			return;
 		}
 		if (in_quote) {
 			output("> ");
+			pbuf_escapeprocessing();
 			pbuf_outputln();
 			in_quote = 0;
+			return;
+		}
+		if (done_import) {
+			pbuf_outputln();
+			done_import = 0;
 			return;
 		}
 
@@ -117,6 +126,7 @@ el_end_handler(void *data, const XML_Char *name)
 				output("1. ");
 			else
 				output("- ");
+			pbuf_escapeprocessing();
 			pbuf_outputln();
 			break;
 		case ELEMENT_TITLE:
@@ -164,6 +174,7 @@ el_end_handler(void *data, const XML_Char *name)
 				output("<br>");
 				list_finished = 0;
 			}
+			pbuf_escapeprocessing();
 			pbuf_flushln();
 			break;
 		}

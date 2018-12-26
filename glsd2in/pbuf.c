@@ -32,6 +32,7 @@
 static void pbuf_entitycompaction(void);
 
 static char pbuf[PBUF_SIZE];
+static char pbuf2[PBUF_SIZE];
 static int pbuf_offset = 0;
 
 static int link_outputed = 0;
@@ -142,6 +143,46 @@ void
 pbuf_entitycompaction(void)
 {
 	// Nothing to do. libexpat does instead.
+}
+
+int
+pbuf_escapeprocessing(void)
+{
+	/*
+	 * XXX
+	 * 
+	 * Implementation should be done using functions that can 
+	 * properly handle character codes. However, because there is 
+	 * no time, I implemented that does not include character codes.
+	 *
+	 * Let's write it later. You understand?
+	 */
+	char *p;
+	char *p2;
+	int i, j;
+
+	i = j = 0;
+	p = pbuf;
+	p2 = pbuf2;
+	while (i + j < PBUF_SIZE) {
+		switch (*p) {
+		case '_':
+			*p2++ = '\\';
+			++j;
+			*p2 = *p;
+			break;
+		default:
+			*p2 = *p;
+			break;
+		}
+		++i;
+		++p;
+		++p2;
+	}
+
+	memcpy(pbuf, pbuf2, PBUF_SIZE);
+
+	return j;
 }
 
 void
