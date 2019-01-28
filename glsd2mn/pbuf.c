@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018 Daichi GOTO
+ * Copyright (c) 2017-2019 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -227,6 +227,12 @@ pbuf_escaped_printc(char c)
 		case '*':
 			putchar('\\');
 			putchar('*');
+			break;
+		case '<':
+			printf("&lt;");
+			break;
+		case '>':
+			printf("&gt;");
 			break;
 		default:
 			putchar(c);
