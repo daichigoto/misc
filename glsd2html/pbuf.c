@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2019 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@
 #define PBUF_SIZE	1024 * 64
 
 static void pbuf_entitycompaction(void);
+static void pbuf_entityexpansion_output(void);
 
 static char pbuf[PBUF_SIZE];
 static int pbuf_offset = 0;
@@ -71,7 +72,7 @@ void
 pbuf_output(void)
 {
 	pbuf_entitycompaction();
-	printf("%s", pbuf);
+	pbuf_entityexpansion_output();
 }
 
 void
@@ -104,7 +105,7 @@ void
 pbuf_flush(void)
 {
 	pbuf_entitycompaction();
-	printf("%s", pbuf);
+	pbuf_entityexpansion_output();
 	pbuf_reset();
 }
 
@@ -139,4 +140,60 @@ void
 pbuf_entitycompaction(void)
 {
 	// Nothing to do. libexpat does instead.
+}
+
+void
+pbuf_entityexpansion_output(void)
+{
+	/*
+	 * It is difficult to judge from the entity-compaction string 
+	 * whether to display as they are or as entity expansion string.
+	 * Here, judgment is made according to the following rule.
+	 *
+	 * 1. If pbuf starts with "<br>", it outputs it as it is.
+	 *
+	 * 2. If pbuf does not start with <br>, '<a href="' is output 
+	 *    as it is, otherwise it outputs as entity expansion 
+	 *    string.
+	 */
+	char *p;
+	int i;
+	bool in_element_a;
+
+	p = pbuf;
+	in_element_a = false;
+	if (0 == strncmp(pbuf, "<br>", 4)) {
+		printf("%s", pbuf);
+	}
+	else {
+		for (i = 0; i < PBUF_SIZE && '\0' != *p; i++, p++) {
+			switch (*p) {
+			case '<':
+				if (0 == strncmp(p, "<a href=\"", 9)) {
+					putchar('<');
+					in_element_a = true;
+				}
+				else if (in_element_a &&
+					 0 == strncmp(p, "</a>", 4)) {
+					printf("</a>");
+					in_element_a = false;
+					p += 3;
+				}
+				else {
+					printf("&lt;");
+					in_element_a = false;
+				}
+				break;
+			case '>':
+				if (in_element_a)
+					putchar('>');
+				else
+					printf("&gt;");
+				break;
+			default:
+				putchar(*p);
+				break;
+			}
+		}
+	}
 }
