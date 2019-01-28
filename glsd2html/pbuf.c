@@ -150,11 +150,12 @@ pbuf_entityexpansion_output(void)
 	 * whether to display as they are or as entity expansion string.
 	 * Here, judgment is made according to the following rule.
 	 *
-	 * 1. If pbuf starts with "<br>", it outputs it as it is.
+	 * 1. If pbuf starts with "<br>" or "<pre>", it outputs it as 
+	 *    it is.
 	 *
-	 * 2. If pbuf does not start with <br>, '<a href="' is output 
-	 *    as it is, otherwise it outputs as entity expansion 
-	 *    string.
+	 * 2. If pbuf does not start with "<br>" or "<pre>", 
+	 *    '<a href="' is output as it is, otherwise it outputs as 
+	 *    entity expansion string.
 	 */
 	char *p;
 	int i;
@@ -162,7 +163,8 @@ pbuf_entityexpansion_output(void)
 
 	p = pbuf;
 	in_element_a = false;
-	if (0 == strncmp(pbuf, "<br>", 4)) {
+	if (0 == strncmp(pbuf, "<br>", 4) ||
+	    0 == strncmp(pbuf, "<pre>", 4)) {
 		printf("%s", pbuf);
 	}
 	else {
