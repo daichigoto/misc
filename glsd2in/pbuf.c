@@ -171,6 +171,11 @@ pbuf_escapeprocessing(void)
 			++j;
 			*p2 = *p;
 			break;
+		case '*':
+			*p2++ = '\\';
+			++j;
+			*p2 = *p;
+			break;
 		default:
 			*p2 = *p;
 			break;
