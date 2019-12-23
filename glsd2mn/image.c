@@ -71,7 +71,7 @@ get_image_size(char *file_in)
 	jpeg_create_decompress(&jpg);
 	jpeg_stdio_src(&jpg, fp);
 	jpeg_read_header(&jpg, TRUE);
-        jpeg_calc_output_dimensions(&jpg);
+	jpeg_calc_output_dimensions(&jpg);
 
 	size.width = jpg.output_width;
 	size.height = jpg.output_height;
@@ -104,7 +104,7 @@ shrink(char *file_in, char *file_ou, int width)
 	jpeg_create_decompress(&jpg);
 	jpeg_stdio_src(&jpg, fp);
 	jpeg_read_header(&jpg, TRUE);
-        jpeg_calc_output_dimensions(&jpg);
+	jpeg_calc_output_dimensions(&jpg);
 
 	ori_width = jpg.output_width;
 	ori_height = jpg.output_height;
