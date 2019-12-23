@@ -37,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20190128"
+#define VERSION			"20191223"
 #define IMAGE_ZIPFILE		"images.zip"
 
 typedef enum el {
@@ -93,6 +93,7 @@ void import(const XML_Char **);
 void import_finish(void);
 
 IMAGE_SIZE image_process(char *, char *, char *, int);
+IMAGE_SIZE get_image_size(char *);
 
 void copy(char *, char *);
 void zip(char *, char *);

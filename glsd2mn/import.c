@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018 Daichi GOTO
+ * Copyright (c) 2017,2018,2019 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -38,6 +38,9 @@ static void import_text_tsv(const XML_Char **);
 
 #define MAPPING_FILE		"mapping.txt"
 
+#define	IMAGE_WIDTH_UNLIMITED	9999
+#define	IMAGE_WIDTH_AUTOGEN	1200
+
 #define IMAGE_WIDTH_LARGE	800
 #define IMAGE_WIDTH_NORMAL	600
 #define IMAGE_WIDTH_MOBILE	360
@@ -53,6 +56,7 @@ static char filename[BUFSIZ];
 static char caption[BUFSIZ];
 static bool index_flag = false;
 static bool iphone_flag = false;
+static bool autogen_flag = false;
 
 static bool index_image_generated = false;
 
@@ -65,6 +69,7 @@ import(const XML_Char **attr)
 
 	index_flag = false;
 	iphone_flag = false;
+	autogen_flag = false;
 
 	for (int i = 0; attr[i]; i += 2) {
 		if (0 == strcmp(attr[i], "type")) {
@@ -138,6 +143,16 @@ import_image(const XML_Char **attr, char *img_type)
 	else
 		++p;
 
+	/*
+	 * 2019/12/23 - Compatible with specification changed.
+	 *
+	 * Images with the width of 1200 pixels or more are target to 
+	 * automatic generation processing.
+	 */
+	size = get_image_size(filename);
+	if (IMAGE_WIDTH_AUTOGEN <= size.width)
+		autogen_flag = true;
+
 	p_name = name;
 	p_namel = namel;
 	while (48 <= *p && *p <= 57) {
@@ -154,33 +169,76 @@ import_image(const XML_Char **attr, char *img_type)
 		++p;
 	}
 
-	if (!index_image_generated || index_flag) {
-		image_process(filename, namel,
-				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
-		image_process(namel, "index.jpg", 
-				IMAGE_ZIPFILE, IMAGE_WIDTH_TOP);
-		if (iphone_flag)
-			size = image_process("index.jpg", name,
-				IMAGE_ZIPFILE, IMAGE_WIDTH_MOBILE);
-		else
-			size = image_process("index.jpg", name,
-				IMAGE_ZIPFILE, IMAGE_WIDTH_TOP);
-		rm(namel);
-		rm(name);
-		rm("index.jpg");
-		index_image_generated = true;
+	/*
+	 * 2019/12/23 - Compatible with specification changed.
+	 *
+	 * If the width of the image is 1200 pixels or more, the image 
+	 * will be automatically generated, so no conversion processing 
+	 * is performed here.
+	 */
+	if (autogen_flag) {
+		if (!index_image_generated || index_flag) {
+			image_process(filename, "ogp.jpg",
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_UNLIMITED);
+			image_process(filename, "index.jpg", 
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_TOP);
+			image_process(filename, name, 
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_UNLIMITED);
+			rm(name);
+			rm("ogp.jpg");
+			rm("index.jpg");
+			index_image_generated = true;
+		}
+		else {
+			image_process(filename, name, 
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_UNLIMITED);
+			rm(name);
+		}
 	}
 	else {
-		image_process(filename, namel, 
-				IMAGE_ZIPFILE, IMAGE_WIDTH_LARGE);
-		if (iphone_flag)
-			size = image_process(namel, name, 
-				IMAGE_ZIPFILE, IMAGE_WIDTH_MOBILE);
-		else
-			size = image_process(namel, name, 
-				IMAGE_ZIPFILE, IMAGE_WIDTH_NORMAL);
-		rm(namel);
-		rm(name);
+		if (!index_image_generated || index_flag) {
+			image_process(filename, "ogp.jpg",
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_UNLIMITED);
+			image_process(filename, namel,
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_LARGE);
+			image_process(namel, "index.jpg", 
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_TOP);
+			if (iphone_flag)
+				size = image_process("index.jpg", name,
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_MOBILE);
+			else
+				size = image_process("index.jpg", name,
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_TOP);
+			rm(namel);
+			rm(name);
+			rm("ogp.jpg");
+			rm("index.jpg");
+			index_image_generated = true;
+		}
+		else {
+			image_process(filename, namel, 
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_LARGE);
+			if (iphone_flag)
+				size = image_process(namel, name, 
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_MOBILE);
+			else
+				size = image_process(namel, name, 
+					IMAGE_ZIPFILE,
+					IMAGE_WIDTH_NORMAL);
+			rm(namel);
+			rm(name);
+		}
 	}
 
 	if (!mapping_buf_initialized) {
@@ -222,10 +280,20 @@ import_image(const XML_Char **attr, char *img_type)
 			escaped_caption[j] = caption[i];
 	}
 
-	mapping_buf_len += snprintf(
-		mapping_buf_p, sizeof(mapping_buf) - mapping_buf_len, 
-		"%s,%s,%s,%s,", name, namel, 
-		escaped_caption, escaped_caption);
+	if (autogen_flag) {
+		mapping_buf_len += snprintf(
+			mapping_buf_p, 
+			sizeof(mapping_buf) - mapping_buf_len, 
+			"%s,,%s,%s,", name,
+			escaped_caption, escaped_caption);
+	}
+	else {
+		mapping_buf_len += snprintf(
+			mapping_buf_p, 
+			sizeof(mapping_buf) - mapping_buf_len, 
+			"%s,%s,%s,%s,", name, namel, 
+			escaped_caption, escaped_caption);
+	}
 	mapping_buf_p = mapping_buf + mapping_buf_len;
 
 	if (350 >= size.width)

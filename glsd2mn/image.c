@@ -52,6 +52,37 @@ image_process(char *file_in, char *file_ou, char *file_zip, int width)
 	return(size);
 }
 
+IMAGE_SIZE
+get_image_size(char *file_in)
+{
+	FILE *fp;
+	struct jpeg_decompress_struct jpg;
+	struct jpeg_error_mgr jpg_err;
+	IMAGE_SIZE size;
+
+	fp = fopen(file_in, "r");
+	if (NULL == fp) {
+		size.width = 0;
+		size.height = 0;
+		return(size);
+	}
+
+	jpg.err = jpeg_std_error(&jpg_err);
+	jpeg_create_decompress(&jpg);
+	jpeg_stdio_src(&jpg, fp);
+	jpeg_read_header(&jpg, TRUE);
+        jpeg_calc_output_dimensions(&jpg);
+
+	size.width = jpg.output_width;
+	size.height = jpg.output_height;
+
+	jpeg_destroy_decompress(&jpg);
+
+	fclose(fp);
+
+	return(size);
+}
+
 static IMAGE_SIZE
 shrink(char *file_in, char *file_ou, int width)
 {

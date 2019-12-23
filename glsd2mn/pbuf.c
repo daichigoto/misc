@@ -145,7 +145,11 @@ void
 pbuf_xxx_linkoutput(void)
 {
 	pbuf_entitycompaction();
-	char *p = strstr(pbuf, "/article/");
+	/*
+	 * 2019/12/23 - Compatible with specification changed.
+	 */
+	// char *p = strstr(pbuf, "/article/");
+	char *p = strstr(pbuf, "http");
 	if (NULL != p) {
 		if (!link_outputed) {
 			newline();
