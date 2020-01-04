@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Daichi GOTO
+ * Copyright (c) 2018,2020 Daichi GOTO
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@
 
 #include "sharedata.h"
 
-#define VERSION			"20180413"
+#define VERSION			"20200104"
 
 void usage(void);
 void version(void);

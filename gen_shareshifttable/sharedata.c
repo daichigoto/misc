@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Daichi GOTO
+ * Copyright (c) 2018,2020 Daichi GOTO
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,6 +42,9 @@ file_2_sharedata(char *path, SHAREDATA *data)
 
 	sharedata_index = 1;
 	while (NULL != fgets(buf, buf_len - 1, fp)) {
+		memset(data[sharedata_index].name, 0, 
+			SHAREDATA_NAME_MAXLEN);
+
 		buf_p = buf;
 		name_p = data[sharedata_index].name;
 		while ('\t' != *buf_p && '\n' != *buf_p && 
@@ -78,6 +81,8 @@ sharedata_2_shareshiftdata
 
 	i = 1;
 	while ('\0' != cur[i].name[0]) {
+		memset(shift[i].name, 0, SHAREDATA_NAME_MAXLEN);
+		
 		strcpy(shift[i].name, cur[i].name);
 		shift[i].cur_index = cur[i].index;
 
