@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018 Daichi GOTO
+ * Copyright (c) 2017,2018,2020 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -152,6 +152,20 @@ import_image(const XML_Char **attr, char *img_type)
 		strcpy(p_name, "pwrsh_");
 		strcpy(p_namel, "pwrsh_");
 		strcpy(p_namem, "pwrsh_");
+		p_path += 6;
+		p_pathl += 6;
+		p_pathm += 6;
+		p_name += 6;
+		p_namel += 6;
+		p_namem += 6;
+	}
+	else if (w_flag) {
+		strcpy(p_path, "wintm_");
+		strcpy(p_pathl, "wintm_");
+		strcpy(p_pathm, "wintm_");
+		strcpy(p_name, "wintm_");
+		strcpy(p_namel, "wintm_");
+		strcpy(p_namem, "wintm_");
 		p_path += 6;
 		p_pathl += 6;
 		p_pathm += 6;

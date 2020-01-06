@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2020 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,8 @@ main(int argc, char *argv[])
 
 	p_flag = 0;
 	P_flag = 0;
-	while ((ch = getopt(argc, argv, "pPhv")) != -1)
+	w_flag = 0;
+	while ((ch = getopt(argc, argv, "pPwhv")) != -1)
 		switch (ch) {
 		case 'h':
 			usage();
@@ -48,6 +49,9 @@ main(int argc, char *argv[])
 			break;
 		case 'P':
 			P_flag = 1;
+			break;
+		case 'w':
+			w_flag = 1;
 			break;
 		case 'v':
 			version();
