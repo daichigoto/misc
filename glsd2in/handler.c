@@ -134,7 +134,7 @@ el_end_handler(void *data, const XML_Char *name)
 			case 1:
 				break;
 			default:
-				for (int i = 0; i <= docgroup_depth; i++)
+				for (int i = 0; i < docgroup_depth; i++)
 					putchar('#');
 				putchar(' ');
 				pbuf_outputln();

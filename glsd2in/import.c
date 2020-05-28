@@ -300,7 +300,7 @@ import_text_sourcecode(const XML_Char **attr)
 	if (NULL == fp)
 		return;
 
-	pbuf_add("#### ", 5);
+	pbuf_add("### ", 4);
 	pbuf_addln(caption, strlen(caption));
 	pbuf_newline();
 
