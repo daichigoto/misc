@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018 Daichi GOTO
+ * Copyright (c) 2017,2018,2020 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -137,6 +137,7 @@ el_end_handler(void *data, const XML_Char *name)
 				for (int i = 0; i < docgroup_depth; i++)
 					putchar('#');
 				putchar(' ');
+				pbuf_escapeprocessing();
 				pbuf_outputln();
 				break;
 			}

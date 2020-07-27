@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2020 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -170,11 +170,13 @@ pbuf_escapeprocessing(void)
 			*p2++ = '\\';
 			++j;
 			*p2 = *p;
+			++pbuf_offset;
 			break;
 		case '*':
 			*p2++ = '\\';
 			++j;
 			*p2 = *p;
+			++pbuf_offset;
 			break;
 		default:
 			*p2 = *p;
