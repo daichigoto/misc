@@ -205,24 +205,41 @@ pbuf_tag_escapeprocessing(void)
 	while (i + j < PBUF_SIZE) {
 		switch (*p) {
 		case '<':
-			*p2++ = '&';
-			++j;
-			*p2++ = 'l';
-			++j;
-			*p2++ = 't';
-			++j;
-			*p2 = ';';
-			++pbuf_offset;
+			if (i + j + 1 < PBUF_SIZE && 
+				('a' == *(p+1) || 
+				 '/' == *(p+1) )
+			    ) {
+				*p2 = *p;
+			}
+			else {
+				*p2++ = '&';
+				++j;
+				*p2++ = 'l';
+				++j;
+				*p2++ = 't';
+				++j;
+				*p2 = ';';
+				++pbuf_offset;
+			}
 			break;
 		case '>':
-			*p2++ = '&';
-			++j;
-			*p2++ = 'g';
-			++j;
-			*p2++ = 't';
-			++j;
-			*p2 = ';';
-			++pbuf_offset;
+			if (i + j != 0 && 
+				('a' == *(p-1) ||
+				 '/' == *(p-1) ||
+				 '"' == *(p-1))
+			    ) {
+				*p2 = *p;
+			}
+			else {
+				*p2++ = '&';
+				++j;
+				*p2++ = 'g';
+				++j;
+				*p2++ = 't';
+				++j;
+				*p2 = ';';
+				++pbuf_offset;
+			}
 			break;
 		default:
 			*p2 = *p;
