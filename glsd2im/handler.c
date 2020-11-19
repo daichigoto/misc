@@ -40,6 +40,7 @@ static char quote_ref[BUFSIZ];
 static int in_item = 0;
 static int in_access = 0;
 static int in_quote = 0;
+static int in_import = 0;
 
 static int doc_started = 0;
 
@@ -65,6 +66,7 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		}
 		break;
 	case ELEMENT_IMPORT:
+		in_import = 1;
 		import(attr);
 		break;
 	case ELEMENT_ITEM:
@@ -126,7 +128,7 @@ el_end_handler(void *data, const XML_Char *name)
 			if (listtype_order)
 				printf("%d. ", listtype_order_index++);
 			else
-				output("- ");
+				output("● ");
 			pbuf_outputln();
 			break;
 		case ELEMENT_TITLE:
@@ -189,14 +191,27 @@ el_end_handler(void *data, const XML_Char *name)
 			}
 			else {
 				if (doc_started) {
-					newline();
-					printf("　"); // paragraph indent
-					pbuf_flushln();
+					if (in_import) {
+						newline();
+						pbuf_flushln();
+						in_import = 0;
+					}
+					else {
+						newline();
+						printf("　"); // paragraph indent
+						pbuf_flushln();
+					}
 				}
 				else {
 					printf("＜本文＞\n"); // paragraph indent
-					printf("　"); // paragraph indent
-					pbuf_flushln();
+					if (in_import) {
+						pbuf_flushln();
+						in_import = 0;
+					}
+					else {
+						printf("　"); // paragraph indent
+						pbuf_flushln();
+					}
 					doc_started = 1;
 				}
 			}

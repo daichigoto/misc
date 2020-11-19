@@ -84,9 +84,11 @@ import(const XML_Char **attr)
 static void
 import_image(const XML_Char **attr, char *img_type)
 {
-	pbuf_add("画像: ", 8);
-	pbuf_addln(filename, strlen(filename));
-	pbuf_add("　　  ", 8);
+	pbuf_add("↓l_", 5);
+	pbuf_add(filename, strlen(filename));
+	pbuf_add(",", 1);
+	pbuf_add(caption, strlen(caption));
+	pbuf_add(",", 1);
 	pbuf_add(caption, strlen(caption));
 }
 
