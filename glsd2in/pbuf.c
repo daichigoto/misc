@@ -192,6 +192,69 @@ pbuf_escapeprocessing(void)
 	return j;
 }
 
+int
+pbuf_tag_escapeprocessing(void)
+{
+	char *p;
+	char *p2;
+	int i, j;
+
+	i = j = 0;
+	p = pbuf;
+	p2 = pbuf2;
+	while (i + j < PBUF_SIZE) {
+		switch (*p) {
+		case '<':
+			if (i + j + 1 < PBUF_SIZE && 
+				('a' == *(p+1) || 
+				 '/' == *(p+1) )
+			    ) {
+				*p2 = *p;
+			}
+			else {
+				*p2++ = '&';
+				++j;
+				*p2++ = 'l';
+				++j;
+				*p2++ = 't';
+				++j;
+				*p2 = ';';
+				++pbuf_offset;
+			}
+			break;
+		case '>':
+			if (i + j != 0 && 
+				('a' == *(p-1) ||
+				 '/' == *(p-1) ||
+				 '"' == *(p-1))
+			    ) {
+				*p2 = *p;
+			}
+			else {
+				*p2++ = '&';
+				++j;
+				*p2++ = 'g';
+				++j;
+				*p2++ = 't';
+				++j;
+				*p2 = ';';
+				++pbuf_offset;
+			}
+			break;
+		default:
+			*p2 = *p;
+			break;
+		}
+		++i;
+		++p;
+		++p2;
+	}
+
+	memcpy(pbuf, pbuf2, PBUF_SIZE);
+
+	return j;
+}
+
 void
 pbuf_xxx_linkoutput(void)
 {

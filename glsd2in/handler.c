@@ -175,6 +175,7 @@ el_end_handler(void *data, const XML_Char *name)
 				output("<br>");
 				list_finished = 0;
 			}
+			pbuf_tag_escapeprocessing();
 			pbuf_escapeprocessing();
 			pbuf_flushln();
 			break;
