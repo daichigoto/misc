@@ -33,6 +33,7 @@ static int listtype_order = 0;
 static int listtype_order_index = 1;
 static int docgroup_depth = 0;
 
+static char *p_access_chardata;
 static char access_chardata[BUFSIZ];
 static char access_ref[BUFSIZ];
 static char quote_ref[BUFSIZ];
@@ -56,6 +57,9 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		break;
 	case ELEMENT_ACCESS:
 		in_access = 1;
+		memset(access_chardata, '\0', sizeof(access_chardata));
+		p_access_chardata = access_chardata;
+
 		memset(access_ref, '\0', sizeof(access_ref));
 		for (int i = 0; attr[i]; i += 2) {
 			if (0 == strcmp(attr[i], "ref")) {
@@ -239,8 +243,8 @@ void
 el_chardata_handler(void *data, const XML_Char *cdata, int len)
 {
 	if (in_access) {
-		memset(access_chardata, '\0', sizeof(access_chardata));
-		memcpy(access_chardata, cdata, len);
+		memcpy(p_access_chardata, cdata, len);
+		p_access_chardata += len;
 	}
 	else {
 		pbuf_add(cdata, len);
