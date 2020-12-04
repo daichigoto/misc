@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2020 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,22 @@
 #define PBUF_SIZE	1024 * 64
 
 static void pbuf_entitycompaction(void);
+static void pbuf_escaped_prints(char *);
+static void pbuf_escaped_printc(char);
 
 static char pbuf[PBUF_SIZE];
 static int pbuf_offset = 0;
+
+static char pbuf2[PBUF_SIZE];
+
+static char pbuf_copied[PBUF_SIZE];
+
+char *
+pbuf_getcopied(void)
+{
+	memcpy(pbuf_copied, pbuf, PBUF_SIZE);
+	return (pbuf_copied);
+}
 
 void
 pbuf_add(const XML_Char *cdata, int len)
@@ -61,13 +74,13 @@ void
 pbuf_output(void)
 {
 	pbuf_entitycompaction();
-	printf("%s", pbuf);
+	pbuf_escaped_prints(pbuf);
 }
 
 void
 pbuf_outputln(void)
 {
-	pbuf_output();
+	pbuf_escaped_prints(pbuf);
 	putchar('\n');
 }
 
@@ -75,12 +88,13 @@ void
 pbuf_trimoutput(int fw_offset, int bw_offset)
 {
 	pbuf_entitycompaction();
+
 	int len = strnlen(pbuf, PBUF_SIZE) - fw_offset - bw_offset;
-	char *p = pbuf;
-	for (int i = 0; i < fw_offset; i++)
-		++p;
-	for (int i = 0; i < len; i++)
-		putchar(*p++);
+
+	memset(pbuf2, '\0', PBUF_SIZE);
+	memcpy(pbuf2, pbuf + fw_offset, len);
+
+	pbuf_escaped_prints(pbuf2);
 }
 
 void
@@ -94,7 +108,7 @@ void
 pbuf_flush(void)
 {
 	pbuf_entitycompaction();
-	printf("%s", pbuf);
+	pbuf_escaped_prints(pbuf);
 	pbuf_reset();
 }
 
@@ -129,4 +143,36 @@ void
 pbuf_entitycompaction(void)
 {
 	// Nothing to do. libexpat does instead.
+}
+
+static void
+pbuf_escaped_prints(char *s)
+{
+	char *p;
+
+	p = s;
+	while ('\0' != *p) {
+		// ' (' -> '('
+		if (' ' == *p && '(' == *(p+1)) {
+			++p;
+		}
+		pbuf_escaped_printc(*p);
+		++p;
+	}
+}
+
+static void
+pbuf_escaped_printc(char c)
+{
+	switch (c) {
+	case '(':
+		printf("（");
+		break;
+	case ')':
+		printf("）");
+		break;
+	default:
+		putchar(c);
+		break;
+	}
 }

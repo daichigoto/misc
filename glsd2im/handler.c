@@ -158,8 +158,26 @@ el_end_handler(void *data, const XML_Char *name)
 		case ELEMENT_LASTMODIFIED:
 			break;
 		default:
-			if (pbuf_startwith("[MJ:")) {
-				pbuf_trimoutputln(1, 1);
+			if (pbuf_startwith("[LINK:")) {
+				newline();
+				printf("関連リンク\n");
+
+				printf("<url>");
+				char *purl = pbuf_getcopied();
+				purl += 6;
+				while (']' != *purl) {
+					putchar(*purl);
+					++purl;
+				}
+				newline();
+
+				printf("<title>");
+				++purl;
+				++purl;
+				while (']' != *purl) {
+					putchar(*purl);
+					++purl;
+				}
 				newline();
 				break;
 			}
@@ -189,7 +207,7 @@ el_end_handler(void *data, const XML_Char *name)
 					printf("%d. ", 
 						listtype_order_index++);
 				else
-					output("- ");
+					output("・");
 				pbuf_outputln();
 				in_item = 0;
 			}

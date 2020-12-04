@@ -85,7 +85,7 @@ static void
 import_image(const XML_Char **attr, char *img_type)
 {
 	pbuf_add("↓l_", 5);
-	pbuf_add(filename, strlen(filename));
+	pbuf_add(filename+7, strlen(filename)-7); // exclude 'images'
 	pbuf_add(",", 1);
 	pbuf_add(caption, strlen(caption));
 	pbuf_add(",", 1);
