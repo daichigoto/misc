@@ -1,0 +1,8 @@
+#!/bin/sh
+
+src="$1"
+dst=$(dirname "$src")"/240x180px.jpg"
+
+gm convert -quality 100 \
+	-resize 180x180 "$src" \
+	-gravity center -extent 240x180 "$dst"

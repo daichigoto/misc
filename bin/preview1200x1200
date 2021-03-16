@@ -1,0 +1,15 @@
+#!/usr/bin/osascript
+
+# Previewのページスクリーンショットサイズを
+# 1200px × 1200px に設定する
+#
+on run argv
+    set preview_bounds to bounds of window 1 of application "preview"
+
+    set item 3 of preview_bounds to (item 1 of preview_bounds) + 1232
+    set item 4 of preview_bounds to (item 2 of preview_bounds) + 1273
+
+    tell application "Preview"
+        set bounds of front window to preview_bounds
+    end tell
+end run

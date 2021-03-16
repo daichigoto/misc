@@ -1,0 +1,14 @@
+#!/usr/bin/osascript
+
+# Safariのサイズを1200px × 1200pxに設定する
+#
+on run argv
+    set safari_bounds to bounds of window 1 of application "Safari"
+
+    set item 3 of safari_bounds to (item 1 of safari_bounds) + 1200
+    set item 4 of safari_bounds to (item 2 of safari_bounds) + 1200
+
+    tell application "Safari"
+        set bounds of front window to safari_bounds
+    end tell
+end run

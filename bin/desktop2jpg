@@ -1,0 +1,52 @@
+#!/bin/sh
+
+####################################################################
+# 必要な変数を定義
+####################################################################
+intervalsec=30
+workdir="$HOME"/Desktop
+msg_start="converting... "
+msg_done="done."
+
+pattern="(スクリーンショット.*g)|(Screenshot.*g)|(IMG.*g)|(IMG.*G)"
+
+####################################################################
+# スクリーンショットをNNN.jpgファイルへ変換
+####################################################################
+cd "$workdir"
+
+printf "%s" "${msg_start}"
+while :
+do
+	i=1
+	ls -tr						|
+	grep  -E "$pattern"				|
+	while read img
+	do
+		jpg=$(printf "%03draw.jpg" "$i")
+		case "$img" in
+		*jpg)
+			cp "$img" "$jpg"
+			;;
+		*png)
+			gm convert -quality 100 "$img" "$jpg"
+			;;
+		*PNG)
+			gm convert -quality 100 "$img" "$jpg"
+			;;
+		esac
+	
+		i=$((1 + $i))
+	done
+	echo "${msg_done}"
+
+	# 新しいスクリーンショットが作成されるか、または一定時間待つ
+	if type wait_filechanges	> /dev/null 2>&1
+	then
+		wait_filechanges .
+	else
+		sleep $intervalsec
+	fi
+
+	printf "%s" "${msg_start}"
+done
