@@ -1,0 +1,44 @@
+#!/bin/sh -exv
+
+# PID record
+pidfile=".build.pid"
+echo "$$" > "$pidfile"
+
+# for DEBUG
+logfile="/tmp/ydmklp-$$"
+exec > $logfile
+trap "rm -f \"$logfile\" \"$pidfile\"" EXIT
+
+while :
+do
+    if [ ! -e typescript.xml ]
+    then
+        sleep 0.1
+    else
+        break
+    fi
+done
+
+while :
+do
+    ydwait
+
+    # adapting to vi/vim save behavior
+    sleep 0.5
+
+    if [ -e .build-lock ]
+    then
+        continue
+    fi
+
+    make clean
+    errormsg=$(make)
+    case $? in
+    0)
+        make upload
+        ;;
+    1)
+        echo "${errormsg}"
+        ;;
+    esac
+done
