@@ -1,0 +1,13 @@
+#!/bin/sh
+
+[ "0" = $# ] && exit
+
+case $(hostname -s) in
+virt)
+    exec ssh virthost \
+        PATH=$PATH:~/Documents/bin LANG=$LANG "${@}" 2> /dev/null
+    ;;
+*)
+    exec "${@}"
+    ;;
+esac
