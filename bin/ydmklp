@@ -1,4 +1,4 @@
-#!/bin/sh -exv
+#!/bin/sh -xv
 
 # PID record
 pidfile=".build.pid"
