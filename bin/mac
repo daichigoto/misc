@@ -5,7 +5,7 @@
 case $(hostname -s) in
 virt)
     exec ssh virthost \
-        PATH=$PATH:~/Documents/bin LANG=$LANG "${@}" 2> /dev/null
+        PATH=$PATH:~/Documents/mics/bin:~/Documents/bin LANG=$LANG "${@}" 2> /dev/null
     ;;
 *)
     exec "${@}"
