@@ -1,0 +1,14 @@
+#!/usr/bin/osascript
+
+# Terminalのサイズを1200px × 600px に設定する
+#
+on run argv
+    set terminal_bounds to bounds of window 1 of application "Terminal"
+
+    set item 3 of terminal_bounds to (item 1 of terminal_bounds) + 900
+    set item 4 of terminal_bounds to (item 2 of terminal_bounds) + 900
+
+    tell application "Terminal"
+        set bounds of front window to terminal_bounds
+    end tell
+end run
