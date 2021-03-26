@@ -25,7 +25,7 @@ do
 	do
 		jpg=$(printf "%03draw.jpg" "$i")
 		case "$img" in
-		*jpg)
+		*jpg|*jpeg)
 			cp "$img" "$jpg"
 			;;
 		*png)
