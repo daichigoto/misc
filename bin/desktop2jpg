@@ -26,13 +26,16 @@ do
 		jpg=$(printf "%03draw.jpg" "$i")
 		case "$img" in
 		*jpg|*jpeg)
-			cp "$img" "$jpg"
+			# ファイルサイズ縮小化目的
+			gm convert "$img" "$jpg"
 			;;
 		*png)
-			gm convert -quality 100 "$img" "$jpg"
+			# JPEG変換およびファイルサイズ縮小化
+			gm convert "$img" "$jpg"
 			;;
 		*PNG)
-			gm convert -quality 100 "$img" "$jpg"
+			# JPEG変換およびファイルサイズ縮小化
+			gm convert "$img" "$jpg"
 			;;
 		esac
 	
