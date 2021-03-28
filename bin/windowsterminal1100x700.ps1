@@ -1,15 +1,15 @@
 #
-#  Excelウィンドウサイズを1200x1200にするスクリプト
+#  Windows Terminalウィンドウサイズを1100x700にするスクリプト
 #
 
 #========================================================================
 # Application name and geometry parameters
 #========================================================================
-$name = "EXCEL"		# application name
-$x = 0  		# x coordinate
-$y = 0			# y coordinate
-$widht = 1202		# width
-$height = 1202		# heigth
+$name = "WindowsTerminal"	# application name
+$x = 0  			# x coordinate
+$y = 0				# y coordinate
+$widht = 1102			# width
+$height = 702			# heigth
 
 #========================================================================
 # Win32 API MoveWindows() function

@@ -5,7 +5,7 @@
 #========================================================================
 # Application name and geometry parameters
 #========================================================================
-$name = "onenote"	# application name
+$name = "ONENOTE"	# application name
 $x = 0  		# x coordinate
 $y = 0			# y coordinate
 $widht = 1202		# width
