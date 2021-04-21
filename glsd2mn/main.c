@@ -27,6 +27,8 @@
 
 #include "glsd2mn.h"
 
+int escaped_output;
+
 int
 main(int argc, char *argv[])
 {

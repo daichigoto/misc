@@ -395,7 +395,7 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 		if (firstline)
 			pbuf_add("|*", 2);
 		else
-			pbuf_add("|", 1);
+			pbuf_add("| ", 2);
 		if ('"' == *p) {
 			++p;
 			mode_inbq = 1;

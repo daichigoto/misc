@@ -63,7 +63,7 @@ typedef struct image_size {
 	int height;
 } IMAGE_SIZE;
 
-int escaped_output;
+extern int escaped_output;
 
 void el_start_handler(void *, const XML_Char *, const XML_Char **);
 void el_end_handler(void *, const XML_Char *);
