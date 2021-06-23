@@ -8,7 +8,7 @@ workdir="$HOME"/Desktop
 msg_start="converting... "
 msg_done="done."
 
-pattern="(スクリーンショット.*g)|(Screenshot.*g)|(IMG.*g)|(IMG.*G)|(Happy.*g)|(コメント.*g)"
+pattern="(スクリーンショット.*g)|(Screenshot.*g)|(IMG.*g)|(IMG.*G)|(LWScreenShot.*g)|(Happy.*g)|(コメント.*g)"
 
 ####################################################################
 # スクリーンショットをNNN.jpgファイルへ変換
