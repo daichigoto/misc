@@ -101,6 +101,6 @@ void newline(void);
 void usage(void);
 void version(void);
 
-int p_flag;
-int P_flag;
-int w_flag;
+extern int p_flag;
+extern int P_flag;
+extern int w_flag;

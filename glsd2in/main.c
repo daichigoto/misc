@@ -27,6 +27,10 @@
 
 #include "glsd2in.h"
 
+int p_flag = 0;
+int P_flag = 0;
+int w_flag = 0;
+
 int
 main(int argc, char *argv[])
 {
@@ -36,9 +40,6 @@ main(int argc, char *argv[])
 	char buf[bufsize];
 	char *input = "/dev/stdin";
 
-	p_flag = 0;
-	P_flag = 0;
-	w_flag = 0;
 	while ((ch = getopt(argc, argv, "pPwhv")) != -1)
 		switch (ch) {
 		case 'h':
