@@ -27,6 +27,8 @@
 
 INCLUDEDIR?=	/usr/local/include
 LIBDIR?=	/usr/local/lib
+BINDIR?=	${.CURDIR}/../bin
+BINPERM?=	500
 
 OBJS=		main.o output.o pbuf.o element.o handler.o import.o
 CMD=		glsd2im
@@ -45,12 +47,19 @@ CFLAGS+=	-I${INCLUDEDIR} \
 CC?=		cc
 MAKE?=		make
 RM?=		rm
+INSTALL?=	install
 
 .c.o:
 	${CC} ${CFLAGS} -c $< -o $@
 
 build: ${OBJS}
 	${CC} ${CFLAGS} -L${LIBDIR} -lexpat -o ${CMD} ${OBJS}
+
+install: clean build
+	${INSTALL} -m ${BINPERM} ${CMD} ${BINDIR}
+
+uninstall: 
+	${RM} -f ${BINDIR}/${CMD}
 
 clean:
 	${RM} -f ${CMD} ${OBJS}
