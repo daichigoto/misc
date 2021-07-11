@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2018 Daichi GOTO
+#  Copyright (c) 2018,2021 Daichi GOTO
 #  All rights reserved.
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 
 INCLUDEDIR?=	/usr/local/include
 LIBDIR?=	/usr/local/lib
+BINDIR?=	${.CURDIR}/../bin
+BINPERM?=	500
 
 OBJS=		main.o sharedata.o
 CMD=		gen_shareshifttable
@@ -45,12 +47,21 @@ CFLAGS+=	-I${INCLUDEDIR} \
 CC?=		cc
 MAKE?=		make
 RM?=		rm
+INSTALL?=	install
 
 .c.o:
 	${CC} ${CFLAGS} -c $< -o $@
 
-build: ${OBJS}
+build: libs ${OBJS}
 	${CC} ${CFLAGS} -L${LIBDIR} -lexpat -ljpeg -o ${CMD} ${OBJS}
+
+libs:
+.if !exists(${LIBDIR}/libjpeg.so)
+	sudo pkg install jpeg-turbo
+.endif
+
+install: clean build
+	${INSTALL} -m ${BINPERM} ${CMD} ${BINDIR}
 
 clean:
 	${RM} -f ${CMD} ${OBJS}
