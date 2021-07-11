@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2017 Daichi GOTO
+#  Copyright (c) 2017,2021 Daichi GOTO
 #  All rights reserved.
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,8 @@ LIBDIR?=	/usr/local/lib
 
 OBJS=		main.o output.o pbuf.o element.o handler.o import.o
 CMD=		glsd2txt
+BINDIR?=	${.CURDIR}/../bin
+BINPERM?=	500
 
 CFLAGS+=	-I${INCLUDEDIR} \
 		-O2 \
@@ -45,12 +47,19 @@ CFLAGS+=	-I${INCLUDEDIR} \
 CC?=		cc
 MAKE?=		make
 RM?=		rm
+INSTALL?=	install
 
 .c.o:
 	${CC} ${CFLAGS} -c $< -o $@
 
 build: ${OBJS}
 	${CC} ${CFLAGS} -L${LIBDIR} -lexpat -o ${CMD} ${OBJS}
+
+install: clean build
+	${INSTALL} -m ${BINPERM} ${CMD} ${BINDIR}
+
+uninstall: 
+	${RM} -f ${BINDIR}/${CMD}
 
 clean:
 	${RM} -f ${CMD} ${OBJS}
