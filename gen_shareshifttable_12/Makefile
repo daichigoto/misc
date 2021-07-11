@@ -63,5 +63,8 @@ libs:
 install: clean build
 	${INSTALL} -m ${BINPERM} ${CMD} ${BINDIR}
 
+uninstall:
+	${RM} -f ${BINDIR}/${CMD}
+
 clean:
 	${RM} -f ${CMD} ${OBJS}
