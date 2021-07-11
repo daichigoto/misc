@@ -52,16 +52,14 @@ INSTALL?=	install
 .c.o:
 	${CC} ${CFLAGS} -c $< -o $@
 
-build: libs ${OBJS}
+build: ${OBJS}
 	${CC} ${CFLAGS} -L${LIBDIR} -lexpat -ljpeg -o ${CMD} ${OBJS}
-
-libs:
-.if !exists(${LIBDIR}/libjpeg.so)
-	sudo pkg install jpeg-turbo
-.endif
 
 install: clean build
 	${INSTALL} -m ${BINPERM} ${CMD} ${BINDIR}
+
+uninstall: 
+	${RM} -f ${BINDIR}/${CMD}
 
 clean:
 	${RM} -f ${CMD} ${OBJS}
