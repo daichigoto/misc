@@ -21,7 +21,7 @@ done
 
 while :
 do
-    ydwait
+    wait_filechanges .
 
     # adapting to vi/vim save behavior
     sleep 0.5
