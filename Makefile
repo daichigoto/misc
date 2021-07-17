@@ -1,10 +1,11 @@
 TARGET_DIRS=	gen_shareshifttable	\
-							gen_shareshifttable_12	\
-							glsd2gm	\
-							glsd2im	\
-							glsd2in	\
-							glsd2mn	\
-							glsd2txt
+		gen_shareshifttable_12	\
+		glsd2gm	\
+		glsd2html	\
+		glsd2im	\
+		glsd2in	\
+		glsd2mn	\
+		glsd2txt
 
 all: install
 
