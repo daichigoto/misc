@@ -1,0 +1,18 @@
+#!/bin/sh
+
+[ "0" = $# ] && exit
+
+case $(hostname -s) in
+virt)
+    case "$1" in
+		msedge)
+        exec ssh virthost \
+				    echo '"'start Shell:AppsFolder'\'Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $2'"' '>' .wincmdserver_cmd
+				;;
+		*)
+        exec ssh virthost \
+				    echo '"'$*'"' '>' .wincmdserver_cmd
+		    ;;
+		esac
+    ;;
+esac
