@@ -13,7 +13,10 @@ virt)
 		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe"'' -compose $2'" '>' .wincmdserver_cmd
 		;;
 	clip)
-		exec ssh virthost 
+		tempfile=$(mktemp /tmp/win.XXXXXX) 
+		cat $2 > "$tempfile"
+		scp "$tempfile" virthost:.wincmdserver_clip
+		rm -f "$tempfile"
 		;;
 	*)
 		exec ssh virthost \
