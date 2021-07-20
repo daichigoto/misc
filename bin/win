@@ -4,15 +4,21 @@
 
 case $(hostname -s) in
 virt)
-    case "$1" in
-		msedge)
-        exec ssh virthost \
-				    echo '"'start Shell:AppsFolder'\'Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $2'"' '>' .wincmdserver_cmd
-				;;
-		*)
-        exec ssh virthost \
-				    echo '"'$*'"' '>' .wincmdserver_cmd
-		    ;;
+	case "$1" in
+	msedge)
+		exec ssh virthost \
+			echo '"'start Shell:AppsFolder'\'Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $2'"' '>' .wincmdserver_cmd
+		;;
+	mail)
+		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe"'' -compose $2'" '>' .wincmdserver_cmd
+		;;
+	clip)
+		exec ssh virthost 
+		;;
+	*)
+		exec ssh virthost \
+			echo '"'$*'"' '>' .wincmdserver_cmd
+		;;
 		esac
-    ;;
+	;;
 esac
