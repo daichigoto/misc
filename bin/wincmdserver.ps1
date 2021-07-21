@@ -38,7 +38,7 @@ while ($true) {
     }
 
     # クリップボートファイルが存在し、かつ、中身があるときにシステム
-		# クリップボードへコピーする
+    # クリップボードへコピーする
     if (Test-Path "$clipbrdFilePath") {
 
         if (0 -lt (Get-ChildItem "$clipbrdFilePath").Length) {
