@@ -1,33 +1,5 @@
-#
 #  設定ウィンドウサイズを1200x800にするスクリプト
-#
 
-#========================================================================
-# Window title and geometry parameters
-#========================================================================
-$title = "設定"		# window title
-$x = 0  		# x coordinate
-$y = 0			# y coordinate
-$widht = 1200		# width
-$height = 800		# heigth
+$cmd = ${PSScriptRoot} + "\window_resizer.ps1 ApplicationFrameHost 設定 1200 800"
 
-#========================================================================
-# Win32 API MoveWindows() function
-#========================================================================
-Add-Type @"
-    using System;
-    using System.Runtime.InteropServices;
-
-    public class Win32Api {
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-    }
-"@
-
-#========================================================================
-# Windows resizing
-#========================================================================
-Get-Process | ? { $_.MainWindowTitle -eq $title } | % {
-    [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $widht, $height, $true)
-} | Out-Null
+Invoke-Expression $cmd
