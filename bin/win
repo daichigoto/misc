@@ -9,13 +9,19 @@ virt)
 		exec ssh virthost \
 			echo '"'start Shell:AppsFolder'\'Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $2'"' '>' .wincmdserver_cmd
 		;;
+	screenshotbrowser1200x800)
+		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Firefox\\firefox.exe"'' $2; firefox1200x800'" '>' .wincmdserver_cmd
+		;;
+	screenshotbrowser1200x600)
+		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Firefox\\firefox.exe"'' $2; firefox1200x600'" '>' .wincmdserver_cmd
+		;;
 	mail)
 		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe"'' -compose $2'" '>' .wincmdserver_cmd
 		;;
 	clip)
 		tempfile=$(mktemp /tmp/win.XXXXXX) 
 		cat $2 > "$tempfile"
-		scp "$tempfile" virthost:.wincmdserver_clip
+		scp "$tempfile" virthost:.wincmdserver_clip > /dev/null 2>&1
 		rm -f "$tempfile"
 		;;
 	*)
