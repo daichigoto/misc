@@ -5,7 +5,7 @@
 #====================================================================
 Param(
 	[String]$ProcessName="*",   # プロセス名
-	[String]$WindowsTitle="*",  # ウィンドウタイトル
+	[String]$WindowTitle="*",  # ウィンドウタイトル
 	[Int32]$Width="800",        # ウィンドウ幅
 	[Int32]$Height="600"        # ウィンドウ高さ
 )
@@ -58,7 +58,7 @@ function Resize-Window {
 
 Get-Process -Name $processName |
 	? { $_.MainWindowHandle -ne 0 } |
-	? { $_.MainWindowTitle -match $windowTitle } |
+	? { $_.MainWindowTitle -match "$windowTitle" } |
 	% {
  		# ウィンドウサイズを変更
 		Resize-Window($_.MainWindowHandle);
