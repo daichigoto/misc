@@ -31,8 +31,6 @@ do
         continue
     fi
 
-    make clean
-
 		# If the default images are used, try to get new ones.
 		# (If there are no files under the images directory that are 
 		#  newer than the images directory, it is assumed that the 
@@ -42,6 +40,7 @@ do
 		    make getimg 2> /dev/null
 		fi
 
+    make clean
     errormsg=$(make)
 
     case $? in
