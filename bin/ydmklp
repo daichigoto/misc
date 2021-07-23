@@ -32,7 +32,18 @@ do
     fi
 
     make clean
+
+		# If the default images are used, try to get new ones.
+		# (If there are no files under the images directory that are 
+		#  newer than the images directory, it is assumed that the 
+		#  default image is being used.)
+		if [ -z "$(find images -newer images 2> /dev/null)" ]
+		then
+		    make getimg 2> /dev/null
+		fi
+
     errormsg=$(make)
+
     case $? in
     0)
         make upload
