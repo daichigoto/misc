@@ -1,6 +1,8 @@
 #!/bin/sh -xv
 
-# PID record
+#====================================================================
+# PID recorded
+#====================================================================
 pidfile=".build.pid"
 echo "$$" > "$pidfile"
 
@@ -10,6 +12,9 @@ exec > $logfile
 trap "rm -f \"$logfile\" \"$pidfile\"" EXIT
 # XXX
 
+#====================================================================
+# Waiting for target file generation
+#====================================================================
 while :
 do
     if [ ! -e typescript.xml ]
@@ -20,39 +25,64 @@ do
     fi
 done
 
+#====================================================================
+# Build processing loop
+#====================================================================
 while :
 do
+		#----------------------------------------------------------------
+    # waiting for one of the files to be updated
+		#----------------------------------------------------------------
     wait_filechanges .
 
+		#----------------------------------------------------------------
     # adapting to vi/vim save behavior
+		#----------------------------------------------------------------
     sleep 0.5
 
+		#----------------------------------------------------------------
+    # Avoid processing during build lock mode
+		#----------------------------------------------------------------
     if [ -e .build-lock ]
     then
         continue
     fi
 
-    # If the default images are used, try to get new ones.
-    # (If there are no files under the images directory that are 
-    #  newer than the images directory, it is assumed that the 
-    #  default image is being used.)
-    if [ -z "$(find images -newer images 2> /dev/null)" ]
-    then
-        # Save the modification time of the images directory.
-        mkdir images.timestamp-saved
-        touch -r images images.timestamp-saved
+		#----------------------------------------------------------------
+    # Automatic acquisition of image files
+		#----------------------------------------------------------------
+    # If the default images are used or do not exist, try to get 
+		# new images. If the images have been acquired manually, it will 
+		# not be acquired automatically.
 
+		# Number of files unter the images directory
+		nofs=$(find images -type f -maxdepth 1 2> /dev/null | awk 'END{print NR}')
+		# If there are no files in the images directory, attempt to
+		# retrieve the image files.
+
+		# A file that indicates that images were automatically acquired 
+		# from this script.
+		confirmationfile="images/.got-by-ydmklp"
+
+    if [ 0 -eq $nofs -o ! -f "$confirmationfile" ]
+    then
         # Get the images.
         make getimg 2> /dev/null
 
-        # Restore the modification time of the images directory.
-        touch -r images.timestamp-saved images
-        rm -d images.timestamp-saved
+				# Record that the image was automatically acquired from this 
+				# script.
+        touch "$confirmationfile"
     fi
 
+		#----------------------------------------------------------------
+    # Build process
+		#----------------------------------------------------------------
     make clean
     errormsg=$(make)
 
+		#----------------------------------------------------------------
+    # Upload the required files
+		#----------------------------------------------------------------
     case $? in
     0)
         make upload
