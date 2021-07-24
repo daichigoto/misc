@@ -2,49 +2,67 @@
 
 [ "0" = $# ] && exit
 
-# sshを実行すると標準入力が持っていかれてしまうため、先に標準入力
-# から入ってくるデータをファイルに格納しておく。
-stdincontents=$(mktemp /tmp/win.XXXXXX)
-trap "rm -f \"$stdincontents\"" EXIT
-cat	> "$stdincontents"
+case "$1" in
+# サブコマンドがクリップボードへのコピーだった場合、標準入力または
+# 指定されたファイルの中身をコピー元データとして用意する。
+clip)
+	stdincontents=$(mktemp /tmp/win.XXXXXX)
+	trap "rm -f \"$stdincontents\"" EXIT
 
-# すでにコマンドがキューに入っている場合には、キューが空になるまで
-# 待機する。
-i=0;
-while [ 0 -ne "$(ssh virthost "(dir .wincmdserver_cmd).Length")" ]
-do
- sleep 0.1
+	case "$#" in
+	1)
+		cat > "$stdincontents"
+		;;
+	2)
+		cat "$2" > "$stdincontents"
+		;;
+	esac
 
- i=$(($i+1))
+	# 注意：sshを実行すると標準入力が持っていかれてしまうため、クリップ
+	# ボートへのコピー処理の場合、標準入力から値を確保する前にsshを実行
+	# してはいけない。スクリプト書き換えの際には注意すること。
+ ;;
 
- if [ $i -gt 20 ]
- then
-	break
- fi
-done
+# サブコマンドがコマンドの実行であり、かつ、すでにキューにコマンドが
+# 入っている場合には、キューが空になるまで待機する。
+*)
+	i=0;
+	while [ 0 -ne "$(ssh virthost "(dir .wincmdserver_cmd).Length")" ]
+	do
+	 sleep 0.1
+	
+	 i=$(($i+1))
+	
+	 if [ $i -gt 20 ]
+	 then
+		break
+	 fi
+	done
+esac
 
 # サブコマンドに合わせて処理を実行
 case $(hostname -s) in
 virt)
 	case "$1" in
 	msedge)
-		ssh virthost \
+		exec ssh virthost \
 			echo '"'start Shell:AppsFolder'\'Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $2'"' '>' .wincmdserver_cmd
 		;;
 	screenshotbrowser1200x800)
-		ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Firefox\\firefox.exe"'' $2; firefox1200x800'" '>' .wincmdserver_cmd
+		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Firefox\\firefox.exe"'' $2; firefox1200x800'" '>' .wincmdserver_cmd
 		;;
 	screenshotbrowser1200x600)
-		ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Firefox\\firefox.exe"'' $2; firefox1200x600'" '>' .wincmdserver_cmd
+		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Firefox\\firefox.exe"'' $2; firefox1200x600'" '>' .wincmdserver_cmd
 		;;
 	mail)
-		ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe"'' -compose $2'" '>' .wincmdserver_cmd
+		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe"'' -compose $2'" '>' .wincmdserver_cmd
 		;;
 	clip)
 		scp "$stdincontents" virthost:.wincmdserver_clip > /dev/null 2>&1
+		rm -f "$stdincontents"
 		;;
 	*)
-		ssh virthost \
+		exec ssh virthost \
 			echo '"'$*'"' '>' .wincmdserver_cmd
 		;;
 		esac
