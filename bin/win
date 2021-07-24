@@ -2,44 +2,49 @@
 
 [ "0" = $# ] && exit
 
+# sshを実行すると標準入力が持っていかれてしまうため、先に標準入力
+# から入ってくるデータをファイルに格納しておく。
+stdincontents=$(mktemp /tmp/win.XXXXXX)
+trap "rm -f \"$stdincontents\"" EXIT
+cat	> "$stdincontents"
+
 # すでにコマンドがキューに入っている場合には、キューが空になるまで
 # 待機する。
 i=0;
-while [ 0 -ne $(ssh virthost "(dir .wincmdserver_cmd).Length") ]
+while [ 0 -ne "$(ssh virthost "(dir .wincmdserver_cmd).Length")" ]
 do
  sleep 0.1
 
  i=$(($i+1))
+
  if [ $i -gt 20 ]
  then
 	break
  fi
 done
 
+# サブコマンドに合わせて処理を実行
 case $(hostname -s) in
 virt)
 	case "$1" in
 	msedge)
-		exec ssh virthost \
+		ssh virthost \
 			echo '"'start Shell:AppsFolder'\'Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $2'"' '>' .wincmdserver_cmd
 		;;
 	screenshotbrowser1200x800)
-		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Firefox\\firefox.exe"'' $2; firefox1200x800'" '>' .wincmdserver_cmd
+		ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Firefox\\firefox.exe"'' $2; firefox1200x800'" '>' .wincmdserver_cmd
 		;;
 	screenshotbrowser1200x600)
-		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Firefox\\firefox.exe"'' $2; firefox1200x600'" '>' .wincmdserver_cmd
+		ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Firefox\\firefox.exe"'' $2; firefox1200x600'" '>' .wincmdserver_cmd
 		;;
 	mail)
-		exec ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe"'' -compose $2'" '>' .wincmdserver_cmd
+		ssh virthost echo "'& ''"C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe"'' -compose $2'" '>' .wincmdserver_cmd
 		;;
 	clip)
-		tempfile=$(mktemp /tmp/win.XXXXXX) 
-		cat $2 > "$tempfile"
-		scp "$tempfile" virthost:.wincmdserver_clip > /dev/null 2>&1
-		rm -f "$tempfile"
+		scp "$stdincontents" virthost:.wincmdserver_clip > /dev/null 2>&1
 		;;
 	*)
-		exec ssh virthost \
+		ssh virthost \
 			echo '"'$*'"' '>' .wincmdserver_cmd
 		;;
 		esac
