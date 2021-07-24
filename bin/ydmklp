@@ -4,10 +4,11 @@
 pidfile=".build.pid"
 echo "$$" > "$pidfile"
 
-# for DEBUG
+# XXX for DEBUG
 logfile="/tmp/ydmklp-$$"
 exec > $logfile
 trap "rm -f \"$logfile\" \"$pidfile\"" EXIT
+# XXX
 
 while :
 do
@@ -37,7 +38,16 @@ do
 		#  default image is being used.)
 		if [ -z "$(find images -newer images 2> /dev/null)" ]
 		then
+		    # Save the modification time of the images directory.
+		    mkdir images.timestamp-saved
+				touch -r images images.timestamp-saved
+
+				# Get the images.
 		    make getimg 2> /dev/null
+
+				# Restore the modification time of the images directory.
+				touch -r images.timestamp-saved images
+				rm -d images.timestamp-saved
 		fi
 
     make clean
