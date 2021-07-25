@@ -28,6 +28,36 @@ done
 #====================================================================
 # Build processing loop
 #====================================================================
+
+# A file that indicates that images were automatically acquired 
+# from this script.
+confirmationfile="images/.got-by-ydmklp"
+
+# Function to retrieve images.
+getimg()
+{
+    # Get the images.
+    mtimepre=$(stat -f '%m' images/001raw.jpg 2> /dev/null)
+    make getimg 2> /dev/null
+    mtimepst=$(stat -f '%m' images/001raw.jpg 2> /dev/null)
+
+    if [ -n "$mtimepst" ]
+        then
+        if [ "$mtimepre" != "$mtimepst" ]
+        then
+            # Record that the images were automatically acquired from 
+						# this script.
+            touch "$confirmationfile"
+
+            # Stagger the modification times of the images directory 
+						# and the files under it to indicate that they are not 
+						# the default image files.
+            sleep 1
+            touch images
+        fi
+    fi
+}
+
 while :
 do
 		#----------------------------------------------------------------
@@ -51,27 +81,32 @@ do
 		#----------------------------------------------------------------
     # Automatic acquisition of image files
 		#----------------------------------------------------------------
-    # If the default images are used or do not exist, try to get 
-		# new images. If the images have been acquired manually, it will 
-		# not be acquired automatically.
 
-		# Number of files unter the images directory
+		# Number of files under the images directory
 		nofs=$(find images -type f -maxdepth 1 2> /dev/null | awk 'END{print NR}')
+
+		# Whether the modification time of the images directory and the 
+		# files under it are all the same or not.
+		case $(stat -f '%m' images images/* 2> /dev/null | sort | uniq | awk 'END{print NR}') in
+		1) allthesametime="yes"; ;;
+		*) allthesametime="no"; ;;
+    esac
+
 		# If there are no files in the images directory, attempt to
 		# retrieve the image files.
-
-		# A file that indicates that images were automatically acquired 
-		# from this script.
-		confirmationfile="images/.got-by-ydmklp"
-
-    if [ 0 -eq $nofs -o ! -f "$confirmationfile" ]
+    if [ 0 -eq $nofs ]
     then
-        # Get the images.
-        make getimg 2> /dev/null
-
-				# Record that the image was automatically acquired from this 
-				# script.
-        touch "$confirmationfile"
+        getimg
+    else
+        # If the confirmation file exists, the file will not be 
+        # automatically retrieved. And if the modification time of
+        # the images directory and all files under it are not the same, 
+        # the image files will not be retrieved automatically because 
+        # this is a case where the user is retrieving them manually.
+        if [ ! -f "$confirmationfile" -a $allthesametime = "yes" ]
+        then
+            getimg
+        fi
     fi
 
 		#----------------------------------------------------------------
