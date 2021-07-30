@@ -2,12 +2,25 @@
 
 [ "0" = $# ] && exit
 
+# サブコマンドに合わせて処理を実行
 case $(hostname -s) in
 virt)
-    exec ssh virthost \
-        PATH=$PATH:~/Documents/mics/bin:~/Documents/bin LANG=$LANG "${@}"
-    ;;
+	case "$1" in
+	screenshotbrowser1200x800)
+		exec ssh virthost open -a Firefox $2 ';' \
+			PATH=$PATH:~/Documents/mics/bin:~/Documents/bin LANG=$LANG  firefox1200x800
+		;;
+	screenshotbrowser1200x600)
+		exec ssh virthost open -a Firefox $2 ';' \
+			PATH=$PATH:~/Documents/mics/bin:~/Documents/bin LANG=$LANG  firefox1200x600
+		;;
+	*)
+		exec ssh virthost \
+        		PATH=$PATH:~/Documents/mics/bin:~/Documents/bin LANG=$LANG "${@}"
+		;;
+	esac
+	;;
 *)
-    exec "${@}"
-    ;;
+	exec "${@}"
+	;;
 esac
