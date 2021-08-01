@@ -68,6 +68,6 @@ virt)
 		exec ssh virthost \
 			echo '"'$*'"' '>' .wincmdserver_cmd
 		;;
-		esac
+	esac
 	;;
 esac

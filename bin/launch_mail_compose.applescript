@@ -7,7 +7,10 @@ on run argv
 		set targetlist to textToList(item i of argv, "=")
 		set target to item 1 of targetlist
 		set value to item 2 of targetlist
-		
+	
+		(* Dealing with cases where attachments are not specified. *)
+    set attach to "/dev/null"
+
 		if target is "to" then
 			set mailto to textToList(value, ",")
 		else if target is "cc" then
@@ -60,7 +63,9 @@ on newMail(mailto, mailcc, sender, subject, attach, body)
 				make new cc recipient with properties {address:item i of newMail_mailcc}
 			end repeat
 			
-			make new attachment with properties {file name:newMail_attach} at after last paragraph
+			if attach /= "/dev/null" then
+				make new attachment with properties {file name:newMail_attach} at after last paragraph
+			end if
 		end tell
 		
 		(* Signature should be added after attachment treatment complete.
@@ -68,8 +73,10 @@ on newMail(mailto, mailcc, sender, subject, attach, body)
 		treatment overwrites signature config and it turns into "none" signature. 
 		I guess it's a bug of Mail.app. Following delay command is workaround of 
 		this issue. *)
+		(*
 		delay 1.5
 		set message signature of composeWindow to signature newMail_sender
+		*)
 	end tell
 end newMail
 
