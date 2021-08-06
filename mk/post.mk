@@ -24,6 +24,9 @@
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 .if defined(NEED_LIBJPEG)
+. if ${OS} == "FreeBSD"
+CFLAGS+=	-ljpeg
+. endif
 . if ${OS} == "Darwin"
 CFLAGS+=	-I/opt/homebrew/Cellar/jpeg-turbo/2.1.0/include/ \
 		-L/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/ \
@@ -42,7 +45,7 @@ install-required-packages:
 .if defined(NEED_LIBEXPAT)
 . if ${OS} == "FreeBSD"
 .  if !exists(${LIBDIR}/libexpat.so)
-	sudo pkg install expat2
+	sudo pkg install -y expat
 .  endif
 . endif
 .endif
@@ -52,9 +55,10 @@ install-required-packages:
 .if defined(NEED_LIBJPEG)
 . if ${OS} == "FreeBSD"
 .  if !exists(${LIBDIR}/libjpeg.so)
-	sudo pkg install jpeg-turbo
+	sudo pkg install -y jpeg-turbo
 .  endif
-. elif ${OS} == "Darwin"
+. endif
+. if ${OS} == "Darwin"
 .  if !exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/libjpeg.dylib)
 	brew install jpeg-turbo
 .  endif
@@ -66,7 +70,7 @@ install-required-packages:
 .if defined(NEED_ZIP)
 . if ${OS} == "FreeBSD"
 .  if !exists(/usr/local/bin/zip)
-	sudo pkg install zip
+	sudo pkg install -y zip
 .  endif
 . endif
 .endif
@@ -76,9 +80,10 @@ install-required-packages:
 .if defined(NEED_GM)
 . if ${OS} == "FreeBSD"
 .  if !exists(/usr/local/bin/gm)
-	sudo pkg install GraphicsMagick
+	sudo pkg install -y GraphicsMagick
 .  endif
-. elif ${OS} == "Darwin"
+. endif
+. if ${OS} == "Darwin"
 .  if !exists(/opt/homebrew/bin/gm)
 	brew install graphicsmagick
 .  endif
