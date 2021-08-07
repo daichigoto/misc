@@ -23,6 +23,32 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-.if !defined(install-required-libs)
-install-required-libs:
+install-required-packages:
+.if defined(NEED_JPEGLIB)
+. if ${OS} == "FreeBSD"
+.  if !exists(${LIBDIR}/libjpeg.so)
+	sudo pkg install jpeg-turbo
+.  endif
+	
+. elif ${OS} == "Darwin"
+.  if !exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/libjpeg.dylib)
+	brew install jpeg-turbo
+.  endif
+CFLAGS+=	-I/opt/homebrew/Cellar/jpeg-turbo/2.1.0/include/ \
+		-L/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/ \
+		-ljpeg
+. endif
+.endif
+	
+.if defined(NEED_GM)
+. if ${OS} == "FreeBSD"
+.  if !exists(/usr/local/bin/gm)
+	sudo pkg install GraphicsMagick
+.  endif
+	
+. elif ${OS} == "Darwin"
+.  if !exists(/opt/homebrew/bin/gm)
+	brew install jpeg-turbo
+.  endif
+. endif
 .endif

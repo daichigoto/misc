@@ -28,5 +28,3 @@
 CMD=		glsd2im
 
 CFLAGS+=	-lexpat
-
-.include	"../mk/post.mk"

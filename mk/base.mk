@@ -58,7 +58,7 @@ INSTALL?=	install
 .c.o:
 	${CC} ${CFLAGS} -c $< -o $@
 
-build: install-required-libs ${OBJS}
+build: install-required-packages ${OBJS}
 	${CC} ${CFLAGS} -o ${CMD} ${OBJS}
 
 install: clean build
@@ -69,3 +69,5 @@ uninstall:
 
 clean:
 	${RM} -f ${CMD} ${OBJS}
+
+.include "install-required-packages.mk"
