@@ -1,0 +1,26 @@
+#!/bin/sh
+
+if [ -e /opt/homebrew/bin/bsdmake ]
+then
+	case "$(pwd)" in
+	${HOME}/Documents/misc*)
+		exec /opt/homebrew/bin/bsdmake "${@}"
+		;;
+	${HOME}/Documents/tttcmds*)
+		exec /opt/homebrew/bin/bsdmake "${@}"
+		;;
+	esac
+fi
+
+if [ -e /usr/bin/make ]
+then
+	exec /usr/bin/make "${@}"
+fi
+
+if [ -z "$(which make | grep -v ${0} | head -1)" ]
+then
+	echo "no such command: make" 1>&2
+	exit 1
+else
+	exec $(which make | grep -v ${0} | head -1)
+fi
