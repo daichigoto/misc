@@ -23,49 +23,37 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-SRCS!=		ls *.c
-OBJS=		${SRCS:.c=.o}
-BINDIR?=	${.CURDIR}/../bin
-BINPERM?=	500
-
-OS!=		uname -s
-
-.if ${OS} == "FreeBSD"
-INCLUDEDIR?=	/usr/local/include
-LIBDIR?=	/usr/local/lib
-.elif ${OS} == "Darwin"
-INCLUDEDIR?=	
-LIBDIR?=	
+install-required-packages:
+#--------------------------------------------------------------------
+# SIMD-accelerated JPEG codec which replaces libjpeg
+#--------------------------------------------------------------------
+.if defined(NEED_JPEGLIB)
+. if ${OS} == "FreeBSD"
+.  if !exists(${LIBDIR}/libjpeg.so)
+	sudo pkg install jpeg-turbo
+.  endif
+	
+. elif ${OS} == "Darwin"
+.  if !exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/libjpeg.dylib)
+	brew install jpeg-turbo
+.  endif
+CFLAGS+=	-I/opt/homebrew/Cellar/jpeg-turbo/2.1.0/include/ \
+		-L/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/ \
+		-ljpeg
+. endif
 .endif
-
-CFLAGS+=	-I${INCLUDEDIR} \
-		-L${LIBDIR} \
-		-O2 \
-		-pipe \
-		-std=gnu99 \
-		-fstack-protector \
-		-Qunused-arguments \
-		-Werror \
-		-Wall \
-		-W \
-		-Wno-unused-parameter
-
-CC?=		cc
-MAKE?=		make
-RM?=		rm
-INSTALL?=	install
-
-.c.o:
-	${CC} ${CFLAGS} -c $< -o $@
-
-build: install-required-packages ${OBJS}
-	${CC} ${CFLAGS} -o ${CMD} ${OBJS}
-
-install: clean build
-	${INSTALL} -m ${BINPERM} ${CMD} ${BINDIR}
-
-uninstall: 
-	${RM} -f ${BINDIR}/${CMD}
-
-clean:
-	${RM} -f ${CMD} ${OBJS}
+#--------------------------------------------------------------------
+# Fast image processing tools based on ImageMagick
+#--------------------------------------------------------------------
+.if defined(NEED_GM)
+. if ${OS} == "FreeBSD"
+.  if !exists(/usr/local/bin/gm)
+	sudo pkg install GraphicsMagick
+.  endif
+	
+. elif ${OS} == "Darwin"
+.  if !exists(/opt/homebrew/bin/gm)
+	brew install graphicsmagick
+.  endif
+. endif
+.endif
