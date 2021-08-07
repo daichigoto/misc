@@ -1,16 +1,10 @@
 #!/bin/sh
 
-if [ -e /opt/homebrew/bin/bsdmake ]
+if [ -n "$(which bsdmake)" ]
 then
 	case "$(pwd)" in
-	${HOME}/Documents/misc*)
-		exec /opt/homebrew/bin/bsdmake "${@}"
-		;;
-	${HOME}/Documents/tttcmds*)
-		exec /opt/homebrew/bin/bsdmake "${@}"
-		;;
 	${HOME}/Documents/*)
-		exec /opt/homebrew/bin/bsdmake "${@}"
+		exec $(which bsdmake | head -1) "${@}"
 		;;
 	esac
 fi
