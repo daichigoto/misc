@@ -23,34 +23,47 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+.if defined(NEED_JPEGLIB)
+. if ${OS} == "Darwin"
+CFLAGS+=	-I/opt/homebrew/Cellar/jpeg-turbo/2.1.0/include/ \
+		-L/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/ \
+		-ljpeg
+. endif
+.endif
+
 install-required-packages:
 #--------------------------------------------------------------------
-# SIMD-accelerated JPEG codec which replaces libjpeg
+# libjpeg compatible libtary
 #--------------------------------------------------------------------
 .if defined(NEED_JPEGLIB)
 . if ${OS} == "FreeBSD"
 .  if !exists(${LIBDIR}/libjpeg.so)
 	sudo pkg install jpeg-turbo
 .  endif
-	
 . elif ${OS} == "Darwin"
 .  if !exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/libjpeg.dylib)
 	brew install jpeg-turbo
 .  endif
-CFLAGS+=	-I/opt/homebrew/Cellar/jpeg-turbo/2.1.0/include/ \
-		-L/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/ \
-		-ljpeg
 . endif
 .endif
 #--------------------------------------------------------------------
-# Fast image processing tools based on ImageMagick
+# ZIP
+#--------------------------------------------------------------------
+.if defined(NEED_ZIP)
+. if ${OS} == "FreeBSD"
+.  if !exists(/usr/local/bin/zip)
+	sudo pkg install zip
+.  endif
+. endif
+.endif
+#--------------------------------------------------------------------
+# GraphicsMagick
 #--------------------------------------------------------------------
 .if defined(NEED_GM)
 . if ${OS} == "FreeBSD"
 .  if !exists(/usr/local/bin/gm)
 	sudo pkg install GraphicsMagick
 .  endif
-	
 . elif ${OS} == "Darwin"
 .  if !exists(/opt/homebrew/bin/gm)
 	brew install graphicsmagick

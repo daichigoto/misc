@@ -1,4 +1,3 @@
-#
 #  Copyright (c) 2017,2021 Daichi GOTO
 #  All rights reserved.
 #
@@ -23,49 +22,15 @@
 #  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
 
-INCLUDEDIR?=	/usr/local/include
-LIBDIR?=	/usr/local/lib
-BINDIR?=	${.CURDIR}/../bin
-BINPERM?=	500
+.include	"../mk/base.mk"
 
-OBJS=		main.o output.o pbuf.o element.o handler.o import.o \
-		image.o fileio.o
 CMD=		glsd2mn
 
-CFLAGS+=	-I${INCLUDEDIR} \
-		-O2 \
-		-pipe \
-		-std=gnu99 \
-		-fstack-protector \
-		-Qunused-arguments \
-		-Werror \
-		-Wall \
-		-W \
-		-Wno-unused-parameter
+CFLAGS+=	-lexpat
 
-CC?=		cc
-MAKE?=		make
-RM?=		rm
-INSTALL?=	install
+NEED_JPEGLIB=	YES
+NEED_ZIP=	YES
+NEED_GM=	YES
 
-.c.o:
-	${CC} ${CFLAGS} -c $< -o $@
-
-build: libs ${OBJS}
-	${CC} ${CFLAGS} -L${LIBDIR} -lexpat -ljpeg -o ${CMD} ${OBJS}
-
-libs:
-.if !exists(${LIBDIR}/libjpeg.so)
-	sudo pkg install jpeg-turbo
-.endif
-
-install: clean build
-	${INSTALL} -m ${BINPERM} ${CMD} ${BINDIR}
-
-uninstall: 
-	${RM} -f ${BINDIR}/${CMD}
-
-clean:
-	${RM} -f ${CMD} ${OBJS}
+.include	"../mk/post.mk"
