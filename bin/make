@@ -9,6 +9,9 @@ then
 	${HOME}/Documents/tttcmds*)
 		exec /opt/homebrew/bin/bsdmake "${@}"
 		;;
+	${HOME}/Documents/*)
+		exec /opt/homebrew/bin/bsdmake "${@}"
+		;;
 	esac
 fi
 
