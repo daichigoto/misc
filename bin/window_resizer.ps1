@@ -55,7 +55,6 @@ function Resize-Window {
 #====================================================================
 # 対象となるウィンドウを選択し、サイズを変更
 #====================================================================
-
 Get-Process -Name $processName |
 	? { $_.MainWindowHandle -ne 0 } |
 	? { $_.MainWindowTitle -match "$windowTitle" } |

@@ -6,12 +6,6 @@
 pidfile=".build.pid"
 echo "$$" > "$pidfile"
 
-# XXX for DEBUG
-logfile="/tmp/ydmklp-$$"
-exec > $logfile
-trap "rm -f \"$logfile\" \"$pidfile\"" EXIT
-# XXX
-
 #====================================================================
 # Waiting for target file generation
 #====================================================================
@@ -83,11 +77,11 @@ do
 		#----------------------------------------------------------------
 
 		# Number of files under the images directory
-		nofs=$(find images -type f -maxdepth 1 2> /dev/null | awk 'END{print NR}')
+		nofs=$(find images -name "0[0-9]*raw.jpg" -type f -maxdepth 1 2> /dev/null | awk 'END{print NR}')
 
 		# Whether the modification time of the images directory and the 
 		# files under it are all the same or not.
-		case $(stat -f '%m' images images/* 2> /dev/null | sort | uniq | awk 'END{print NR}') in
+		case $(stat -f '%m' images images/0* 2> /dev/null | sort | uniq | awk 'END{print NR}') in
 		1) allthesametime="yes"; ;;
 		*) allthesametime="no"; ;;
     esac

@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# usage:
+#	geoiplookup domain or ip
+
+#================================================================
+# 作業用ディレクトリの作成と削除トラップの設定
+#================================================================
+tmpd="/tmp/$(basename $0)_$$"; mkdir $tmpd
+trap "[ -d $tmpd ] && chmod -R u+w $tmpd; rm -rf $tmpd" EXIT
+
+#================================================================
+# 誤判定処理
+#================================================================
+case "$1" in
+us-cert.cisa.gov)
+ echo "GeoIP Country Edition: US, United States"; exit ;;
+www.comparitech.com)
+ echo "GeoIP Country Edition: UK, United Kingdom"; exit ;;
+*.jp)
+ echo "GeoIP Country Edition: JP, Japan"; exit ;;
+esac
+
+#================================================================
+# ドメイン名をIPアドレスに変換
+#================================================================
+case "$1" in
+[1-9][0-9]*.[1-9][0-9]*.[1-9][0-9]*.[1-9][0-9]*)
+	ip="$1"
+	;;
+*)
+	drill	"$1" 					|
+	grep	'IN	A	[1-9][0-9]*.[1-9][0-9]*.[1-9][0-9]*.[1-9][0-9]*'	|
+	head	-1						|
+	awk	'{print $5}'		> $tmpd/IP
+
+	ip=$(cat $tmpd/IP)
+	;;
+esac
+
+#================================================================
+# api.geoiplookup.netでIPアドレスを地理情報に変換
+#================================================================
+curl --get "http://api.geoiplookup.net/?query=$ip"	> $tmpd/DATA 2> /dev/null
+
+isocode=$(grep -o '<countrycode>.*</countrycode>' $tmpd/DATA | sed 's/<[^>]*>//g')
+name=$(grep -o '<countryname>.*</countryname>' $tmpd/DATA | sed 's/<[^>]*>//g')
+
+echo "GeoIP Country Edition: $isocode, $name"
