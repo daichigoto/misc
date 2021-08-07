@@ -23,7 +23,7 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-.if defined(NEED_JPEGLIB)
+.if defined(NEED_LIBJPEG)
 . if ${OS} == "Darwin"
 CFLAGS+=	-I/opt/homebrew/Cellar/jpeg-turbo/2.1.0/include/ \
 		-L/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/ \
@@ -31,11 +31,25 @@ CFLAGS+=	-I/opt/homebrew/Cellar/jpeg-turbo/2.1.0/include/ \
 . endif
 .endif
 
+.if defined(NEED_LIBEXPAT)
+CFLAGS+=	-lexpat
+.endif
+
 install-required-packages:
 #--------------------------------------------------------------------
-# libjpeg compatible libtary
+# expat (XML 1.0 parser written in C)
 #--------------------------------------------------------------------
-.if defined(NEED_JPEGLIB)
+.if defined(NEED_LIBEXPAT)
+. if ${OS} == "FreeBSD"
+.  if !exists(${LIBDIR}/libexpat.so)
+	sudo pkg install expat2
+.  endif
+. endif
+.endif
+#--------------------------------------------------------------------
+# libjpeg compatible library
+#--------------------------------------------------------------------
+.if defined(NEED_LIBJPEG)
 . if ${OS} == "FreeBSD"
 .  if !exists(${LIBDIR}/libjpeg.so)
 	sudo pkg install jpeg-turbo

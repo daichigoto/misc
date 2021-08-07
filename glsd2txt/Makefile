@@ -27,6 +27,6 @@
 
 CMD=		glsd2txt
 
-CFLAGS+=	-lexpat
+NEED_LIBEXPAT=	YES
 
 .include	"../mk/post.mk"
