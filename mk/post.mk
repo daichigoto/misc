@@ -23,49 +23,6 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-SRCS!=		ls *.c
-OBJS=		${SRCS:.c=.o}
-BINDIR?=	${.CURDIR}/../bin
-BINPERM?=	500
-
-OS!=		uname -s
-
-.if ${OS} == "FreeBSD"
-INCLUDEDIR?=	/usr/local/include
-LIBDIR?=	/usr/local/lib
-.elif ${OS} == "Darwin"
-INCLUDEDIR?=	
-LIBDIR?=	
+.if !defined(install-required-libs)
+install-required-libs:
 .endif
-
-CFLAGS+=	-I${INCLUDEDIR} \
-		-L${LIBDIR} \
-		-O2 \
-		-pipe \
-		-std=gnu99 \
-		-fstack-protector \
-		-Qunused-arguments \
-		-Werror \
-		-Wall \
-		-W \
-		-Wno-unused-parameter
-
-CC?=		cc
-MAKE?=		make
-RM?=		rm
-INSTALL?=	install
-
-.c.o:
-	${CC} ${CFLAGS} -c $< -o $@
-
-build: install-required-libs ${OBJS}
-	${CC} ${CFLAGS} -o ${CMD} ${OBJS}
-
-install: clean build
-	${INSTALL} -m ${BINPERM} ${CMD} ${BINDIR}
-
-uninstall: 
-	${RM} -f ${BINDIR}/${CMD}
-
-clean:
-	${RM} -f ${CMD} ${OBJS}
