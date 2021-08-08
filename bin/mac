@@ -25,6 +25,21 @@ virt)
 	esac
 	;;
 *)
-	exec "${@}"
-	;;
+	case "$1" in
+	screenshotbrowser1200x800)
+		open -a Firefox $2
+		firefox1200x800
+		;;
+	screenshotbrowser1200x600)
+		open -a Firefox $2
+		firefox1200x600
+		;;
+	mail)
+		/Applications/Thunderbird.app/Contents/MacOS/thunderbird -compose $2
+		# Thunderbirdはopenコマンド経由だと新規メールの作成が機能しない
+		;;
+	*)
+		exec "${@}"
+		;;
+	esac
 esac
