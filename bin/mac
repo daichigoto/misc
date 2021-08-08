@@ -35,7 +35,7 @@ virt)
 		firefox1200x600
 		;;
 	mail)
-		/Applications/Thunderbird.app/Contents/MacOS/thunderbird -compose $2
+		/Applications/Thunderbird.app/Contents/MacOS/thunderbird -compose $2 &
 		# Thunderbirdはopenコマンド経由だと新規メールの作成が機能しない
 		;;
 	*)
