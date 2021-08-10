@@ -23,14 +23,23 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#--------------------------------------------------------------------
+# CFLAGS
+#--------------------------------------------------------------------
 .if defined(NEED_LIBJPEG)
 . if ${OS} == "FreeBSD"
 CFLAGS+=	-ljpeg
 . endif
 . if ${OS} == "Darwin"
+.  if exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/)
 CFLAGS+=	-I/opt/homebrew/Cellar/jpeg-turbo/2.1.0/include/ \
 		-L/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/ \
 		-ljpeg
+.  elif exists(/usr/local/opt/jpeg-turbo/)
+CFLAGS+=	-I/usr/local/opt/jpeg-turbo/include/ \
+		-L/usr/local/opt/jpeg-turbo/lib/ \
+		-ljpeg
+.  endif
 . endif
 .endif
 
@@ -59,7 +68,7 @@ install-required-packages:
 .  endif
 . endif
 . if ${OS} == "Darwin"
-.  if !exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/libjpeg.dylib)
+.  if !exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/libjpeg.dylib) && !exists(/usr/local/opt/jpeg-turbo/lib/libjpeg.dylib)
 	brew install jpeg-turbo
 .  endif
 . endif
@@ -84,7 +93,7 @@ install-required-packages:
 .  endif
 . endif
 . if ${OS} == "Darwin"
-.  if !exists(/opt/homebrew/bin/gm)
+.  if !exists(/opt/homebrew/bin/gm) && !exists(/usr/local/bin/gm)
 	brew install graphicsmagick
 .  endif
 . endif
