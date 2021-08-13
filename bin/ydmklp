@@ -40,12 +40,12 @@ getimg()
         if [ "$mtimepre" != "$mtimepst" ]
         then
             # Record that the images were automatically acquired from 
-						# this script.
+            # this script.
             touch "$confirmationfile"
 
             # Stagger the modification times of the images directory 
-						# and the files under it to indicate that they are not 
-						# the default image files.
+            # and the files under it to indicate that they are not 
+            # the default image files.
             sleep 1
             touch images
         fi
@@ -54,40 +54,40 @@ getimg()
 
 while :
 do
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     # waiting for one of the files to be updated
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     wait_filechanges .
 
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     # adapting to vi/vim save behavior
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     sleep 0.5
 
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     # Avoid processing during build lock mode
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     if [ -e .build-lock ]
     then
         continue
     fi
 
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     # Automatic acquisition of image files
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
 
-		# Number of files under the images directory
-		nofs=$(find images -name "0[0-9]*raw.jpg" -type f -maxdepth 1 2> /dev/null | awk 'END{print NR}')
+    # Number of files under the images directory
+    nofs=$(find images -name "0[0-9]*raw.jpg" -type f -maxdepth 1 2> /dev/null | awk 'END{print NR}')
 
-		# Whether the modification time of the images directory and the 
-		# files under it are all the same or not.
-		case $(stat -f '%m' images images/0* 2> /dev/null | sort | uniq | awk 'END{print NR}') in
-		1) allthesametime="yes"; ;;
-		*) allthesametime="no"; ;;
+    # Whether the modification time of the images directory and the 
+    # files under it are all the same or not.
+    case $(stat -f '%m' images images/0* 2> /dev/null | sort | uniq | awk 'END{print NR}') in
+    1) allthesametime="yes"; ;;
+    *) allthesametime="no"; ;;
     esac
 
-		# If there are no files in the images directory, attempt to
-		# retrieve the image files.
+    # If there are no files in the images directory, attempt to
+    # retrieve the image files.
     if [ 0 -eq $nofs ]
     then
         getimg
@@ -103,15 +103,15 @@ do
         fi
     fi
 
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     # Build process
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     make clean
     errormsg=$(make)
 
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     # Upload the required files
-		#----------------------------------------------------------------
+    #----------------------------------------------------------------
     case $? in
     0)
         make upload
