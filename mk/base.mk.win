@@ -27,28 +27,33 @@ SRCS=		$(wildcard *.c)
 OBJS=		$(SRCS:.c=.o)
 
 BINDIR=		./../bin
+BINPERM=	500
 
 INCLUDEDIR=	/usr/include
 LIBDIR=		/usr/lib
 
+# CFLAGS+=	-I${INCLUDEDIR} \
+# 		-L${LIBDIR} \
+# 		-O2 \
+# 		-pipe \
+# 		-std=gnu99 \
+# 		-fstack-protector \
+# 		-Qunused-arguments \
+# 		-Werror \
+# 		-Wall \
+# 		-W \
+# 		-Wno-unused-parameter \
+
 CFLAGS+=	-I${INCLUDEDIR} \
 		-L${LIBDIR} \
-		-O2 \
-		-pipe \
-		-std=gnu99 \
-		-fstack-protector \
-		-Qunused-arguments \
 		-Wno-error \
-		-Wall \
-		-W \
-		-Wno-unused-parameter
-
-# -Wno-error --> -Werror
+		-Wno-incompatible-library-redeclaration
 
 CC=		clang
 MAKE=		make
-RM=		rm -f
+RM=		rm 
 COPY=		cp
+INSTALL=	install
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -56,12 +61,12 @@ COPY=		cp
 build: install-required-packages $(OBJS)
 	$(CC) $(CFLAGS) -o $(CMD) $(OBJS)
 
-# install: clean build
-# 	${INSTALL} -m ${BINPERM} ${CMD} ${BINDIR}
+install: clean build
+	$(INSTALL) -m $(BINPERM) $(CMD) $(BINDIR)
 
-# uninstall: 
-# 	${RM} -f ${BINDIR}/${CMD}
+uninstall: 
+	$(RM) -f $(BINDIR)/$(CMD)
 
 clean:
-	${RM} ${CMD}
-	${RM} ${OBJS}
+	$(RM) -f $(CMD)
+	$(RM) -f $(OBJS)

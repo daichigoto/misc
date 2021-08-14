@@ -17,13 +17,13 @@ all: install
 install: 
 	for i in $(TARGET_DIRS); \
 	do \
-		( cd $${i}; make install ); \
+		( cd $${i}; $(MAKE) install ); \
 	done
 
 uninstall: 
 	for i in $(TARGET_DIRS); \
 	do \
-		( cd $${i}; make uninstall ); \
+		( cd $${i}; $(MAKE) uninstall ); \
 	done
 
 clean: 
