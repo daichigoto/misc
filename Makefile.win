@@ -1,0 +1,33 @@
+SHELL=		ash
+MAKE+=		-f Makefile.win
+
+# TARGET_DIRS=	gen_shareshifttable	\
+# 		gen_shareshifttable_12	\
+# 		glsd2gm	\
+# 		glsd2html	\
+# 		glsd2im	\
+# 		glsd2in	\
+# 		glsd2mn	\
+# 		glsd2txt
+
+TARGET_DIRS=	glsd2txt
+
+all: install
+
+install: 
+	for i in $(TARGET_DIRS); \
+	do \
+		( cd $${i}; make install ); \
+	done
+
+uninstall: 
+	for i in $(TARGET_DIRS); \
+	do \
+		( cd $${i}; make uninstall ); \
+	done
+
+clean: 
+	for i in $(TARGET_DIRS); \
+	do \
+		( cd $${i}; $(MAKE) clean ); \
+	done
