@@ -25,7 +25,7 @@
 
 include		../mk/base.mk.win
 
-CMD=		glsd2txt
+CMD=		glsd2txt.exe
 
 NEED_LIBEXPAT=	YES
 

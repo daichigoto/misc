@@ -28,6 +28,5 @@
 CMD=		glsd2gm
 
 NEED_LIBEXPAT=	YES
-NEED_LIBJPEG=	YES
 
 .include	"../mk/post.mk"

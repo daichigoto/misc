@@ -1,4 +1,4 @@
-#  Copyright (c) 2018,2021 Daichi GOTO
+#  Copyright (c) 2021 Daichi GOTO
 #  All rights reserved.
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -23,11 +23,10 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-.include	"../mk/base.mk"
+include		../mk/base.mk.win
 
-CMD=		gen_shareshifttable_12
+CMD=		gen_shareshifttable_12.exe
 
 NEED_LIBEXPAT=	YES
-NEED_LIBJPEG=	YES
 
-.include	"../mk/post.mk"
+include		../mk/post.mk.win
