@@ -26,23 +26,12 @@
 #--------------------------------------------------------------------
 # CFLAGS
 #--------------------------------------------------------------------
-#.if defined(NEED_LIBJPEG)
-#. if ${OS} == "FreeBSD"
-#CFLAGS+=	-ljpeg
-#. endif
-#. if ${OS} == "Darwin"
-#.  if exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/)
-#CFLAGS+=	-I/opt/homebrew/Cellar/jpeg-turbo/2.1.0/include/ \
-#		-L/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/ \
-#		-ljpeg
-#.  elif exists(/usr/local/opt/jpeg-turbo/)
-#CFLAGS+=	-I/usr/local/opt/jpeg-turbo/include/ \
-#		-L/usr/local/opt/jpeg-turbo/lib/ \
-#		-ljpeg
-#.  endif
-#. endif
-#.endif
-#
+ifdef NEED_LIBJPEG
+CFLAGS+=	-I/mingw64/include
+LINKFLAGS+=	C:\msys64\mingw64\lib\libjpeg.a	\
+		C:\msys64\mingw64\lib\libjpeg.a	\
+endif
+
 ifdef NEED_LIBEXPAT
 LINKFLAGS+=	-lexpat
 endif
@@ -69,20 +58,13 @@ ifdef NEED_LIBEXPAT
  endif
 endif
 #--------------------------------------------------------------------
-## libjpeg compatible library
-##--------------------------------------------------------------------
-#.if defined(NEED_LIBJPEG)
-#. if ${OS} == "FreeBSD"
-#.  if !exists(${LIBDIR}/libjpeg.so)
-#	sudo pkg install -y jpeg-turbo
-#.  endif
-#. endif
-#. if ${OS} == "Darwin"
-#.  if !exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/libjpeg.dylib) && !exists(/usr/local/opt/jpeg-turbo/lib/libjpeg.dylib)
-#	brew install jpeg-turbo
-#.  endif
-#. endif
-#.endif
+# libjpeg compatible library
+#--------------------------------------------------------------------
+ifdef NEED_LIBJPEG
+ ifneq ($(wildcard /mingw64/include/jpeglib.h), /mingw64/include/jpeglib.h)
+	pacman -S --noconfirm mingw-w64-x86_64-libjpeg-turbo
+ endif
+endif
 ##--------------------------------------------------------------------
 ## ZIP
 ##--------------------------------------------------------------------
@@ -100,11 +82,6 @@ endif
 #. if ${OS} == "FreeBSD"
 #.  if !exists(/usr/local/bin/gm)
 #	sudo pkg install -y GraphicsMagick
-#.  endif
-#. endif
-#. if ${OS} == "Darwin"
-#.  if !exists(/opt/homebrew/bin/gm) && !exists(/usr/local/bin/gm)
-#	brew install graphicsmagick
 #.  endif
 #. endif
 #.endif
