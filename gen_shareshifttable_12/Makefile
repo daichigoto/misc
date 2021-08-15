@@ -25,7 +25,7 @@
 
 .include	"../mk/base.mk"
 
-CMD=		gen_shareshifttable
+CMD=		gen_shareshifttable_12.exe
 
 NEED_LIBEXPAT=	YES
 NEED_LIBJPEG=	YES
