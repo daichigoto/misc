@@ -52,8 +52,13 @@ install-required-packages:
 # LLVM Clang
 #--------------------------------------------------------------------
 ifneq ($(wildcard $(CC)), $(CC))
-#	pacman -S --noconfirm clang
-	pacman -S --noconfirm mingw-w64-x86_64-clang
+	pacman -S --noconfirm clang
+endif
+#--------------------------------------------------------------------
+# err.h
+#--------------------------------------------------------------------
+ifneq ($(wildcard $(CC)), $(CC))
+	pacman -S --noconfirm msys2-runtime-devel
 endif
 #--------------------------------------------------------------------
 # expat (XML 1.0 parser written in C)

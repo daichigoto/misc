@@ -31,31 +31,21 @@ BINPERM=	500
 
 INCLUDEDIR=	/usr/include
 LIBDIR=		/usr/lib
-INCLUDEDIR=	/mingw64/include
-LIBDIR=		/mingw64/lib
-
-# CFLAGS+=	-I${INCLUDEDIR} \
-# 		-L${LIBDIR} \
-# 		-O2 \
-# 		-pipe \
-# 		-std=gnu99 \
-# 		-fstack-protector \
-# 		-Qunused-arguments \
-# 		-Werror \
-# 		-Wall \
-# 		-W \
-# 		-Wno-unused-parameter \
+CC=		/usr/bin/clang.exe
 
 CFLAGS=		-I${INCLUDEDIR} \
-		-L${LIBDIR} \
-		-Wno-error \
-		-Wno-incompatible-library-redeclaration
+		-O2 \
+		-pipe \
+		-std=gnu99 \
+		-fstack-protector \
+		-Qunused-arguments \
+		-Werror \
+		-Wall \
+		-W \
+		-Wno-unused-parameter
 
-LINKFLAGS=	-L${LIBDIR} 
+LINKFLAGS=	
 
-CC=		C:\msys64\usr\bin\clang.exe
-CC=		/usr/bin/clang.exe
-CC=		/mingw64/bin/clang.exe
 RM=		rm 
 COPY=		cp
 INSTALL=	install
@@ -64,7 +54,7 @@ INSTALL=	install
 	$(CC) $(CFLAGS) -c $< -o $@
 
 build: install-required-packages $(OBJS)
-	$(CC) $(CFLAGS) $(LINKFLAGS) -o $(CMD) $(OBJS)
+	$(CC) $(CFLAGS) -o $(CMD) $(OBJS) $(LINKFLAGS) 
 
 install: clean build
 	$(INSTALL) -m $(BINPERM) $(CMD) $(BINDIR)
