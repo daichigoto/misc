@@ -49,6 +49,13 @@ endif
 
 install-required-packages:
 #--------------------------------------------------------------------
+# LLVM Clang
+#--------------------------------------------------------------------
+ifneq ($(wildcard $(CC)), $(CC))
+#	pacman -S --noconfirm clang
+	pacman -S --noconfirm mingw-w64-x86_64-clang
+endif
+#--------------------------------------------------------------------
 # expat (XML 1.0 parser written in C)
 #--------------------------------------------------------------------
 ifdef NEED_LIBEXPAT

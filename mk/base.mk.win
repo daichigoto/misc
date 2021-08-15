@@ -31,6 +31,8 @@ BINPERM=	500
 
 INCLUDEDIR=	/usr/include
 LIBDIR=		/usr/lib
+INCLUDEDIR=	/mingw64/include
+LIBDIR=		/mingw64/lib
 
 # CFLAGS+=	-I${INCLUDEDIR} \
 # 		-L${LIBDIR} \
@@ -52,6 +54,8 @@ CFLAGS=		-I${INCLUDEDIR} \
 LINKFLAGS=	-L${LIBDIR} 
 
 CC=		C:\msys64\usr\bin\clang.exe
+CC=		/usr/bin/clang.exe
+CC=		/mingw64/bin/clang.exe
 RM=		rm 
 COPY=		cp
 INSTALL=	install
