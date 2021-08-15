@@ -44,7 +44,7 @@
 #.endif
 #
 ifdef NEED_LIBEXPAT
-CFLAGS+=	-lexpat
+LINKFLAGS+=	-lexpat
 endif
 
 install-required-packages:
