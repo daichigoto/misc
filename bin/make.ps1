@@ -2,19 +2,30 @@
 # BSD MakefileとWindows GNU Makefileを共存させるためのラッパースクリプト
 #=========================================================================
 
-# MSYS2 make.exeをインストール
-if (! (Test-Path -PathType Leaf C:\msys64\usr\bin\pacman.exe)) {
-	winget install MSYS2
-	C:\msys64\usr\bin\pacman.exe -Syu --noconfirm
-}
-if (! (Test-Path -PathType Leaf C:\msys64\usr\bin\make.exe)) {
-	pacman -S --noconfirm make
+# Cygwin
+$make = "C:\cygwin64\bin\make.exe"
+
+# make.exeをインストール
+if (! (Test-Path -PathType Leaf $make)) {
+	echo "Install make"
 }
 
 # Makefile.winがある場合にはこれを指定してmake.exeを実行
 if (Test-Path -PathType Leaf Makefile.win) {
-	make.exe -f Makefile.win $Args
+	$cmd = $make + " -f Makefile.win " + $Args
+	Invoke-Expression $cmd
 }
 else {
-	make.exe $Args
+	$cmd = $make + " " + $Args
+	Invoke-Expression $cmd
 }
+
+# MSYS2 note
+# make.exeをインストール
+# if (! (Test-Path -PathType Leaf C:\msys64\usr\bin\pacman.exe)) {
+# 	winget install MSYS2
+# 	C:\msys64\usr\bin\pacman.exe -Syu --noconfirm
+# }
+# if (! (Test-Path -PathType Leaf C:\msys64\usr\bin\make.exe)) {
+# 	pacman -S --noconfirm make
+# }

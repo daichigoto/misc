@@ -23,45 +23,10 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-SRCS=		$(wildcard *.c)
-OBJS=		$(SRCS:.c=.o)
+include		../mk/base.mk.win
 
-BINDIR=		./../bin
-BINPERM=	500
+CMD=		glsd2im.exe
 
-INCLUDEDIR=	
-LIBDIR=		
-CC=		/bin/clang-8.exe
+NEED_LIBEXPAT=	YES
 
-CFLAGS=		-I${INCLUDEDIR} \
-		-O2 \
-		-pipe \
-		-std=gnu99 \
-		-fstack-protector \
-		-Qunused-arguments \
-		-Werror \
-		-Wall \
-		-W \
-		-Wno-unused-parameter
-
-LINKFLAGS=	
-
-RM=		rm 
-COPY=		cp
-INSTALL=	install
-
-.c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
-
-build: install-required-packages $(OBJS)
-	$(CC) $(CFLAGS) -o $(CMD) $(OBJS) $(LINKFLAGS) 
-
-install: clean build
-	$(INSTALL) -m $(BINPERM) $(CMD) $(BINDIR)
-
-uninstall: 
-	$(RM) -f $(BINDIR)/$(CMD)
-
-clean:
-	$(RM) -f $(CMD)
-	$(RM) -f $(OBJS)
+include		../mk/post.mk.win

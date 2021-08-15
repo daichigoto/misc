@@ -27,61 +27,55 @@
 # CFLAGS
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
-CFLAGS+=	-I/mingw64/include
-LINKFLAGS+=	C:\msys64\mingw64\lib\libjpeg.a	\
-		C:\msys64\mingw64\lib\libjpeg.a	\
+LINKFLAGS+=	-ljpeg
 endif
 
 ifdef NEED_LIBEXPAT
 LINKFLAGS+=	-lexpat
 endif
 
+# Cywgin
 install-required-packages:
 #--------------------------------------------------------------------
 # LLVM Clang
 #--------------------------------------------------------------------
 ifneq ($(wildcard $(CC)), $(CC))
-	pacman -S --noconfirm clang
-endif
-#--------------------------------------------------------------------
-# err.h
-#--------------------------------------------------------------------
-ifneq ($(wildcard $(CC)), $(CC))
-	pacman -S --noconfirm msys2-runtime-devel
+	@echo "Install clang"
 endif
 #--------------------------------------------------------------------
 # expat (XML 1.0 parser written in C)
 #--------------------------------------------------------------------
 ifdef NEED_LIBEXPAT
  ifneq ($(wildcard /usr/include/expat.h), /usr/include/expat.h)
-	pacman -S --noconfirm libexpat-devel
+	@echo "Install libexpat-devel"
  endif
 endif
 #--------------------------------------------------------------------
 # libjpeg compatible library
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
- ifneq ($(wildcard /mingw64/include/jpeglib.h), /mingw64/include/jpeglib.h)
-	pacman -S --noconfirm mingw-w64-x86_64-libjpeg-turbo
+ ifneq ($(wildcard /usr/include/jpeglib.h), /usr/include/jpeglib.h)
+	@echo "Install libjpeg-devel"
  endif
 endif
-##--------------------------------------------------------------------
-## ZIP
-##--------------------------------------------------------------------
-#.if defined(NEED_ZIP)
-#. if ${OS} == "FreeBSD"
-#.  if !exists(/usr/local/bin/zip)
-#	sudo pkg install -y zip
-#.  endif
-#. endif
-#.endif
-##--------------------------------------------------------------------
-## GraphicsMagick
-##--------------------------------------------------------------------
-#.if defined(NEED_GM)
-#. if ${OS} == "FreeBSD"
-#.  if !exists(/usr/local/bin/gm)
-#	sudo pkg install -y GraphicsMagick
-#.  endif
-#. endif
-#.endif
+#--------------------------------------------------------------------
+# ZIP
+#--------------------------------------------------------------------
+ifdef NEED_ZIP
+ ifneq ($(wildcard /bin/zip.exe), /bin/zip.exe)
+	@echo "Install zip"
+ endif
+endif
+#--------------------------------------------------------------------
+# GraphicsMagick
+#--------------------------------------------------------------------
+ifdef NEED_GM
+ ifneq ($(wildcard /bin/gm.exe), /bin/gm.exe)
+	@echo "Install GraphicsMagick"
+ endif
+endif
+
+# MSYS2 note
+#	pacman -S --noconfirm clang
+#	pacman -S --noconfirm libexpat-devel
+#	pacman -S --noconfirm mingw-w64-x86_64-libjpeg-turbo
