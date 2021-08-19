@@ -5,6 +5,7 @@
 #====================================================================
 pidfile=".build.pid"
 echo "$$" > "$pidfile"
+trap "rm -f \"$pidfile\" .timestamp; exit" INT
 
 #====================================================================
 # Waiting for target file generation
@@ -23,6 +24,14 @@ done
 # Build processing loop
 #====================================================================
 
+XXX_debug()
+{
+    mtimepre=$(stat -f '%m' images/001raw.jpg 2> /dev/null)
+    mtimepred=$(stat -f '%m' images 2> /dev/null)
+    echo "$1: [$mtimepred] - images"
+    echo "$1: [$mtimepre] - images/001raw.jpg"
+}
+
 # A file that indicates that images were automatically acquired 
 # from this script.
 confirmationfile="images/.got-by-ydmklp"
@@ -31,9 +40,7 @@ confirmationfile="images/.got-by-ydmklp"
 getimg()
 {
     # Get the images.
-    mtimepre=$(stat -f '%m' images/001raw.jpg 2> /dev/null)
     make getimg 2> /dev/null
-    mtimepst=$(stat -f '%m' images/001raw.jpg 2> /dev/null)
 
     if [ -n "$mtimepst" ]
         then
@@ -46,8 +53,7 @@ getimg()
             # Stagger the modification times of the images directory 
             # and the files under it to indicate that they are not 
             # the default image files.
-            sleep 1
-            touch images
+            touch -r .. images
         fi
     fi
 }
@@ -62,7 +68,7 @@ do
     #----------------------------------------------------------------
     # adapting to vi/vim save behavior
     #----------------------------------------------------------------
-    sleep 0.5
+    sleep 0.2
 
     #----------------------------------------------------------------
     # Avoid processing during build lock mode
