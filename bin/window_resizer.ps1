@@ -7,8 +7,19 @@ Param(
 	[String]$ProcessName="*",   # プロセス名
 	[String]$WindowTitle=".*",  # ウィンドウタイトル(正規表現)
 	[Int32]$Width="800",        # ウィンドウ幅
-	[Int32]$Height="600"        # ウィンドウ高さ
+	[Int32]$Height="600",       # ウィンドウ高さ
+	[Switch]$WindowProcessList  # ウィンドウプロセス一覧を表示
 )
+
+#====================================================================
+# ウィンドウプロセスを一覧表示
+#====================================================================
+if ($WindowProcessList) {
+	Get-Process 						| 
+	? {$_.MainWindowHandle -ne 0 } 				| 
+	Format-Table -Property Id,ProcessName,MainWindowTitle
+	exit
+}
 
 #====================================================================
 # ウィンドウサイズを変更する関数 Resize-Window
