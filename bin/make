@@ -1,23 +1,57 @@
 #!/bin/sh
 
-if [ -n "$(which bsdmake)" ]
-then
+case "$(uname)" in
+FreeBSD)
+	# FreeBSD
+
+	# BSDmake
+	exec /usr/bin/make "${@}"
+	;;
+Darwin)
+	# Mac
+	if [ -n "$(which bsdmake)" ]
+	then
+		brew install bsdmake
+	fi
+
 	case "$(pwd)" in
 	${HOME}/Documents/*)
+		# BSDmake
 		exec $(which bsdmake | head -1) "${@}"
 		;;
+	*)
+		# GNUmake
+		exec /usr/bin/make "${@}"
+		;;
 	esac
-fi
+	;;
+MINGW*)
+	# Windows (MSYS2 MinGW-w64)
+	if [ ! -f /mingw64/bin/mingw32-make.exe ]
+	then
+		pacman -S --noconfirm mingw-w64-x86_64-make
 
-if [ -e /usr/bin/make ]
-then
-	exec /usr/bin/make "${@}"
-fi
+	fi
 
-if [ -z "$(which make | grep -v ${0} | head -1)" ]
-then
-	echo "no such command: make" 1>&2
-	exit 1
-else
-	exec $(which make | grep -v ${0} | head -1)
-fi
+	# GNUmake
+	if [ -f Makefile.win ]
+	then
+		exec /mingw64/bin/mingw32-make.exe -f Makefile.win
+	else
+		exec /mingw64/bin/mingw32-make.exe
+	fi
+	;;
+MSYS*)
+	# Windows (MSYS2)
+	;;
+*)
+	# others
+	if [ -z "$(which make | grep -v ${0} | head -1)" ]
+	then
+		echo "no such command: make" 1>&2
+		exit 1
+	else
+		exec $(which make | grep -v ${0} | head -1)
+	fi
+	;;
+esac
