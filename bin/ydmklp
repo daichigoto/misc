@@ -40,7 +40,9 @@ confirmationfile="images/.got-by-ydmklp"
 getimg()
 {
     # Get the images.
+    mtimepre=$(stat -f '%m' images/001raw.jpg 2> /dev/null)
     make getimg 2> /dev/null
+    mtimepst=$(stat -f '%m' images/001raw.jpg 2> /dev/null)
 
     if [ -n "$mtimepst" ]
         then
