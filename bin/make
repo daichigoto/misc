@@ -25,6 +25,22 @@ Darwin)
 		;;
 	esac
 	;;
+MSYS*)
+	# Windows (MSYS2)
+	if [ ! -f /usr/bin/make.exe ]
+	then
+		pacman -S --noconfirm make
+	fi
+
+	# GNUmake
+	if [ -f Makefile.win ]
+	then
+		exec -f /usr/bin/make Makefile.win
+	else
+		exec /usr/bin/make
+	fi
+	# Windows (MSYS2)
+	;;
 MINGW*)
 	# Windows (MSYS2 MinGW-w64)
 	if [ ! -f /mingw64/bin/mingw32-make.exe ]
@@ -40,9 +56,6 @@ MINGW*)
 	else
 		exec /mingw64/bin/mingw32-make.exe
 	fi
-	;;
-MSYS*)
-	# Windows (MSYS2)
 	;;
 *)
 	# others
