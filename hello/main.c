@@ -28,11 +28,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sysexits.h>
+#include <err.h>
 
 int
 main(int argc, char *argv[])
 {
-	printf("Hello World!\n");
+	int noc;
+
+	noc = printf("Hello World!\n");
+
+	if (0 > noc) {
+		err(0, "cannot print out\n");
+	}
 
 	exit(EX_OK);
 }
