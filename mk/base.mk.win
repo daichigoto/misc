@@ -29,9 +29,9 @@ OBJS=		$(SRCS:.c=.o)
 BINDIR=		./../bin
 BINPERM=	500
 
-INCLUDEDIR=	C:\msys64\usr\include
+INCLUDEDIR=	/usr/include
 LIBDIR=		
-CC=		C:\msys64\mingw64\bin\clang.exe
+CC=		/usr/bin/clang
 
 CFLAGS=		-I${INCLUDEDIR} \
 		-O2 \

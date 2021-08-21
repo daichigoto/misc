@@ -28,6 +28,8 @@
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
 LINKFLAGS+=	-ljpeg
+LINKFLAGS+=	-L/clang64/lib
+CFLAGS+=	-I/clang64/include
 endif
 
 ifdef NEED_LIBEXPAT
@@ -39,43 +41,38 @@ install-required-packages:
 #--------------------------------------------------------------------
 # LLVM Clang
 #--------------------------------------------------------------------
-ifneq ($(wildcard $(CC)), $(CC))
-	@echo "Install clang"
+ifneq ($(wildcard $(CC)),$(CC))
+	pacman -S --noconfirm clang
 endif
 #--------------------------------------------------------------------
 # expat (XML 1.0 parser written in C)
 #--------------------------------------------------------------------
 ifdef NEED_LIBEXPAT
  ifneq ($(wildcard /usr/include/expat.h), /usr/include/expat.h)
-	@echo "Install libexpat-devel"
+	pacman -S --noconfirm libexpat-devel
  endif
 endif
 #--------------------------------------------------------------------
 # libjpeg compatible library
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
- ifneq ($(wildcard /usr/include/jpeglib.h), /usr/include/jpeglib.h)
-	@echo "Install libjpeg-devel"
+ ifneq ($(wildcard /clang64/include/jpeglib.h), /clang64/include/jpeglib.h)
+	pacman -S --noconfirm mingw-w64-clang-x86_64-libjpeg-turbo
  endif
 endif
 #--------------------------------------------------------------------
 # ZIP
 #--------------------------------------------------------------------
 ifdef NEED_ZIP
- ifneq ($(wildcard /bin/zip.exe), /bin/zip.exe)
-	@echo "Install zip"
+ ifneq ($(wildcard /usr/bin/zip.exe), /usr/bin/zip.exe)
+	pacman -S --noconfirm zip
  endif
 endif
 #--------------------------------------------------------------------
 # GraphicsMagick
 #--------------------------------------------------------------------
 ifdef NEED_GM
- ifneq ($(wildcard /bin/gm.exe), /bin/gm.exe)
-	@echo "Install GraphicsMagick"
+ ifneq ($(wildcard /clang64/bin/gm.exe), /clang64/bin/gm.exe)
+	pacman -S --noconfirm mingw-w64-clang-x86_64-graphicsmagick
  endif
 endif
-
-# MSYS2 note
-#	pacman -S --noconfirm clang
-#	pacman -S --noconfirm libexpat-devel
-#	pacman -S --noconfirm mingw-w64-x86_64-libjpeg-turbo
