@@ -1,14 +1,13 @@
 #!/bin/sh
 
 case "$(uname)" in
+# FreeBSD
 FreeBSD)
-	# FreeBSD
-
 	# BSDmake
 	exec /usr/bin/make "${@}"
 	;;
+# Mac
 Darwin)
-	# Mac
 	if [ -n "$(which bsdmake)" ]
 	then
 		brew install bsdmake
@@ -25,40 +24,8 @@ Darwin)
 		;;
 	esac
 	;;
-MSYS*)
-	# Windows (MSYS2)
-	if [ ! -f /usr/bin/make.exe ]
-	then
-		pacman -S --noconfirm make
-	fi
-
-	# GNUmake
-	if [ -f Makefile.win ]
-	then
-		exec -f /usr/bin/make Makefile.win
-	else
-		exec /usr/bin/make
-	fi
-	# Windows (MSYS2)
-	;;
-MINGW*)
-	# Windows (MSYS2 MinGW-w64)
-	if [ ! -f /mingw64/bin/mingw32-make.exe ]
-	then
-		pacman -S --noconfirm mingw-w64-x86_64-make
-
-	fi
-
-	# GNUmake
-	if [ -f Makefile.win ]
-	then
-		exec /mingw64/bin/mingw32-make.exe -f Makefile.win
-	else
-		exec /mingw64/bin/mingw32-make.exe
-	fi
-	;;
+# Others
 *)
-	# others
 	if [ -z "$(which make | grep -v ${0} | head -1)" ]
 	then
 		echo "no such command: make" 1>&2
