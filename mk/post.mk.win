@@ -24,12 +24,11 @@
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #--------------------------------------------------------------------
-# CFLAGS
+# CFLAGS / LINKFLAGS
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
-LINKFLAGS+=	-ljpeg
-LINKFLAGS+=	-L/mingw64/lib
-CFLAGS+=	-I/mingw64/include
+CFLAGS+=	-I./../contrib/libjpeg/
+LINKFLAGS+=	./../contrib/libjpeg/.libs/libjpeg.a
 endif
 
 ifdef NEED_LIBEXPAT
@@ -50,14 +49,6 @@ endif
 ifdef NEED_LIBEXPAT
  ifneq ($(wildcard /usr/include/expat.h), /usr/include/expat.h)
 	pacman -S --noconfirm libexpat-devel
- endif
-endif
-#--------------------------------------------------------------------
-# libjpeg compatible library
-#--------------------------------------------------------------------
-ifdef NEED_LIBJPEG
- ifneq ($(wildcard /mingw64/include/jpeglib.h), /mingw64/include/jpeglib.h)
-	pacman -S --noconfirm mingw-w64-x86_64-libjpeg-turbo
  endif
 endif
 #--------------------------------------------------------------------
