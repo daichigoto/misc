@@ -28,8 +28,8 @@
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
 LINKFLAGS+=	-ljpeg
-LINKFLAGS+=	-L/clang64/lib
-CFLAGS+=	-I/clang64/include
+LINKFLAGS+=	-L/mingw64/lib
+CFLAGS+=	-I/mingw64/include
 endif
 
 ifdef NEED_LIBEXPAT
@@ -56,8 +56,8 @@ endif
 # libjpeg compatible library
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
- ifneq ($(wildcard /clang64/include/jpeglib.h), /clang64/include/jpeglib.h)
-	pacman -S --noconfirm mingw-w64-clang-x86_64-libjpeg-turbo
+ ifneq ($(wildcard /mingw64/include/jpeglib.h), /mingw64/include/jpeglib.h)
+	pacman -S --noconfirm mingw-w64-x86_64-libjpeg-turbo
  endif
 endif
 #--------------------------------------------------------------------
@@ -72,7 +72,7 @@ endif
 # GraphicsMagick
 #--------------------------------------------------------------------
 ifdef NEED_GM
- ifneq ($(wildcard /clang64/bin/gm.exe), /clang64/bin/gm.exe)
-	pacman -S --noconfirm mingw-w64-clang-x86_64-graphicsmagick
+ ifneq ($(wildcard /mingw64/bin/gm.exe), /mingw64/bin/gm.exe)
+	pacman -S --noconfirm mingw-w64-x86_64-graphicsmagick
  endif
 endif
