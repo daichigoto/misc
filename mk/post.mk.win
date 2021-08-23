@@ -27,7 +27,9 @@
 # CFLAGS / LINKFLAGS
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
+LIBJPEGDIR=	../contrib/libjpeg/
 LIBJPEGA=	./../contrib/libjpeg/.libs/libjpeg.a
+
 CFLAGS+=	-I./../contrib/libjpeg/
 LINKFLAGS+=	$(LIBJPEGA)
 endif
@@ -57,7 +59,7 @@ endif
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
  ifneq ($(wildcard $(LIBJPEGA)), $(LIBJPEGA)) 
-	(cd ../contrib/libjpeg; $(MAKE} build)
+	(cd $(NEED_LIBJPEG); $(MAKE) build)
  endif
 endif
 #--------------------------------------------------------------------
