@@ -25,7 +25,7 @@ uninstall:
 	done
 
 clean: 
-	for i in $(TARGET_DIRS); \
+	for i in $(TARGET_DIRS) contrib/*; \
 	do \
 		( cd $${i}; $(MAKE) clean ); \
 	done

@@ -27,8 +27,9 @@
 # CFLAGS / LINKFLAGS
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
+LIBJPEGA=	./../contrib/libjpeg/.libs/libjpeg.a
 CFLAGS+=	-I./../contrib/libjpeg/
-LINKFLAGS+=	./../contrib/libjpeg/.libs/libjpeg.a
+LINKFLAGS+=	$(LIBJPEGA)
 endif
 
 ifdef NEED_LIBEXPAT
@@ -49,6 +50,14 @@ endif
 ifdef NEED_LIBEXPAT
  ifneq ($(wildcard /usr/include/expat.h), /usr/include/expat.h)
 	pacman -S --noconfirm libexpat-devel
+ endif
+endif
+#--------------------------------------------------------------------
+# libjpeg
+#--------------------------------------------------------------------
+ifdef NEED_LIBJPEG
+ ifneq ($(wildcard $(LIBJPEGA)), $(LIBJPEGA)) 
+	(cd ../contrib/libjpeg; $(MAKE} build)
  endif
 endif
 #--------------------------------------------------------------------
