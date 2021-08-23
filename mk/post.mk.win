@@ -59,7 +59,7 @@ endif
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
  ifneq ($(wildcard $(LIBJPEGA)), $(LIBJPEGA)) 
-	(cd $(NEED_LIBJPEG); $(MAKE) build)
+	(cd $(LIBJPEGDIR); $(MAKE) build)
  endif
 endif
 #--------------------------------------------------------------------
