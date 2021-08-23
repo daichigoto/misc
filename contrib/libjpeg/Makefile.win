@@ -27,5 +27,9 @@ build:
 	./configure
 	make.exe
 
+install:
+
+uninstall:
+
 clean:
 	make.exe clean
