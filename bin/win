@@ -82,3 +82,10 @@ virt*)
 	esac
 	;;
 esac
+
+# Windows MSYS2 platform
+case $(uname) in
+MSYS*)
+	win.ps1 "$@"
+	;;
+esac
