@@ -1,5 +1,4 @@
-SHELL=		ash
-MAKE+=		-f Makefile.win
+include		./mk/vars.mk.win
 
 TARGET_DIRS=	gen_shareshifttable	\
 		gen_shareshifttable_12	\
