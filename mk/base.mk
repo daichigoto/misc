@@ -47,8 +47,11 @@ CFLAGS+=	-I${INCLUDEDIR} \
 		-Qunused-arguments \
 		-Werror \
 		-Wall \
-		-W \
-		-Wno-unused-parameter
+		-W
+
+# Since we are also defining arguments that are not used by the handler, 
+# we need the following option.
+CFLAGS+=	-Wno-unused-parameter
 
 CC?=		cc
 MAKE?=		make
