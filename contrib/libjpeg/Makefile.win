@@ -29,7 +29,11 @@ build:
 
 install:
 
+
 uninstall:
 
+
 clean:
+ifeq ($(wildcard Makefile), Makefile)
 	make.exe clean
+endif
