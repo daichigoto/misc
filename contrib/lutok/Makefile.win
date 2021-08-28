@@ -23,24 +23,27 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-LIB=		liblutok.a
+LIB=		./.libs/liblutok.a
 
 LIBDIR=		./../../lib
 LIBPERM=	644
 
 INSTALL=        install
+RM=		rm
 
-build:
+build: $(LIB)
+
+$(LIB): configure
 	MAKE=/usr/bin/make \
 	PKG_CONFIG_PATH=/mingw64/lib/pkgconfig \
 	     ./configure --build=x86_64
 	/usr/bin/make
 
 install: build
-	$(INSTALL) -m $(LIBPERM) ./.libs/$(LIB) $(LIBDIR); \
+	$(INSTALL) -m $(LIBPERM) $(LIB) $(LIBDIR)
 
 uninstall:
-	$(RM) -f $(LIBDIR)/$(LIB); \
+	$(RM) -f $(LIBDIR)/$(subst ./.libs/,,$(LIB))
 
 clean:
 ifeq ($(wildcard Makefile), Makefile)
