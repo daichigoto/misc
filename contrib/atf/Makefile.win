@@ -32,10 +32,10 @@ BINPERM=	500
 INSTALL=        install
 
 build:
-	./configure --build=x86_64
-	make.exe
+	MAKE=/usr/bin/make ./configure --build=x86_64
+	/usr/bin/make
 
-install:
+install: build
 	for i in $(CMDS); \
 	do \
 		$(INSTALL) -m $(BINPERM) ./atf-sh/$${i} $(BINDIR); \
