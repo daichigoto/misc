@@ -27,12 +27,18 @@ Darwin)
 # Windows MSYS2
 MSYS*)
 	# NOTICE:
+	#
 	# It is necessary to use only the command name, not the full path, 
 	# so that it can be executed from both Windows and MSYS2. 
 	# (Windows and MSYS2 have different ways of writing paths)
 	#
 	# GNUmake
-	exec make.exe "${@}"
+	if [ -f Makefile.win ]
+	then
+		exec make.exe -f Makefile.win "${@}"
+	else
+		exec make.exe "${@}"
+	fi
 	;;
 # Others
 *)
