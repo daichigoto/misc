@@ -23,9 +23,13 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-build: install-required-packages
+B_TSCHKFILE=	./.libs/libjpeg.a
+
+build: install-required-packages $(B_TSCHKFILE)
+
+$(B_TSCHKFILE): configure
 	MAKE=/usr/bin/make ./configure
-	make.exe
+	/usr/bin/make
 
 install:
 
