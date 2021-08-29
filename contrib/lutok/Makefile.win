@@ -31,7 +31,7 @@ RM=		rm
 B_TSCHKFILE=	./.libs/liblutok.a
 I_TSCHKFILE=	$(INSTALLDIR)/lib/liblutok.a
 
-build: $(B_TSCHKFILE)
+build: install-required-packages $(B_TSCHKFILE)
 
 $(B_TSCHKFILE): configure
 	MAKE=/usr/bin/make \
@@ -50,4 +50,12 @@ uninstall:
 clean:
 ifeq ($(wildcard Makefile), Makefile)
 	/usr/bin/make clean
+endif
+
+install-required-packages:
+ifneq ($(wildcard /usr/bin/pkg-config.exe), /usr/bin/pkg-config.exe)
+	pacman -S --noconfirm pkg-config
+endif
+ifneq ($(wildcard /mingw64/bin/lua.exe), /mingw64/bin/lua.exe)
+	pacman -S --noconfirm mingw-w64-x86_64-lua
 endif
