@@ -62,3 +62,6 @@ endif
 ifneq ($(wildcard /mingw64/bin/lua.exe), /mingw64/bin/lua.exe)
 	pacman -S --noconfirm mingw-w64-x86_64-lua
 endif
+ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
+	pacman -S --noconfirm diffutils
+endif

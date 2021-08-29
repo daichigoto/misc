@@ -37,7 +37,7 @@ BINPERM=	500
 B_TSCHKTILE=	./.libs/libatf-c.a
 I_TSCHKTILE=	$(INSTALLDIR)/bin/atf-sh.exe
 
-build: $(B_TSCHKTILE)
+build: install-required-packages $(B_TSCHKTILE)
 
 $(B_TSCHKTILE): configure
 	MAKE=/usr/bin/make ./configure --build=x86_64 --prefix=$(INSTALLDIR)
@@ -62,4 +62,9 @@ uninstall:
 clean:
 ifeq ($(wildcard Makefile), Makefile)
 	/usr/bin/make clean
+endif
+
+install-required-packages:
+ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
+	pacman -S --noconfirm diffutils
 endif

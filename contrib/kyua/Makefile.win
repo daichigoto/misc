@@ -61,6 +61,9 @@ ifeq ($(wildcard Makefile), Makefile)
 endif
 
 install-required-packages:
+ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
+	pacman -S --noconfirm diffutils
+endif
 ifneq ($(wildcard /usr/bin/pkg-config.exe), /usr/bin/pkg-config.exe)
 	pacman -S --noconfirm pkg-config
 endif
