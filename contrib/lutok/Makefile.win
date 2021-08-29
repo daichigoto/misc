@@ -23,29 +23,29 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-LIB=		./.libs/liblutok.a
 
-LIBDIR=		./../../lib
-LIBPERM=	644
+INSTALLDIR=	$(shell readlink -f ./../../opt/lutok)
 
 INSTALL=        install
 RM=		rm
 
-build: $(LIB)
+TSCHKFILE=	./.libs/liblutok.a
 
-$(LIB): configure
+build: $(TSCHKFILE)
+
+$(TSCHKFILE): configure
 	MAKE=/usr/bin/make \
 	PKG_CONFIG_PATH=/mingw64/lib/pkgconfig \
-	     ./configure --build=x86_64
+		./configure --build=x86_64 --prefix=$(INSTALLDIR)
 	/usr/bin/make
 
 install: build
-	$(INSTALL) -m $(LIBPERM) $(LIB) $(LIBDIR)
+	/usr/bin/make install
 
 uninstall:
-	$(RM) -f $(LIBDIR)/$(subst ./.libs/,,$(LIB))
+	$(RM) -rf $(INSTALLDIR)
 
 clean:
 ifeq ($(wildcard Makefile), Makefile)
-	make.exe clean
+	/usr/bin/make clean
 endif
