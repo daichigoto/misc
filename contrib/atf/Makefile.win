@@ -23,26 +23,31 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-CMDS=		atf-check.exe	\
-		atf-sh.exe
+CMDS=		./atf-sh/atf-check.exe	\
+		./atf-sh/atf-sh.exe
+LIB_C=		./.libs/libatf-c.a
+LIB_C++=	./.libs/libatf-c++.a
 
 BINDIR=		./../../bin
 BINPERM=	500
 
 INSTALL=        install
+RM=		rm
 
-build:
+build: $(LIB_C)
+
+$(LIB_C): configure
 	MAKE=/usr/bin/make ./configure --build=x86_64
 	/usr/bin/make
 
 install: build
 	for i in $(CMDS); \
 	do \
-		$(INSTALL) -m $(BINPERM) ./atf-sh/$${i} $(BINDIR); \
+		$(INSTALL) -m $(BINPERM) $${i} $(BINDIR); \
 	done
 
 uninstall:
-	for i in $(CMDS); \
+	for i in $(subst ./atf-sh/,,$(CMDS)); \
 	do \
 		$(RM) -f $(BINDIR)/$${i}; \
 	done
