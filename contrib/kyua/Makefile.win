@@ -78,12 +78,6 @@ endif
 ifneq ($(wildcard /usr/lib/libsqlite3.a), /usr/lib/libsqlite3.a)
 	pacman -S --noconfirm libsqlite-devel
 endif
-ifneq ($(wildcard $(BINDIR)/atf-sh.exe), $(BINDIR)/atf-sh.exe)
-	cd ../atf; $(MAKE) build install
-endif
-ifneq ($(wildcard ../../opt/lutok/lib/liblutok.a), ../../opt/lutok/lib/liblutok.a)
-	cd ../lutok; $(MAKE) build install
-endif
 ifneq ($(wildcard $(ATFINSTALLDIR)), $(ATFINSTALLDIR))
 	cd $(ATFBUILDDIR); \
 		$(MAKE) -f Makefile.win build; \
