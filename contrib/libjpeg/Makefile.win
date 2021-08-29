@@ -23,13 +23,15 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+MAKE=		/usr/bin/make
+
 B_TSCHKFILE=	./.libs/libjpeg.a
 
 build: install-required-packages $(B_TSCHKFILE)
 
 $(B_TSCHKFILE): configure
-	MAKE=/usr/bin/make ./configure
-	/usr/bin/make
+	MAKE=$(MAKE) ./configure
+	$(MAKE)
 
 install:
 
@@ -39,7 +41,9 @@ uninstall:
 
 clean:
 ifeq ($(wildcard Makefile), Makefile)
-	/usr/bin/make clean
+ ifeq ($(wildcard $(B_TSCHKFILE)), $(B_TSCHKFILE))
+	$(MAKE) clean
+ endif
 endif
 
 install-required-packages:
