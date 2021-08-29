@@ -23,36 +23,43 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-CMDS=		./atf-sh/atf-check.exe	\
-		./atf-sh/atf-sh.exe
-LIB_C=		./.libs/libatf-c.a
-LIB_C++=	./.libs/libatf-c++.a
+INSTALLDIR=	$(shell readlink -f ./../../opt/atf)
 
-BINDIR=		./../../bin
-BINPERM=	500
+CMDS_SHELL=	$(INSTALLDIR)/bin/atf-sh.exe \
+		$(INSTALLDIR)/libexec/atf-check.exe
 
 INSTALL=        install
 RM=		rm
 
-build: $(LIB_C)
+BINDIR=		./../../bin
+BINPERM=	500
 
-$(LIB_C): configure
-	MAKE=/usr/bin/make ./configure --build=x86_64
+B_TSCHKTILE=	./.libs/libatf-c.a
+I_TSCHKTILE=	$(INSTALLDIR)/bin/atf-sh.exe
+
+build: $(B_TSCHKTILE)
+
+$(B_TSCHKTILE): configure
+	MAKE=/usr/bin/make ./configure --build=x86_64 --prefix=$(INSTALLDIR)
 	/usr/bin/make
 
-install: build
-	for i in $(CMDS); \
+install: $(I_TSCHKTILE) build
+
+$(I_TSCHKTILE): configure
+	/usr/bin/make install
+	for i in $(CMDS_SHELL); \
 	do \
 		$(INSTALL) -m $(BINPERM) $${i} $(BINDIR); \
 	done
 
 uninstall:
-	for i in $(subst ./atf-sh/,,$(CMDS)); \
+	$(RM) -rf $(INSTALLDIR)
+	for i in $(notdir $(CMDS_SHELL)); \
 	do \
-		$(RM) -f $(BINDIR)/$${i}; \
+		$(RM) -f $(BINPERM)/$${i}; \
 	done
 
 clean:
 ifeq ($(wildcard Makefile), Makefile)
-	make.exe clean
+	/usr/bin/make clean
 endif
