@@ -23,7 +23,7 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-build:
+build: install-required-packages
 	MAKE=/usr/bin/make ./configure
 	make.exe
 
@@ -36,4 +36,9 @@ uninstall:
 clean:
 ifeq ($(wildcard Makefile), Makefile)
 	/usr/bin/make clean
+endif
+
+install-required-packages:
+ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
+	pacman -S --noconfirm diffutils
 endif
