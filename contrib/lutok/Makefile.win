@@ -36,7 +36,7 @@ build: install-required-packages $(B_TSCHKFILE)
 $(B_TSCHKFILE): configure
 	MAKE=/usr/bin/make \
 	PKG_CONFIG_PATH=/mingw64/lib/pkgconfig \
-		./configure --build=x86_64 --with-atf=no --prefix=$(INSTALLDIR)
+		./configure --build=x86_64 --prefix=$(INSTALLDIR)
 	/usr/bin/make
 
 install: $(I_TSCHKFILE) build
