@@ -41,7 +41,7 @@ I_TSCHKTILE=	$(INSTALLDIR)/bin/atf-sh.exe
 build: install-required-packages $(B_TSCHKTILE)
 
 $(B_TSCHKTILE): configure
-	./configure --build=x86_64 --prefix=$(INSTALLDIR)
+	MAKE=$(MAKE) ./configure --build=x86_64 --prefix=$(INSTALLDIR)
 	$(MAKE)
 
 install: $(I_TSCHKTILE) build
