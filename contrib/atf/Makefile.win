@@ -56,7 +56,7 @@ uninstall:
 	$(RM) -rf $(INSTALLDIR)
 	for i in $(notdir $(CMDS_SHELL)); \
 	do \
-		$(RM) -f $(BINPERM)/$${i}; \
+		$(RM) -f $(BINDIR)/$${i}; \
 	done
 
 clean:
