@@ -29,6 +29,7 @@ CMD=		$(INSTALLDIR)/bin/kyua.exe
 
 INSTALL=        install
 RM=		rm
+MAKE+=		-f Makefile.win
 
 BINDIR=		./../../bin
 BINPERM=	500
@@ -36,7 +37,7 @@ BINPERM=	500
 B_TSCHKFILE=	./kyua.exe
 I_TSCHKFILE=	$(INSTALLDIR)/bin/kyua.exe
 
-build: $(B_TSCHKFILE)
+build: install-required-packages $(B_TSCHKFILE)
 
 $(B_TSCHKFILE): configure
 	MAKE=/usr/bin/make \
@@ -57,4 +58,18 @@ uninstall:
 clean:
 ifeq ($(wildcard Makefile), Makefile)
 	/usr/bin/make clean
+endif
+
+install-required-packages:
+ifneq ($(wildcard /usr/bin/pkg-config.exe), /usr/bin/pkg-config.exe)
+	pacman -S --noconfirm pkg-config
+endif
+ifneq ($(wildcard /usr/lib/libsqlite3.a), /usr/lib/libsqlite3.a)
+	pacman -S --noconfirm libsqlite-devel
+endif
+ifneq ($(wildcard $(BINDIR)/atf-sh.exe), $(BINDIR)/atf-sh.exe)
+	cd ../atf; $(MAKE) build install
+endif
+ifneq ($(wildcard ../../opt/lutok/lib/liblutok.a), ../../opt/lutok/lib/liblutok.a)
+	cd ../lutok; $(MAKE) build install
 endif
