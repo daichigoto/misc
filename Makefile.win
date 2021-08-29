@@ -7,8 +7,9 @@ TARGET_DIRS=	gen_shareshifttable	\
 		glsd2im		\
 		glsd2in		\
 		glsd2mn		\
-		glsd2txt	\
-		contrib/atf	\
+		glsd2txt
+
+CONTRIB_DIRS=	contrib/atf	\
 		contrib/lutok	\
 		contrib/kyua
 
@@ -18,6 +19,10 @@ install:
 	for i in $(TARGET_DIRS); \
 	do \
 		( cd $${i}; $(MAKE) install ); \
+	done
+	for i in $(CONTRIB_DIRS); \
+	do \
+		( cd $${i}; $(MAKE) build install ); \
 	done
 
 uninstall: 
