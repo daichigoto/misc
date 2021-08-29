@@ -24,7 +24,7 @@
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 build:
-	./configure
+	MAKE=/usr/bin/make ./configure
 	make.exe
 
 install:
@@ -35,5 +35,5 @@ uninstall:
 
 clean:
 ifeq ($(wildcard Makefile), Makefile)
-	make.exe clean
+	/usr/bin/make clean
 endif
