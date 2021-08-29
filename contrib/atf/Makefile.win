@@ -68,3 +68,6 @@ install-required-packages:
 ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
 	pacman -S --noconfirm diffutils
 endif
+ifneq ($(wildcard /usr/bin/autoconf), /usr/bin/autoconf)
+	pacman -S --noconfirm autoconf
+endif
