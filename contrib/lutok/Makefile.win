@@ -25,6 +25,9 @@
 
 INSTALLDIR=	$(shell readlink -f ./../../opt/lutok)
 
+ATFINSTALLDIR=	$(dir $(INSTALLDIR))/atf
+ATFBUILDDIR=	./../atf
+
 INSTALL=        install
 RM=		rm
 MAKE=		/usr/bin/make
@@ -35,6 +38,7 @@ I_TSCHKFILE=	$(INSTALLDIR)/lib/liblutok.a
 build: install-required-packages $(B_TSCHKFILE)
 
 $(B_TSCHKFILE): configure
+	autoreconf -i -s -I $(ATFINSTALLDIR)/share/aclocal
 	MAKE=$(MAKE) \
 	PKG_CONFIG_PATH=/mingw64/lib/pkgconfig \
 		./configure --build=x86_64 --prefix=$(INSTALLDIR)
@@ -70,4 +74,15 @@ ifneq ($(wildcard /mingw64/bin/lua.exe), /mingw64/bin/lua.exe)
 endif
 ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
 	pacman -S --noconfirm diffutils
+endif
+ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
+	pacman -S --noconfirm diffutils
+endif
+# The lutok documentation explains that ATF is optional, but in practice, 
+# it is required for the build and must be installed and ready to use, 
+# regardless of whether ATF is used or not.
+ifneq ($(wildcard $(ATFDIR)), $(ATFDIR))
+	cd $(ATFBUILDDIR); \
+		$(MAKE) -f Makefile.win build; \
+		$(MAKE) -f Makefile.win install
 endif
