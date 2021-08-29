@@ -25,11 +25,17 @@
 
 INSTALLDIR=	$(shell readlink -f ./../../opt/kyua)
 
+ATFINSTALLDIR=	$(dir $(INSTALLDIR))/atf
+ATFBUILDDIR=	./../atf
+
+LUTOKINSTALLDIR=$(dir $(INSTALLDIR))/lutok
+LUTOKBUILDDIR=	./../lutok
+
 CMD=		$(INSTALLDIR)/bin/kyua.exe
 
 INSTALL=        install
 RM=		rm
-MAKE+=		-f Makefile.win
+MAKE=		/usr/bin/make
 
 BINDIR=		./../../bin
 BINPERM=	500
@@ -40,15 +46,15 @@ I_TSCHKFILE=	$(INSTALLDIR)/bin/kyua.exe
 build: install-required-packages $(B_TSCHKFILE)
 
 $(B_TSCHKFILE): configure
-	MAKE=/usr/bin/make \
-	PKG_CONFIG_PATH=./../../opt/lutok/lib/pkgconfig/ \
+	MAKE=$(MAKE) \
+	PKG_CONFIG_PATH=$(LUTOKINSTALLDIR)/lib/pkgconfig/ \
 		./configure --build=x86_64 --prefix=$(INSTALLDIR)
-	/usr/bin/make
+	$(MAKE)
 
 install: $(I_TSCHKFILE) build
 
 $(I_TSCHKFILE): configure
-	/usr/bin/make install
+	$(MAKE) install
 	$(INSTALL) -m $(BINPERM) $(CMD) $(BINDIR)
 
 uninstall:
@@ -57,7 +63,9 @@ uninstall:
 
 clean:
 ifeq ($(wildcard Makefile), Makefile)
-	/usr/bin/make clean
+ ifeq ($(wildcard $(B_TSCHKFILE)), $(B_TSCHKFILE))
+	$(MAKE) clean
+ endif
 endif
 
 install-required-packages:
@@ -75,4 +83,14 @@ ifneq ($(wildcard $(BINDIR)/atf-sh.exe), $(BINDIR)/atf-sh.exe)
 endif
 ifneq ($(wildcard ../../opt/lutok/lib/liblutok.a), ../../opt/lutok/lib/liblutok.a)
 	cd ../lutok; $(MAKE) build install
+endif
+ifneq ($(wildcard $(ATFINSTALLDIR)), $(ATFINSTALLDIR))
+	cd $(ATFBUILDDIR); \
+		$(MAKE) -f Makefile.win build; \
+		$(MAKE) -f Makefile.win install
+endif
+ifneq ($(wildcard $(LUTOKINSTALLDIR)), $(LUTOKINSTALLDIR))
+	cd $(LUTOKBUILDDIR); \
+		$(MAKE) -f Makefile.win build; \
+		$(MAKE) -f Makefile.win install
 endif
