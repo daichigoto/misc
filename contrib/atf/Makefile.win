@@ -61,7 +61,9 @@ uninstall:
 
 clean:
 ifeq ($(wildcard Makefile), Makefile)
+ ifeq ($(wildcard $(B_TSCHKTILE)), $(B_TSCHKTILE))
 	/usr/bin/make clean
+ endif
 endif
 
 install-required-packages:
