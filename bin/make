@@ -25,7 +25,7 @@ Darwin)
 	esac
 	;;
 *)
-	if [ -z "$(which make | grep -v ${0} | head -1)" ]
+	if [ -z "$(which -a make | grep -v ${0} | head -1)" ]
 	then
 		echo "no such hoge command: make" 1>&2
 		exit 1
