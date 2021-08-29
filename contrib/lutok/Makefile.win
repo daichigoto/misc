@@ -81,7 +81,7 @@ endif
 # The lutok documentation explains that ATF is optional, but in practice, 
 # it is required for the build and must be installed and ready to use, 
 # regardless of whether ATF is used or not.
-ifneq ($(wildcard $(ATFDIR)), $(ATFDIR))
+ifneq ($(wildcard $(ATFINSTALLDIR)), $(ATFINSTALLDIR))
 	cd $(ATFBUILDDIR); \
 		$(MAKE) -f Makefile.win build; \
 		$(MAKE) -f Makefile.win install
