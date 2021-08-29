@@ -36,7 +36,7 @@ build: install-required-packages $(B_TSCHKFILE)
 $(B_TSCHKFILE): configure
 	MAKE=/usr/bin/make \
 	PKG_CONFIG_PATH=/mingw64/lib/pkgconfig \
-		./configure --build=x86_64 --prefix=$(INSTALLDIR)
+		./configure --build=x86_64 --with-atf=no --prefix=$(INSTALLDIR)
 	/usr/bin/make
 
 install: $(I_TSCHKFILE) build
@@ -49,7 +49,9 @@ uninstall:
 
 clean:
 ifeq ($(wildcard Makefile), Makefile)
+ ifeq ($(wildcard $(B_TSCHKFILE)), $(B_TSCHKFILE))
 	/usr/bin/make clean
+ endif
 endif
 
 install-required-packages:
@@ -58,6 +60,9 @@ ifneq ($(wildcard /usr/bin/pkg-config.exe), /usr/bin/pkg-config.exe)
 endif
 ifneq ($(wildcard /usr/bin/aclocal), /usr/bin/aclocal)
 	pacman -S --noconfirm automake-wrapper
+endif
+ifneq ($(wildcard /usr/bin/autoconf), /usr/bin/autoconf)
+	pacman -S --noconfirm autoconf
 endif
 ifneq ($(wildcard /mingw64/bin/lua.exe), /mingw64/bin/lua.exe)
 	pacman -S --noconfirm mingw-w64-x86_64-lua
