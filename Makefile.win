@@ -2,12 +2,15 @@ include		./mk/vars.mk.win
 
 TARGET_DIRS=	gen_shareshifttable	\
 		gen_shareshifttable_12	\
-		glsd2gm	\
+		glsd2gm		\
 		glsd2html	\
-		glsd2im	\
-		glsd2in	\
-		glsd2mn	\
-		glsd2txt
+		glsd2im		\
+		glsd2in		\
+		glsd2mn		\
+		glsd2txt	\
+		contrib/atf	\
+		contrib/lutok	\
+		contrib/kyua
 
 all: install
 
