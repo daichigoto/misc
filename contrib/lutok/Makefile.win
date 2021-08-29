@@ -23,23 +23,25 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 INSTALLDIR=	$(shell readlink -f ./../../opt/lutok)
 
 INSTALL=        install
 RM=		rm
 
-TSCHKFILE=	./.libs/liblutok.a
+B_TSCHKFILE=	./.libs/liblutok.a
+I_TSCHKFILE=	$(INSTALLDIR)/lib/liblutok.a
 
-build: $(TSCHKFILE)
+build: $(B_TSCHKFILE)
 
-$(TSCHKFILE): configure
+$(B_TSCHKFILE): configure
 	MAKE=/usr/bin/make \
 	PKG_CONFIG_PATH=/mingw64/lib/pkgconfig \
 		./configure --build=x86_64 --prefix=$(INSTALLDIR)
 	/usr/bin/make
 
-install: build
+install: $(I_TSCHKFILE) build
+
+$(I_TSCHKFILE): configure
 	/usr/bin/make install
 
 uninstall:
