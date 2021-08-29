@@ -25,10 +25,13 @@
 
 INSTALLDIR=	$(shell readlink -f ./../../opt/kyua)
 
+CMD=		$(INSTALLDIR)/bin/kyua.exe
+
 INSTALL=        install
 RM=		rm
 
 BINDIR=		./../../bin
+BINPERM=	500
 
 B_TSCHKFILE=	./kyua.exe
 I_TSCHKFILE=	$(INSTALLDIR)/bin/kyua.exe
@@ -45,9 +48,11 @@ install: $(I_TSCHKFILE) build
 
 $(I_TSCHKFILE): configure
 	/usr/bin/make install
+	$(INSTALL) -m $(BINPERM) $(CMD) $(BINDIR)
 
 uninstall:
 	$(RM) -rf $(INSTALLDIR)
+	$(RM) -rf $(BINDIR)/$(notdir $(CMD))
 
 clean:
 ifeq ($(wildcard Makefile), Makefile)
