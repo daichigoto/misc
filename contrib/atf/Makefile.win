@@ -30,6 +30,7 @@ CMDS_SHELL=	$(INSTALLDIR)/bin/atf-sh.exe \
 
 INSTALL=        install
 RM=		rm
+MAKE=		/usr/bin/make
 
 BINDIR=		./../../bin
 BINPERM=	500
@@ -40,10 +41,11 @@ I_TSCHKTILE=	$(INSTALLDIR)/bin/atf-sh.exe
 build: install-required-packages $(B_TSCHKTILE)
 
 $(B_TSCHKTILE): configure
-	MAKE=/usr/bin/make ./configure --build=x86_64 --prefix=$(INSTALLDIR)
-	/usr/bin/make
+	./configure --build=x86_64 --prefix=$(INSTALLDIR)
+	$(MAKE)
 
 install: $(I_TSCHKTILE) build
+	$(MAKE) install
 
 $(I_TSCHKTILE): configure
 	/usr/bin/make install
@@ -62,7 +64,7 @@ uninstall:
 clean:
 ifeq ($(wildcard Makefile), Makefile)
  ifeq ($(wildcard $(B_TSCHKTILE)), $(B_TSCHKTILE))
-	/usr/bin/make clean
+	$(MAKE) clean
  endif
 endif
 
