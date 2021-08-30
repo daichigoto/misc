@@ -25,10 +25,10 @@
 
 INSTALLDIR=	$(shell readlink -f ./../../opt/kyua)
 
-ATFINSTALLDIR=	$(dir $(INSTALLDIR))/atf
+ATFINSTALLDIR=	$(dir $(INSTALLDIR))atf
 ATFBUILDDIR=	./../atf
 
-LUTOKINSTALLDIR=$(dir $(INSTALLDIR))/lutok
+LUTOKINSTALLDIR=$(dir $(INSTALLDIR))lutok
 LUTOKBUILDDIR=	./../lutok
 
 CMD=		$(INSTALLDIR)/bin/kyua.exe
@@ -46,8 +46,9 @@ I_TSCHKFILE=	$(INSTALLDIR)/bin/kyua.exe
 build: install-required-packages $(B_TSCHKFILE)
 
 $(B_TSCHKFILE): configure
+	autoreconf -i -s -I $(ATFINSTALLDIR)/share/aclocal
 	MAKE=$(MAKE) \
-	PKG_CONFIG_PATH=$(LUTOKINSTALLDIR)/lib/pkgconfig/ \
+	PKG_CONFIG_PATH=$(ATFINSTALLDIR)/lib/pkgconfig:$(LUTOKINSTALLDIR)/lib/pkgconfig \
 		./configure --build=x86_64 --prefix=$(INSTALLDIR)
 	$(MAKE)
 
@@ -69,15 +70,27 @@ ifeq ($(wildcard Makefile), Makefile)
 endif
 
 install-required-packages:
-ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
-	pacman -S --noconfirm diffutils
+ifneq ($(wildcard /usr/bin/autoconf), /usr/bin/autoconf)
+	pacman -S --noconfirm autoconf
+endif
+ifneq ($(wildcard /usr/bin/aclocal), /usr/bin/aclocal)
+	pacman -S --noconfirm automake-wrapper
+endif
+ifneq ($(wildcard /usr/bin/libtool), /usr/bin/libtool)
+	pacman -S --noconfirm libtool
 endif
 ifneq ($(wildcard /usr/bin/pkg-config.exe), /usr/bin/pkg-config.exe)
 	pacman -S --noconfirm pkg-config
 endif
+ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
+	pacman -S --noconfirm diffutils
+endif
 ifneq ($(wildcard /usr/lib/libsqlite3.a), /usr/lib/libsqlite3.a)
 	pacman -S --noconfirm libsqlite-devel
 endif
+# The kyua documentation explains that ATF is optional, but in practice,
+# it is required for the build and must be installed and ready to use,
+# regardless of whether ATF is used or not.
 ifneq ($(wildcard $(ATFINSTALLDIR)), $(ATFINSTALLDIR))
 	cd $(ATFBUILDDIR); \
 		$(MAKE) -f Makefile.win build; \
