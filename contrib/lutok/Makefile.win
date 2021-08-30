@@ -60,20 +60,20 @@ ifeq ($(wildcard Makefile), Makefile)
 endif
 
 install-required-packages:
-ifneq ($(wildcard /usr/bin/pkg-config.exe), /usr/bin/pkg-config.exe)
-	pacman -S --noconfirm pkg-config
+ifneq ($(wildcard /usr/bin/autoconf), /usr/bin/autoconf)
+	pacman -S --noconfirm autoconf
 endif
 ifneq ($(wildcard /usr/bin/aclocal), /usr/bin/aclocal)
 	pacman -S --noconfirm automake-wrapper
 endif
-ifneq ($(wildcard /usr/bin/autoconf), /usr/bin/autoconf)
-	pacman -S --noconfirm autoconf
+ifneq ($(wildcard /usr/bin/libtool), /usr/bin/libtool)
+	pacman -S --noconfirm libtool
+endif
+ifneq ($(wildcard /usr/bin/pkg-config.exe), /usr/bin/pkg-config.exe)
+	pacman -S --noconfirm pkg-config
 endif
 ifneq ($(wildcard /mingw64/bin/lua.exe), /mingw64/bin/lua.exe)
 	pacman -S --noconfirm mingw-w64-x86_64-lua
-endif
-ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
-	pacman -S --noconfirm diffutils
 endif
 ifneq ($(wildcard /usr/bin/diff.exe), /usr/bin/diff.exe)
 	pacman -S --noconfirm diffutils
