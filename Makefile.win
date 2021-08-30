@@ -26,7 +26,7 @@ install:
 	done
 
 uninstall: 
-	for i in $(TARGET_DIRS); \
+	for i in $(TARGET_DIRS) $(CONTRIB_DIRS); \
 	do \
 		( cd $${i}; $(MAKE) uninstall ); \
 	done
