@@ -49,7 +49,9 @@ $(B_TSCHKFILE): configure
 	autoreconf -i -s -I $(ATFINSTALLDIR)/share/aclocal
 	MAKE=$(MAKE) \
 	PKG_CONFIG_PATH=$(ATFINSTALLDIR)/lib/pkgconfig:$(LUTOKINSTALLDIR)/lib/pkgconfig \
-		./configure --build=x86_64 --prefix=$(INSTALLDIR)
+		./configure \
+			--build=x86_64 --prefix=$(INSTALLDIR) \
+			--with-atf=no
 	$(MAKE)
 
 install: $(I_TSCHKFILE) build
