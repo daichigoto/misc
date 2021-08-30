@@ -27,7 +27,7 @@ Darwin)
 *)
 	if [ -z "$(which -a make | grep -v ${0} | head -1)" ]
 	then
-		echo "no such hoge command: make" 1>&2
+		echo "misc/bin/make: no such command: make" 1>&2
 		exit 1
 	else
 		exec $(which make | grep -v ${0} | head -1) "${@}"
