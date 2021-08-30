@@ -45,10 +45,13 @@ I_TSCHKFILE=	$(INSTALLDIR)/bin/kyua.exe
 
 build: install-required-packages $(B_TSCHKFILE)
 
+# ATF is required for the build, but the build will not pass 
+# with ATF enabled, so the specification should be explicitly 
+# disabled.
 $(B_TSCHKFILE): configure
 	autoreconf -i -s -I $(ATFINSTALLDIR)/share/aclocal
 	MAKE=$(MAKE) \
-	PKG_CONFIG_PATH=$(ATFINSTALLDIR)/lib/pkgconfig:$(LUTOKINSTALLDIR)/lib/pkgconfig \
+	PKG_CONFIG_PATH=$(LUTOKINSTALLDIR)/lib/pkgconfig \
 		./configure \
 			--build=x86_64 --prefix=$(INSTALLDIR) \
 			--with-atf=no
