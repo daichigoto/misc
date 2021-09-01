@@ -22,7 +22,7 @@ if ($WindowProcessList) {
 }
 
 #====================================================================
-# ウィンドウを移動する関数 Move-Window
+# Win32 APIのインポート
 #====================================================================
 Add-Type @"
 using System;
@@ -45,9 +45,31 @@ public class WinAPI
 	// ウィンドウの座標を変更する関数
 	[DllImport("user32.dll")]
 	public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint); 
+
+	// スクリーンサイズを取得する関数
+	[DllImport("user32.dll")]
+	public static extern int GetSystemMetrics(int nIndex); 
 }
 "@
 
+#====================================================================
+# マイナス指定のXおよびYを正規の値へ変換
+#====================================================================
+# スクリーン幅
+$screenWidth = [WinAPI]::GetSystemMetrics(0);
+# スクリーン高さ
+$screenHeight = [WinAPI]::GetSystemMetrics(1);
+
+if ($X -lt 0) {
+	$X = $screenWidth + $X
+}
+if ($Y -lt 0) {
+	$Y = $screenHeight + $Y
+}
+
+#====================================================================
+# ウィンドウを移動する関数 Move-Window
+#====================================================================
 function Move-Window {
 	param (
 		$wh  # ウィンドウハンドラ
@@ -74,6 +96,6 @@ Get-Process -Name $processName |
 	? { $_.MainWindowHandle -ne 0 } |
 	? { $_.MainWindowTitle -match "$windowTitle" } |
 	% {
- 		# ウィンドウサイズを変更
+ 		# ウィンドウを移動
 		Move-Window($_.MainWindowHandle);
 }
