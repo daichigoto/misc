@@ -53,7 +53,8 @@ $(B_TSCHKFILE): configure
 	MAKE=$(MAKE) \
 	PKG_CONFIG_PATH=$(LUTOKINSTALLDIR)/lib/pkgconfig \
 		./configure \
-			--build=x86_64 --prefix=$(INSTALLDIR) \
+			--build=x86_64 \
+			--prefix=$(INSTALLDIR) \
 			--with-atf=no
 	$(MAKE)
 
