@@ -40,7 +40,7 @@ ifdef NEED_LIBEXPAT
 LINKFLAGS+=	-lexpat
 endif
 
-# Cywgin
+# MSYS2
 install-required-packages:
 #--------------------------------------------------------------------
 # LLVM Clang
