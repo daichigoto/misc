@@ -35,23 +35,20 @@ MAKE=		/usr/bin/make
 BINDIR=		./../../bin
 BINPERM=	500
 
-B_TSCHKTILE=	./.libs/libatf-c.a
-I_TSCHKTILE=	$(INSTALLDIR)/bin/atf-sh.exe
+B_TSCHKFILE=	./.libs/libatf-c.a
+I_TSCHKFILE=	$(INSTALLDIR)/bin/atf-sh.exe
 
-build: install-required-packages $(B_TSCHKTILE)
+build: install-required-packages $(B_TSCHKFILE)
 
-$(B_TSCHKTILE): configure
+$(B_TSCHKFILE): configure
 	MAKE=$(MAKE) \
-	CC=clang \
-	CXX=clang++ \
 		./configure --build=x86_64 --prefix=$(INSTALLDIR)
 	$(MAKE)
 
-install: build $(I_TSCHKTILE)
-	$(MAKE) install
+install: build $(I_TSCHKFILE)
 
-$(I_TSCHKTILE): Makefile
-	/usr/bin/make install
+$(I_TSCHKFILE): Makefile
+	$(MAKE) install
 	for i in $(CMDS_SHELL); \
 	do \
 		$(INSTALL) -m $(BINPERM) $${i} $(BINDIR); \
@@ -66,7 +63,7 @@ uninstall:
 
 clean:
 ifeq ($(wildcard Makefile), Makefile)
- ifeq ($(wildcard $(B_TSCHKTILE)), $(B_TSCHKTILE))
+ ifeq ($(wildcard $(B_TSCHKFILE)), $(B_TSCHKFILE))
 	$(MAKE) clean
  endif
 endif
