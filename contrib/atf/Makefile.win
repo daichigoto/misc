@@ -41,13 +41,16 @@ I_TSCHKTILE=	$(INSTALLDIR)/bin/atf-sh.exe
 build: install-required-packages $(B_TSCHKTILE)
 
 $(B_TSCHKTILE): configure
-	MAKE=$(MAKE) ./configure --build=x86_64 --prefix=$(INSTALLDIR)
+	MAKE=$(MAKE) \
+	CC=clang \
+	CXX=clang++ \
+		./configure --build=x86_64 --prefix=$(INSTALLDIR)
 	$(MAKE)
 
-install: $(I_TSCHKTILE) build
+install: build $(I_TSCHKTILE)
 	$(MAKE) install
 
-$(I_TSCHKTILE): configure
+$(I_TSCHKTILE): Makefile
 	/usr/bin/make install
 	for i in $(CMDS_SHELL); \
 	do \
