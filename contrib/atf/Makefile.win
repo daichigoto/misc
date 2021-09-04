@@ -44,8 +44,6 @@ $(B_TSCHKFILE): configure
 	MAKE=$(MAKE) \
 	ATF_SHELL=/bin/sh \
 		./configure --build=x86_64 --prefix=$(INSTALLDIR)
-#	MAKE=$(MAKE) \
-#		./configure --build=x86_64 --prefix=$(INSTALLDIR)
 	$(MAKE)
 
 install: build $(I_TSCHKFILE)
