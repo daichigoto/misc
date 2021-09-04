@@ -44,7 +44,7 @@ $(B_TSCHKFILE): configure
 		./configure --build=x86_64 --prefix=$(INSTALLDIR)
 	$(MAKE)
 
-install: $(I_TSCHKFILE) build
+install: build $(I_TSCHKFILE)
 
 $(I_TSCHKFILE): configure
 	$(MAKE) install
