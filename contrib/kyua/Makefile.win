@@ -49,6 +49,14 @@ build: install-required-packages $(B_TSCHKFILE)
 # with ATF enabled, so the specification should be explicitly 
 # disabled.
 $(B_TSCHKFILE): configure
+# If mingw-w64-x86_64-sqlite3 is installed, it conflicts with 
+# sqlite-devel. Uninstall it before building and install it 
+# after building again.
+	if pacman -Q mingw-w64-x86_64-sqlite3 2> /dev/null; \
+	then \
+		touch .uninstall-mingw-w64-x86_64-sqlite3; \
+		pacman -Rdd --noconfirm mingw-w64-x86_64-sqlite3; \
+	fi
 	autoreconf -i -s -I $(ATFINSTALLDIR)/share/aclocal
 	MAKE=$(MAKE) \
 	PKG_CONFIG_PATH=$(LUTOKINSTALLDIR)/lib/pkgconfig \
@@ -57,6 +65,14 @@ $(B_TSCHKFILE): configure
 			--prefix=$(INSTALLDIR) \
 			--with-atf=no
 	$(MAKE)
+# If mingw-w64-x86_64-sqlite3 is installed, it conflicts with 
+# sqlite-devel. Uninstall it before building and install it 
+# after building again.
+	if [ -f .uninstall-mingw-w64-x86_64-sqlite3 ]; \
+	then \
+		rm .uninstall-mingw-w64-x86_64-sqlite3; \
+		pacman -S --noconfirm mingw-w64-x86_64-sqlite3; \
+	fi
 
 install: $(I_TSCHKFILE) build
 
