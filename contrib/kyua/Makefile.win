@@ -74,9 +74,9 @@ $(B_TSCHKFILE): configure
 		pacman -S --noconfirm mingw-w64-x86_64-sqlite3; \
 	fi
 
-install: $(I_TSCHKFILE) build
+install: build $(I_TSCHKFILE)
 
-$(I_TSCHKFILE): configure
+$(I_TSCHKFILE): Makefile
 	$(MAKE) install
 	$(INSTALL) -m $(BINPERM) $(CMD) $(BINDIR)
 
