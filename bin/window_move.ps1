@@ -53,21 +53,6 @@ public class WinAPI
 "@
 
 #====================================================================
-# マイナス指定のXおよびYを正規の値へ変換
-#====================================================================
-# スクリーン幅
-$screenWidth = [WinAPI]::GetSystemMetrics(0);
-# スクリーン高さ
-$screenHeight = [WinAPI]::GetSystemMetrics(1);
-
-if ($X -lt 0) {
-	$X = $screenWidth + $X
-}
-if ($Y -lt 0) {
-	$Y = $screenHeight + $Y
-}
-
-#====================================================================
 # ウィンドウを移動する関数 Move-Window
 #====================================================================
 function Move-Window {
@@ -84,6 +69,20 @@ function Move-Window {
 	# 取得した座標データからウィンドウの幅と高さを計算
 	$width = $rc.Right - $rc.Left;
 	$height = $rc.Bottom - $rc.Top;
+
+	# マイナス指定のXおよびYを正値へ変換
+	if ($X -lt 0) {
+		# スクリーン幅を取得
+		$screenWidth = [WinAPI]::GetSystemMetrics(0);
+		# Xの値を算出
+		$X = $screenWidth + $X - $width
+	}
+	if ($Y -lt 0) {
+		# スクリーン高さを取得
+		$screenHeight = [WinAPI]::GetSystemMetrics(1);
+		# Yの値を算出
+		$Y = $screenHeight + $Y - $height
+	}
 
 	# ウィンドウのサイズはそのままに、左上の場所を変更
 	[WinAPI]::MoveWindow($wh, $X, $Y, $width, $height, $true) > $null
