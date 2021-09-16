@@ -92,7 +92,7 @@ function Move-Deploy {
 		$Y = $screenHeight + $Y - $Height
 	}
 
-	# ウィンドウを指定あれた座標に指定されたサイズで配置する
+	# ウィンドウを指定された座標に指定されたサイズで配置する
 	[WinAPI]::MoveWindow($wh, $X, $Y, $Width, $Height, $true) > $null
 }
 
