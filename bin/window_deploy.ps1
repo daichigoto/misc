@@ -55,9 +55,9 @@ public class WinAPI
 "@
 
 #====================================================================
-# ウィンドウを配置する関数 Move-Deploy
+# ウィンドウを配置する関数 Deploy-Window
 #====================================================================
-function Move-Deploy {
+function Deploy-Window {
 	param (
 		$wh  # ウィンドウハンドラ
 	)
@@ -104,5 +104,5 @@ Get-Process -Name $processName |
 	? { $_.MainWindowTitle -match "$windowTitle" } |
 	% {
  		# ウィンドウを配置
-		Move-Deploy($_.MainWindowHandle);
+		Deploy-Window($_.MainWindowHandle);
 }
