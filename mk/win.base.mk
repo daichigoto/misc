@@ -26,7 +26,6 @@
 SRCS=		$(wildcard *.c)
 OBJS=		$(SRCS:.c=.o)
 
-BINDIR=		./../bin
 BINPERM=	500
 
 INCLUDEDIR=	/usr/include

@@ -23,16 +23,16 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-include		./../mk/cmds.mk.win
+include		$(MKDIR)/win.cmds.mk
 
 #--------------------------------------------------------------------
 # CFLAGS / LINKFLAGS
 #--------------------------------------------------------------------
 ifdef NEED_LIBJPEG
-LIBJPEGDIR=	../contrib/libjpeg/
-LIBJPEGA=	./../contrib/libjpeg/.libs/libjpeg.a
+LIBJPEGDIR=	$(CONTRIBDIR)/libjpeg/
+LIBJPEGA=	$(CONTRIBDIR)/libjpeg/.libs/libjpeg.a
 
-CFLAGS+=	-I./../contrib/libjpeg/
+CFLAGS+=	-I$(CONTRIBDIR)/libjpeg/
 LINKFLAGS+=	$(LIBJPEGA)
 endif
 
