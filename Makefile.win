@@ -1,5 +1,6 @@
 include		./mk/win.dirs.mk
-include		./mk/win.cmds.mk
+
+include		$(MKDIR)/win.cmds.mk
 
 TARGET_DIRS=	gen_shareshifttable	\
 		gen_shareshifttable_12	\
@@ -12,7 +13,8 @@ TARGET_DIRS=	gen_shareshifttable	\
 
 CONTRIB_DIRS=	contrib/atf	\
 		contrib/lutok	\
-		contrib/kyua
+		contrib/kyua	\
+		contrib/bsddate
 
 all: install
 
