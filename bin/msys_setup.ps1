@@ -12,15 +12,13 @@ if (! (Test-Path -PathType Leaf C:\msys64\usr\bin\pacman.exe)) {
 }
 
 #=========================================================================
-# マンドセットをセットアップ
+# コマンドセットをセットアップ
 #=========================================================================
-# make.exeをインストール
 $cmd = "C:\msys64\usr\bin\make.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm make
 }
 
-# そのほか使用頻度の高いコマンドをインストール
 $cmd = "C:\msys64\usr\bin\vim.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm vim
@@ -34,4 +32,9 @@ if (! (Test-Path -PathType Leaf $cmd)) {
 $cmd = "C:\msys64\usr\bin\tree.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm tree
+}
+
+$cmd = "C:\msys64\mingw64\bin\gm.exe"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm mingw-w64-x86_64-graphicsmagick
 }
