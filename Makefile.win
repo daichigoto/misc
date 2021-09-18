@@ -1,4 +1,4 @@
-include		./mk/vars.mk.win
+include		./mk/cmds.mk.win
 
 TARGET_DIRS=	gen_shareshifttable	\
 		gen_shareshifttable_12	\
