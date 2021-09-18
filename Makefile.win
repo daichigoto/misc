@@ -1,4 +1,5 @@
-include		./mk/cmds.mk.win
+include		./mk/win.dirs.mk
+include		./mk/win.cmds.mk
 
 TARGET_DIRS=	gen_shareshifttable	\
 		gen_shareshifttable_12	\
@@ -14,6 +15,8 @@ CONTRIB_DIRS=	contrib/atf	\
 		contrib/kyua
 
 all: install
+
+build: install
 
 install: 
 	for i in $(TARGET_DIRS); \
@@ -35,4 +38,10 @@ clean:
 	for i in $(TARGET_DIRS) $(CONTRIB_DIRS); \
 	do \
 		( cd $${i}; $(MAKE) clean ); \
+	done
+
+test:
+	for i in $(TARGET_DIRS) $(CONTRIB_DIRS); \
+	do \
+		( cd $${i}; echo $(MAKE) clean ); \
 	done
