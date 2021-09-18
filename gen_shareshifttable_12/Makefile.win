@@ -23,10 +23,12 @@
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-include		../mk/base.mk.win
+include		../mk/win.dirs.mk
+
+include		$(MKDIR)/win.base.mk
 
 CMD=		gen_shareshifttable_12.exe
 
 NEED_LIBEXPAT=	YES
 
-include		../mk/post.mk.win
+include		$(MKDIR)/win.post.mk
