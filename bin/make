@@ -8,7 +8,7 @@ FreeBSD)
 	;;
 # Mac
 Darwin)
-	if [ -n "$(which bsdmake)" ]
+	if [ -z "$(which bsdmake)" ]
 	then
 		brew install bsdmake
 	fi
