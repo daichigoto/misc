@@ -52,10 +52,12 @@ INSTALL=	install
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
-build: install-required-packages $(OBJS)
+build: install-required-packages $(BINDIR)/$(CMD)
+
+$(BINDIR)/$(CMD): $(OBJS)
 	$(CC) $(CFLAGS) -o $(CMD) $(OBJS) $(LINKFLAGS) 
 
-install: clean build
+install: build
 	$(INSTALL) -m $(BINPERM) $(CMD) $(BINDIR)
 
 uninstall: 
