@@ -26,13 +26,31 @@ Darwin)
 		;;
 	esac
 	;;
-*)
-	if [ -z "$(which -a make | grep -v ${0} | head -1)" ]
+# MSYS2
+MSYS*)
+	make=$(which -a make | grep -v ${0} | head -1)
+	if [ -z "$make" ]
 	then
 		echo "misc/bin/make: no such command: make" 1>&2
 		exit 1
 	else
-		exec $(which make | grep -v ${0} | head -1) "${@}"
+		# BSDmakeとGNUmakeを共存させる処理
+		if [ -f Makefile.win ]
+		then
+			exec "$make" -f Makefile.win "${@}"
+		else
+			exec "$make" "${@}"
+		fi
+	fi
+	;;
+*)
+	make=$(which -a make | grep -v ${0} | head -1)
+	if [ -z "$make" ]
+	then
+		echo "misc/bin/make: no such command: make" 1>&2
+		exit 1
+	else
+		exec "$make" "${@}"
 	fi
 	;;
 esac
