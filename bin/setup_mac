@@ -1,0 +1,123 @@
+#!/bin/sh
+
+#=========================================================================
+# Mac 実行環境セットアップスクリプト
+#=========================================================================
+
+#=========================================================================
+# Homebrewセットアップ
+#=========================================================================
+if [ ! -f /opt/homebrew/bin/brew ]
+then
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile  
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+#=========================================================================
+# コマンドセットをセットアップ
+#=========================================================================
+cmd="/opt/homebrew/bin/bat"
+if [ ! -f "${cmd}" ]
+then
+	brew install bat
+fi
+
+cmd="/opt/homebrew/bin/bsdmake"
+if [ ! -f "${cmd}" ]
+then
+	brew install bsdmake
+fi
+
+cmd="/opt/homebrew/bin/realpath"
+if [ ! -f "${cmd}" ]
+then
+	brew install coreutils
+fi
+
+cmd="/opt/homebrew/bin/fish"
+if [ ! -f "${cmd}" ]
+then
+	brew install fish
+fi
+
+cmd="/opt/homebrew/bin/fzf"
+if [ ! -f "${cmd}" ]
+then
+	brew install fzf
+fi
+
+cmd="/opt/homebrew/bin/gawk"
+if [ ! -f "${cmd}" ]
+then
+	brew install gawk
+fi
+
+cmd="/opt/homebrew/bin/gsed"
+if [ ! -f "${cmd}" ]
+then
+	brew install gnu-sed
+fi
+
+cmd="/opt/homebrew/bin/gm"
+if [ ! -f "${cmd}" ]
+then
+	brew install graphicsmagick
+fi
+
+cmd="/opt/homebrew/lib/libjpeg.a"
+if [ ! -f "${cmd}" ]
+then
+	brew install jpeg-turbo
+fi
+
+cmd="/opt/homebrew/bin/kyua"
+if [ ! -f "${cmd}" ]
+then
+	brew install kyua
+fi
+
+cmd="/opt/homebrew/bin/nvim"
+if [ ! -f "${cmd}" ]
+then
+	brew install neovim
+fi
+
+cmd="/opt/homebrew/bin/tree"
+if [ ! -f "${cmd}" ]
+then
+	brew install tree
+fi
+
+#=========================================================================
+# アプリケーションをセットアップ
+#=========================================================================
+cmd="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+if [ ! -f "${cmd}" ]
+then
+	brew install google-chrome
+fi
+
+cmd="/Applications/Firefox.app/Contents/MacOS/firefox"
+if [ ! -f "${cmd}" ]
+then
+	brew install firefox
+fi
+
+cmd="/Applications/Thunderbird.app/Contents/MacOS/thunderbird"
+if [ ! -f "${cmd}" ]
+then
+	brew install thunderbird
+fi
+
+cmd="/Applications/Visual Studio Code.app/Contents/MacOS/Electron"
+if [ ! -f "${cmd}" ]
+then
+	brew install visual-studio-code
+fi
+
+cmd="/Applications/OneDrive.app/Contents/MacOS/OneDrive"
+if [ ! -f "${cmd}" ]
+then
+	brew install onedrive
+fi
