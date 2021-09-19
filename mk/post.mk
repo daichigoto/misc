@@ -31,9 +31,9 @@
 CFLAGS+=	-ljpeg
 . endif
 . if ${OS} == "Darwin"
-.  if exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/)
-CFLAGS+=	-I/opt/homebrew/Cellar/jpeg-turbo/2.1.0/include/ \
-		-L/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/ \
+.  if exists(/opt/homebrew/lib/)
+CFLAGS+=	-I/opt/homebrew/include/ \
+		-L/opt/homebrew/lib/ \
 		-ljpeg
 .  elif exists(/usr/local/opt/jpeg-turbo/)
 CFLAGS+=	-I/usr/local/opt/jpeg-turbo/include/ \
@@ -68,7 +68,7 @@ install-required-packages:
 .  endif
 . endif
 . if ${OS} == "Darwin"
-.  if !exists(/opt/homebrew/Cellar/jpeg-turbo/2.1.0/lib/libjpeg.dylib) && !exists(/usr/local/opt/jpeg-turbo/lib/libjpeg.dylib)
+.  if !exists(/opt/homebrew/lib/libjpeg.dylib) && !exists(/usr/local/opt/jpeg-turbo/lib/libjpeg.dylib)
 	brew install jpeg-turbo
 .  endif
 . endif
