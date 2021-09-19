@@ -8,7 +8,7 @@ FreeBSD)
 	;;
 # Mac
 Darwin)
-	setup-mac
+	setup_mac
 
 	if [ -z "$(which bsdmake)" ]
 	then
