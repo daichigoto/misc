@@ -36,6 +36,11 @@ if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm tree
 }
 
+$cmd = "C:\msys64\mingw64\bin\bat.exe"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm mingw-w64-x86_64-bat
+}
+
 $cmd = "C:\msys64\mingw64\bin\gm.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm mingw-w64-x86_64-graphicsmagick
