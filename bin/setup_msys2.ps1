@@ -36,6 +36,11 @@ if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm tree
 }
 
+$cmd = "C:\msys64\usr\bin\man.exe"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm man-db
+}
+
 $cmd = "C:\msys64\mingw64\bin\bat.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm mingw-w64-x86_64-bat
