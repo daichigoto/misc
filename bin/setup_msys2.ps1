@@ -50,3 +50,8 @@ $cmd = "C:\msys64\mingw64\bin\gm.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm mingw-w64-x86_64-graphicsmagick
 }
+
+$cmd = "C:\msys64\mingw64\bin\drill.exe"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm mingw-w64-x86_64-ldns
+}
