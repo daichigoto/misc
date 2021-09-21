@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018 Daichi GOTO
+ * Copyright (c) 2017,2018,2021 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -228,7 +228,7 @@ static void
 import_text_Xsv(const XML_Char **attr, const char delim)
 {
 	FILE *fp;
-	char buf[1024 * 8], numbuf[BUFSIZ];
+	char buf[1024 * 64], numbuf[BUFSIZ];
 	char *p;
 
 	fp = fopen(filename, "r");
