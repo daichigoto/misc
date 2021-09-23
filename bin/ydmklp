@@ -21,13 +21,24 @@ do
 done
 
 #====================================================================
+# Command preparation
+#====================================================================
+case "$(uname)" in
+MSYS*)
+	statcmd="stat -c '%Y'"
+	;;
+*)
+	statcmd="stat -f '%m'"
+	;;
+esac
+
+#====================================================================
 # Build processing loop
 #====================================================================
-
 XXX_debug()
 {
-    mtimepre=$(stat -f '%m' images/001raw.jpg 2> /dev/null)
-    mtimepred=$(stat -f '%m' images 2> /dev/null)
+    mtimepre=$($statcmd images/001raw.jpg 2> /dev/null)
+    mtimepred=$($statcmd images 2> /dev/null)
     echo "$1: [$mtimepred] - images"
     echo "$1: [$mtimepre] - images/001raw.jpg"
 }
@@ -40,9 +51,9 @@ confirmationfile="images/.got-by-ydmklp"
 getimg()
 {
     # Get the images.
-    mtimepre=$(stat -f '%m' images/001raw.jpg 2> /dev/null)
+    mtimepre=$($statcmd images/001raw.jpg 2> /dev/null)
     make getimg 2> /dev/null
-    mtimepst=$(stat -f '%m' images/001raw.jpg 2> /dev/null)
+    mtimepst=$($statcmd images/001raw.jpg 2> /dev/null)
 
     if [ -n "$mtimepst" ]
         then
@@ -89,7 +100,7 @@ do
 
     # Whether the modification time of the images directory and the 
     # files under it are all the same or not.
-    case $(stat -f '%m' images images/0* 2> /dev/null | sort | uniq | awk 'END{print NR}') in
+    case $($statcmd images images/0* 2> /dev/null | sort | uniq | awk 'END{print NR}') in
     1) allthesametime="yes"; ;;
     *) allthesametime="no"; ;;
     esac
