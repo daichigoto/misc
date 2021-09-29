@@ -89,7 +89,7 @@ function Resize-Window {
 		$Height = $screenHeight * $HeightRatio / 100
 	}
 	# 取得した座標データからウィンドウの現在の幅を計算
-	if ($Height -eq 0) {
+	elseif ($Height -eq 0) {
 		$Height = $rc.Bottom - $rc.Top;
 	}
 
