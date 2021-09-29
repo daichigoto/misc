@@ -8,11 +8,13 @@
 # 引数を処理
 #====================================================================
 Param(
-	[String]$ProcessName="*",   # プロセス名
-	[String]$WindowTitle=".*",  # ウィンドウタイトル(正規表現)
-	[Int32]$Width="800",        # ウィンドウ幅
-	[Int32]$Height="600",       # ウィンドウ高さ
-	[Switch]$WindowProcessList  # ウィンドウプロセス一覧を表示
+	[String]$ProcessName="*",	# プロセス名
+	[String]$WindowTitle=".*",	# ウィンドウタイトル(正規表現)
+	[Int32]$Width="0",		# ウィンドウ幅
+	[Int32]$Height="0",		# ウィンドウ高さ
+	[Int32]$WidthRatio="0",		# ウィンドウ幅(スクリーン幅に対する割合)
+	[Int32]$HeightRatio="0",	# ウィンドウ高さ(スクリーン高に対する割合)
+	[Switch]$WindowProcessList	# ウィンドウプロセス一覧を表示
 )
 
 #====================================================================
@@ -49,6 +51,10 @@ public class WinAPI
 	// ウィンドウの座標を変更する関数
 	[DllImport("user32.dll")]
 	public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint); 
+
+	// スクリーンサイズを取得する関数
+	[DllImport("user32.dll")]
+	public static extern int GetSystemMetrics(int nIndex); 
 }
 "@
 
@@ -62,6 +68,30 @@ function Resize-Window {
 
 	# ウィンドウの現在の座標データを取得
 	[WinAPI]::GetWindowRect($wh, [ref]$rc) > $null
+
+	# 取得したスクリーン幅からウィンドウの幅を計算
+	if ($WidthRatio -ne 0) {
+		# スクリーン幅を取得
+		$screenWidth = [WinAPI]::GetSystemMetrics(0);
+		# Widthの値を算出
+		$Width = $screenWidth * $WidthRatio / 100
+	}
+	# 取得した座標データからウィンドウの現在の幅を計算
+	elseif ($Width -eq 0) {
+		$Width = $rc.Right - $rc.Left;
+	}
+
+	# 取得したスクリーン幅からウィンドウの高さを計算
+	if ($HeightRatio -ne 0) {
+		# スクリーン高を取得
+		$screenHeight = [WinAPI]::GetSystemMetrics(1);
+		# Heightの値を算出
+		$Height = $screenHeight * $HeightRatio / 100
+	}
+	# 取得した座標データからウィンドウの現在の幅を計算
+	if ($Height -eq 0) {
+		$Height = $rc.Bottom - $rc.Top;
+	}
 
 	# 左上の場所はそのままに、ウィンドウのサイズを変更
 	[WinAPI]::MoveWindow($wh, $rc.Left, $rc.Top, $width, $height, $true) > $null
