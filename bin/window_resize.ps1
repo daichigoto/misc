@@ -12,8 +12,8 @@ Param(
 	[String]$WindowTitle=".*",	# ウィンドウタイトル(正規表現)
 	[Int32]$Width="0",		# ウィンドウ幅
 	[Int32]$Height="0",		# ウィンドウ高さ
-	[Double]$WidthRatio="0",	# ウィンドウ幅(スクリーン幅を1とし、0～1の実数で指定)
-	[Double]$HeightRatio="0",	# ウィンドウ高(スクリーン高を1とし、0～1の実数で指定)
+	[Double]$WidthRatio="-1",	# ウィンドウ幅(スクリーン幅を1とし、0～1の実数で指定)
+	[Double]$HeightRatio="-1",	# ウィンドウ高(スクリーン高を1とし、0～1の実数で指定)
 	[Switch]$WindowProcessList	# ウィンドウプロセス一覧を表示
 )
 
