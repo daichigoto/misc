@@ -16,8 +16,8 @@ Param(
 	[Int32]$Height="0",		# ウィンドウ高
 	[Double]$XRatio="-1",		# ウィンドウ左上X座標(スクリーン幅を1とし、0～1の実数で指定)
 	[Double]$YRatio="-1",		# ウィンドウ左上Y座標(スクリーン高を1とし、0～1の実数で指定)
-	[Int32]$WidthRatio="0",		# ウィンドウ幅(スクリーン幅に対する割合)
-	[Int32]$HeightRatio="0",	# ウィンドウ高(スクリーン高に対する割合)
+	[Double]$WidthRatio="-1",	# ウィンドウ幅(スクリーン幅を1とし、0～1の実数で指定)
+	[Double]$HeightRatio="-1",	# ウィンドウ高(スクリーン高を1とし、0～1の実数で指定)
 	[Switch]$WindowProcessList	# ウィンドウプロセス一覧を表示
 )
 
@@ -104,26 +104,26 @@ function Deploy-Window {
 		$Y = $screenHeight * $YRatio 
 	}
 
-	# 取得したスクリーン幅からウィンドウの幅を計算
-	if ($WidthRatio -ne 0) {
+	# 幅が0～1の割合で指定されている場合にWidthの値へ変換
+	if ($WidthRatio -ge 0) {
 		# スクリーン幅を取得
 		$screenWidth = [WinAPI]::GetSystemMetrics(0);
 		# Widthの値を算出
 		$Width = $screenWidth * $WidthRatio / 100
 	}
-	# 取得した座標データからウィンドウの現在の幅を計算
+	# 幅指定がないため、取得した座標データからウィンドウの現在の幅を設定
 	elseif ($Width -eq 0) {
 		$Width = $rc.Right - $rc.Left;
 	}
 
-	# 取得したスクリーン幅からウィンドウの高さを計算
-	if ($HeightRatio -ne 0) {
+	# 高が0～1の割合で指定されている場合にHeightの値へ変換
+	if ($HeightRatio -ge 0) {
 		# スクリーン高を取得
 		$screenHeight = [WinAPI]::GetSystemMetrics(1);
 		# Heightの値を算出
 		$Height = $screenHeight * $HeightRatio / 100
 	}
-	# 取得した座標データからウィンドウの現在の幅を計算
+	# 高指定がないため、取得した座標データからウィンドウの現在の高を設定
 	elseif ($Height -eq 0) {
 		$Height = $rc.Bottom - $rc.Top;
 	}
