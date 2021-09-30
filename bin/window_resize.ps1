@@ -74,7 +74,7 @@ function Resize-Window {
 		# スクリーン幅を取得
 		$screenWidth = [WinAPI]::GetSystemMetrics(0);
 		# Widthの値を算出
-		$Width = $screenWidth * $WidthRatio / 100
+		$Width = $screenWidth * $WidthRatio
 	}
 	# 幅指定がないため、取得した座標データからウィンドウの現在の幅を設定
 	elseif ($Width -eq 0) {
@@ -86,7 +86,7 @@ function Resize-Window {
 		# スクリーン高を取得
 		$screenHeight = [WinAPI]::GetSystemMetrics(1);
 		# Heightの値を算出
-		$Height = $screenHeight * $HeightRatio / 100
+		$Height = $screenHeight * $HeightRatio
 	}
 	# 高指定がないため、取得した座標データからウィンドウの現在の高を設定
 	elseif ($Height -eq 0) {
