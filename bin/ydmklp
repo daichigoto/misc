@@ -76,7 +76,14 @@ do
     #----------------------------------------------------------------
     # waiting for one of the files to be updated
     #----------------------------------------------------------------
-    wait_filechanges .
+    case "$(uname)" in
+    Darwin)
+        wait_filechanges typescript.xml
+        ;;
+    *)
+        wait_filechanges .
+        ;;
+    esac
 
     #----------------------------------------------------------------
     # adapting to vi/vim save behavior
