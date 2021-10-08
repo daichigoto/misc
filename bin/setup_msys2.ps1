@@ -9,7 +9,7 @@
 #=========================================================================
 # MSYS2をインストール
 if (! (Test-Path -PathType Leaf C:\msys64\usr\bin\pacman.exe)) {
-	winget install MSYS2
+	winget install --id msys2.msys2
 	C:\msys64\usr\bin\pacman.exe -Syu --noconfirm
 }
 
