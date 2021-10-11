@@ -12,8 +12,8 @@ Param(
 	[String]$WindowTitle=".*",	# ウィンドウタイトル(正規表現)
 	[Int32]$X="0",			# ウィンドウ左上X座標
 	[Int32]$Y="0",			# ウィンドウ左上Y座標
-	[Int32]$Width="0",		# ウィンドウ幅
-	[Int32]$Height="0",		# ウィンドウ高
+	[Int32]$Width="-1",		# ウィンドウ幅
+	[Int32]$Height="-1",		# ウィンドウ高
 	[Double]$XRatio="-1",		# ウィンドウ左上X座標(スクリーン幅を1とし、0～1の実数で指定)
 	[Double]$YRatio="-1",		# ウィンドウ左上Y座標(スクリーン高を1とし、0～1の実数で指定)
 	[Double]$WidthRatio="-1",	# ウィンドウ幅(スクリーン幅を1とし、0～1の実数で指定)
@@ -112,7 +112,7 @@ function Deploy-Window {
 		$Width = $screenWidth * $WidthRatio
 	}
 	# 幅指定がないため、取得した座標データからウィンドウの現在の幅を設定
-	elseif ($Width -eq 0) {
+	elseif ($Width -eq -1) {
 		$Width = $rc.Right - $rc.Left;
 	}
 
@@ -124,7 +124,7 @@ function Deploy-Window {
 		$Height = $screenHeight * $HeightRatio
 	}
 	# 高指定がないため、取得した座標データからウィンドウの現在の高を設定
-	elseif ($Height -eq 0) {
+	elseif ($Height -eq -1) {
 		$Height = $rc.Bottom - $rc.Top;
 	}
 

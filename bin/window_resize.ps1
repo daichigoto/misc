@@ -10,8 +10,8 @@
 Param(
 	[String]$ProcessName="*",	# プロセス名
 	[String]$WindowTitle=".*",	# ウィンドウタイトル(正規表現)
-	[Int32]$Width="0",		# ウィンドウ幅
-	[Int32]$Height="0",		# ウィンドウ高さ
+	[Int32]$Width="-1",		# ウィンドウ幅
+	[Int32]$Height="-1",		# ウィンドウ高さ
 	[Double]$WidthRatio="-1",	# ウィンドウ幅(スクリーン幅を1とし、0～1の実数で指定)
 	[Double]$HeightRatio="-1",	# ウィンドウ高(スクリーン高を1とし、0～1の実数で指定)
 	[Switch]$WindowProcessList	# ウィンドウプロセス一覧を表示
@@ -77,7 +77,7 @@ function Resize-Window {
 		$Width = $screenWidth * $WidthRatio
 	}
 	# 幅指定がないため、取得した座標データからウィンドウの現在の幅を設定
-	elseif ($Width -eq 0) {
+	elseif ($Width -eq -1) {
 		$Width = $rc.Right - $rc.Left;
 	}
 
@@ -89,12 +89,12 @@ function Resize-Window {
 		$Height = $screenHeight * $HeightRatio
 	}
 	# 高指定がないため、取得した座標データからウィンドウの現在の高を設定
-	elseif ($Height -eq 0) {
+	elseif ($Height -eq -1) {
 		$Height = $rc.Bottom - $rc.Top;
 	}
 
 	# 左上の場所はそのままに、ウィンドウのサイズを変更
-	[WinAPI]::MoveWindow($wh, $rc.Left, $rc.Top, $width, $height, $true) > $null
+	[WinAPI]::MoveWindow($wh, $rc.Left, $rc.Top, $Width, $Height, $true) > $null
 }
 
 #====================================================================
