@@ -93,16 +93,16 @@ function Deploy-Window {
 	}
 
 	# 割合指定をXおよびYの正値へ変換
-	if ($XRatio -ge 0) {
+	if ($XRatio -gt 0) {
 		$X = $screenWidth * $XRatio
 	}
-	else {
+	elseif ($XRatio -lt 0) {
 		$X = $screenWidth + ($screenWidth * $XRatio) - $Width
 	}
-	if ($YRatio -ge 0) {
+	if ($YRatio -gt 0) {
 		$Y = $screenHeight * $YRatio 
 	}
-	else {
+	elseif ($YRatio -lt 0) {
 		$Y = $screenHeight + ($screenHeight * $YRatio) - $Height
 	}
 
