@@ -20,16 +20,16 @@ switch ($subcmd)
 {
 	"msedge" {
 		$cmd='C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-		& $cmd $subcmdarg1
+		& $cmd --inprivate $subcmdarg1
 	}
 	"screenshotbrowser1200x800" {
 		$cmd='C:\Program Files\Mozilla Firefox\firefox.exe'
-		& $cmd $subcmdarg1
+		& $cmd -private-window $subcmdarg1
 		firefox1200x800.ps1
 	}
 	"screenshotbrowser1200x600" {
 		$cmd='C:\Program Files\Mozilla Firefox\firefox.exe'
-		& $cmd $subcmdarg1
+		& $cmd -private-window $subcmdarg1
 		firefox1200x600.ps1
 	}
 	"mail" {
