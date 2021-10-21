@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018,2019 Daichi GOTO
+ * Copyright (c) 2017,2018,2019,2021 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -443,6 +443,9 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 			else if ('*' == *p) {
 				pbuf_add("&lowast;", 8);
 				emptycell = false;
+			}
+			else if ('\r' == *p) {
+				// Carriage return will be deleted.
 			}
 			else {
  				pbuf_add(p, 1);
