@@ -110,12 +110,6 @@ then
 	brew install thunderbird
 fi
 
-cmd="/Applications/Visual Studio Code.app/Contents/MacOS/Electron"
-if [ ! -f "${cmd}" ]
-then
-	brew install visual-studio-code
-fi
-
 cmd="/Applications/OneDrive.app/Contents/MacOS/OneDrive"
 if [ ! -f "${cmd}" ]
 then
