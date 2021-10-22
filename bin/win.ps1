@@ -27,6 +27,7 @@ switch ($subcmd)
 		& $cmd -private-window
 		Start-Sleep 0.3
 		& $cmd -private-window $subcmdarg1
+		Start-Sleep 0.3
 		firefox1200x800.ps1
 	}
 	"screenshotbrowser1200x600" {
@@ -34,6 +35,7 @@ switch ($subcmd)
 		& $cmd -private-window
 		Start-Sleep 0.3
 		& $cmd -private-window $subcmdarg1
+		Start-Sleep 0.3
 		firefox1200x600.ps1
 	}
 	"mail" {
