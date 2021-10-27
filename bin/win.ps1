@@ -25,17 +25,17 @@ switch ($subcmd)
 	"screenshotbrowser1200x800" {
 		$cmd='C:\Program Files\Mozilla Firefox\firefox.exe'
 		& $cmd -private-window
-		Start-Sleep 0.5
+		Start-Sleep 0.8
 		& $cmd -private-window $subcmdarg1
-		Start-Sleep 0.5
+		Start-Sleep 0.8
 		firefox1200x800.ps1
 	}
 	"screenshotbrowser1200x600" {
 		$cmd='C:\Program Files\Mozilla Firefox\firefox.exe'
 		& $cmd -private-window
-		Start-Sleep 0.5
+		Start-Sleep 0.8
 		& $cmd -private-window $subcmdarg1
-		Start-Sleep 0.5
+		Start-Sleep 0.8
 		firefox1200x600.ps1
 	}
 	"mail" {
