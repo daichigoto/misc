@@ -371,7 +371,7 @@ static void
 import_text_Xsv(const XML_Char **attr, const char delim)
 {
 	FILE *fp;
-	char buf[BUFSIZ] = {'\0'};
+	char buf[BUFSIZ * 10] = {'\0'};
 	char *p;
 	bool emptycell;
 
