@@ -13,7 +13,7 @@ trap "[ -d $tmpd ] && chmod -R u+w $tmpd; rm -rf $tmpd" EXIT
 # 誤判定処理
 #================================================================
 case "$1" in
-us-cert.cisa.gov)
+*.cisa.gov)
  echo "GeoIP Country Edition: US, United States"; exit ;;
 www.comparitech.com)
  echo "GeoIP Country Edition: UK, United Kingdom"; exit ;;
