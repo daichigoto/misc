@@ -41,6 +41,21 @@ if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm man-db
 }
 
+$cmd = "C:\msys64\usr\bin\neofetch"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm neofetch
+}
+
+$cmd = "C:\msys64\usr\bin\zip.exe"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm zip
+}
+
+$cmd = "C:\msys64\usr\bin\unzip.exe"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm unzip
+}
+
 $cmd = "C:\msys64\mingw64\bin\bat.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm mingw-w64-x86_64-bat
@@ -49,6 +64,11 @@ if (! (Test-Path -PathType Leaf $cmd)) {
 $cmd = "C:\msys64\mingw64\bin\gm.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm mingw-w64-x86_64-graphicsmagick
+}
+
+$cmd = "C:\msys64\mingw64\bin\drill.exe"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm mingw-w64-x86_64-ldns
 }
 
 $cmd = "C:\msys64\mingw64\bin\drill.exe"
