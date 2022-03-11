@@ -41,11 +41,6 @@ if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm man-db
 }
 
-$cmd = "C:\msys64\usr\bin\neofetch"
-if (! (Test-Path -PathType Leaf $cmd)) {
-	pacman -S --noconfirm neofetch
-}
-
 $cmd = "C:\msys64\usr\bin\zip.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm zip
@@ -54,6 +49,16 @@ if (! (Test-Path -PathType Leaf $cmd)) {
 $cmd = "C:\msys64\usr\bin\unzip.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm unzip
+}
+
+$cmd = "C:\msys64\usr\bin\bc.exe"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm bc
+}
+
+$cmd = "C:\msys64\usr\bin\neofetch"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm neofetch
 }
 
 $cmd = "C:\msys64\mingw64\bin\bat.exe"
