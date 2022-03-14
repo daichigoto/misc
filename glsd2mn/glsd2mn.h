@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019,2021 Daichi GOTO
+ * Copyright (c) 2017-2019,2021,2022 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20211021"
+#define VERSION			"20220314"
 #define IMAGE_ZIPFILE		"images.zip"
 
 typedef enum el {
@@ -82,6 +82,7 @@ void pbuf_trimoutputln(int, int);
 void pbuf_flush(void);
 void pbuf_flushln(void);
 void pbuf_reset(void);
+char* pbuf_get_escaped_string(char *);
 int pbuf_startwith(char *);
 
 void pbuf_xxx_linkoutput(void);

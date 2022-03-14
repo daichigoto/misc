@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018,2019,2021 Daichi GOTO
+ * Copyright (c) 2017,2018,2019-2022 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -343,7 +343,8 @@ import_text_sourcecode(const XML_Char **attr)
 	for (int i = 0; i <= depth + 1; i++)
 		pbuf_add("#", 1);
 	pbuf_add(" ", 1);
-	pbuf_addln(caption, strlen(caption));
+	pbuf_addln(pbuf_get_escaped_string(caption), 
+		strlen(pbuf_get_escaped_string(caption)));
 	pbuf_newline();
 
 	fp = fopen(filename, "r");
