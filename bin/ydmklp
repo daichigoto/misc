@@ -67,6 +67,12 @@ getimg()
             # and the files under it to indicate that they are not 
             # the default image files.
             touch -r .. images
+	else
+	    # On macOS, make getimg updates the last modified time of 
+	    # the images directory even if no image files are being 
+	    # acquired. Therefore, the last modified time is synchronized 
+	    # here to indicate that no image files have been acquired.
+            touch -r images images/0*
         fi
     fi
 }
