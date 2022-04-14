@@ -288,6 +288,9 @@ pbuf_escaped_printc(char c)
 			putchar('\\');
 			putchar('*');
 			break;
+		case '&':
+			printf("&amp;");
+			break;
 		case '<':
 			printf("&lt;");
 			break;
