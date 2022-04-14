@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018,2021 Daichi GOTO
+ * Copyright (c) 2017,2018,2021,2022 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -193,6 +193,9 @@ import_text_sourcecode(const XML_Char **attr)
 				break;
 			case '>':
 				pbuf_add("&gt;", 4);
+				break;
+			case '&':
+				pbuf_add("&amp;", 5);
 				break;
 			default:
 				pbuf_add(buf_p, 1);
