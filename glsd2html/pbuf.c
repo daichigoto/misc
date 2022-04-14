@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2019 Daichi GOTO
+ * Copyright (c) 2017,2019,2022 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -170,6 +170,9 @@ pbuf_entityexpansion_output(void)
 	else {
 		for (i = 0; i < PBUF_SIZE && '\0' != *p; i++, p++) {
 			switch (*p) {
+			case '&':
+				printf("&amp;");
+				break;
 			case '<':
 				if (0 == strncmp(p, "<a href=\"", 9)) {
 					putchar('<');
