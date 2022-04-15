@@ -187,6 +187,18 @@ pbuf_get_escaped_string(char *s)
 			*n = ';';
 			++n;
 			break;
+		case '&':
+			*n = '&';
+			++n;
+			*n = 'a';
+			++n;
+			*n = 'm';
+			++n;
+			*n = 'p';
+			++n;
+			*n = ';';
+			++n;
+			break;
 		default:
 			*n = *p;
 			++n;
