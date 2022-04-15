@@ -35,6 +35,8 @@ static void pbuf_entityexpansion_output(void);
 static char pbuf[PBUF_SIZE];
 static int pbuf_offset = 0;
 
+static char pbuf_temp[PBUF_SIZE];
+
 void
 pbuf_add(const XML_Char *cdata, int len)
 {
@@ -134,6 +136,60 @@ pbuf_startwith(char *s)
 	if (0 == strncmp(pbuf, s, strlen(s)))
 		return 1;
 	return 0;
+}
+
+char *
+pbuf_get_escaped_string(char *s)
+{
+	char *p, *n;
+	int s_len;
+	memset(pbuf_temp, '\0', PBUF_SIZE);
+
+	p = s;
+	n = pbuf_temp;
+	s_len = strlen(s);
+	for (int i = 0; i < s_len; i++, p++) {
+		switch (*p) {
+		case '<':
+			*n = '&';
+			++n;
+			*n = 'l';
+			++n;
+			*n = 't';
+			++n;
+			*n = ';';
+			++n;
+			break;
+		case '>':
+			*n = '&';
+			++n;
+			*n = 'g';
+			++n;
+			*n = 't';
+			++n;
+			*n = ';';
+			++n;
+			break;
+		case '&':
+			*n = '&';
+			++n;
+			*n = 'a';
+			++n;
+			*n = 'm';
+			++n;
+			*n = 'p';
+			++n;
+			*n = ';';
+			++n;
+			break;
+		default:
+			*n = *p;
+			++n;
+			break;
+		}
+	}
+
+	return (pbuf_temp);
 }
 
 void

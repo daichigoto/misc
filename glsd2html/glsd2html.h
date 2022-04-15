@@ -37,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20220414"
+#define VERSION			"20220415"
 
 typedef enum el {
 	ELEMENT_DOCUMENT,
@@ -78,6 +78,7 @@ void pbuf_trimoutputln(int, int);
 void pbuf_flush(void);
 void pbuf_flushln(void);
 void pbuf_reset(void);
+char* pbuf_get_escaped_string(char *);
 int pbuf_startwith(char *);
 
 void import(const XML_Char **);

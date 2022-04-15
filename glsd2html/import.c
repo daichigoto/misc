@@ -216,7 +216,8 @@ import_text_sourcecode(const XML_Char **attr)
 	pbuf_add(numbuf, strlen(numbuf));
 	++src_counter;
 	pbuf_add(" ", 1);
-	pbuf_add(caption, strlen(caption));
+	pbuf_add(pbuf_get_escaped_string(caption), 
+		strlen(pbuf_get_escaped_string(caption)));
 	pbuf_addln("</p>", 4);
 	pbuf_addln("<br>", 4);
 }
