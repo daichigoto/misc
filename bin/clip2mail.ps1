@@ -44,5 +44,5 @@ if ($body.Length -gt $bodycharlimit) {
 # メールを作成
 #========================================================================
 & $mailer 								`
-        -compose 							`
-        "to='$to',subject='$title',body='$body'"
+	-compose 							`
+	"to='$to',subject='$title',body='$body'"
