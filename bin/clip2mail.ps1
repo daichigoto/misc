@@ -10,7 +10,7 @@
 $mailer='C:\Program Files\Mozilla Thunderbird\thunderbird.exe'
 
 #========================================================================
-# 本文の上限サイズ（バイト数）
+# 本文の上限文字数
 #========================================================================
 $bodysizelimit = 32000
 
@@ -29,27 +29,15 @@ $body=$(Get-Clipboard | Out-String)
 $body=$body -replace " ","&nbsp;"
 $body=$body -replace "<","&lt;"
 $body=$body -replace ">","&gt;"
+$body=$body -replace ",","&#044;"
+$body=$body -replace "	","&#009;"
 
 #========================================================================
 # 引数で指定できる文字列長には上限がある。上限を超えている場合には、条件
-# 未満まで文字列を減らして使用する。
+# 未満まで文字数を減らして使用する。
 #========================================================================
 if ($body.Length -gt $bodysizelimit) {
-	$i = 1
-	while ($true) {
-		$subbody = $body.Substring(0, $i)
-		if ($subbody.Length -gt $bodysizelimit) {
-			break;
-		}
-		$i++
-	}
-
-	if ($i -gt 1) {
-		$body = $body.Substring(0, $i - 1)
-	}
-	else {
-		$body='テキストデータが大きすぎて使えません'
-	}
+	$body = $body.Substring(0, $bodysizelimit)
 }
 
 #========================================================================
