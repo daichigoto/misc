@@ -80,3 +80,13 @@ $cmd = "C:\msys64\mingw64\bin\jq.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm mingw-w64-x86_64-jq
 }
+
+$cmd = "C:\msys64\usr\bin\pip"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	pacman -S --noconfirm python-pip
+}
+
+$cmd = "C:\msys64\usr\bin\deepl"
+if (! (Test-Path -PathType Leaf $cmd)) {
+	sh -c 'pip install deepl-translate'
+}
