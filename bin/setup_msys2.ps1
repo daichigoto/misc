@@ -76,7 +76,7 @@ if (! (Test-Path -PathType Leaf $cmd)) {
 	pacman -S --noconfirm mingw-w64-x86_64-ldns
 }
 
-$cmd = "C:\msys64\mingw64\bin\drill.exe"
+$cmd = "C:\msys64\mingw64\bin\jq.exe"
 if (! (Test-Path -PathType Leaf $cmd)) {
-	pacman -S --noconfirm mingw-w64-x86_64-ldns
+	pacman -S --noconfirm mingw-w64-x86_64-jq
 }
