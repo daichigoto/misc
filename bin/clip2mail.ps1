@@ -29,8 +29,8 @@ $body=$(Get-Clipboard | Out-String)
 $body=$body -replace " ","&nbsp;"
 $body=$body -replace "<","&lt;"
 $body=$body -replace ">","&gt;"
-$body=$body -replace ",","&#044;"
 $body=$body -replace "	","<pre style='display:inline'>&#009;</pre>"
+#$body=$body -replace ",","&#044;"
 
 #========================================================================
 # 引数で指定できる文字列長には上限がある。上限を超えている場合には、条件
