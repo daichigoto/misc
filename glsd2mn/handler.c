@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2022 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -119,7 +119,7 @@ el_end_handler(void *data, const XML_Char *name)
 			pbuf_outputln();
 			break;
 		case ELEMENT_TITLE:
-			escaped_output = 0;
+			escaped_output = 1;
 			switch(docgroup_depth) {
 			case 1:
 				pbuf_outputln();
