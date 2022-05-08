@@ -281,6 +281,12 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 			}
 			else if ('|' == *p)
 				pbuf_add("｜", 3);
+			else if ('<' == *p)
+				pbuf_add("&lt;", 4);
+			else if ('>' == *p)
+				pbuf_add("&gt;", 4);
+			else if ('&' == *p)
+				pbuf_add("&amp;", 5);
 			else
  				pbuf_add(p, 1);
 			++p;
