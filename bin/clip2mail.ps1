@@ -65,7 +65,6 @@ function Get-TrimmedBody {
 	$trimmed
 }
 
-
 if ($body.Length -gt $bodycharlimit) {
 	$body = Get-TrimmedBody
 	$body += "<br>"
