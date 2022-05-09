@@ -445,6 +445,18 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 				pbuf_add("&lowast;", 8);
 				emptycell = false;
 			}
+			else if ('<' == *p) {
+				pbuf_add("&lt;", 4);
+				emptycell = false;
+			}
+			else if ('>' == *p) {
+				pbuf_add("&gt;", 4);
+				emptycell = false;
+			}
+			else if ('&' == *p) {
+				pbuf_add("&amp;", 5);
+				emptycell = false;
+			}
 			else if ('\r' == *p) {
 				// Carriage return will be deleted.
 			}
