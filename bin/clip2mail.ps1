@@ -50,13 +50,13 @@ function Get-TrimmedBody {
 	       "&gt;",
 	       "<pre style='display:inline'>&#009;</pre>",
 	       "&#044;")
-	:EndsTreament foreach ($v in $a) {
+	:EndTreatment foreach ($v in $a) {
 		$len = $v.Length - 1
 		for ($i=0; $i -lt $len; $i++) {
 			$v = $v.Substring(0, $len - $i)
 			if ($trimmed.EndsWith($v)) {
 				$trimmed = $trimmed.Substring(0, $trimmed.Length - $v.Length)
-				break EndsTreament
+				break EndTreatment
 			}
 		}
 	}
