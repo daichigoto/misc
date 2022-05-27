@@ -6,12 +6,16 @@
 
 #========================================================================
 # 引数を処理
-#   -To	foo@sample.com		宛先メールアドレス
-#   -From bar@sample.com	送信元メールアドレス
-#   -Subject 'Mail Title'	メールサブジェクト
+#   -To	a@example.com,b@example.com	宛先メールアドレス
+#   -Cc a@example.com,b@example.com	Ccメールアドレス
+#   -Bcc a@example.com,b@example.com	Bcccメールアドレス
+#   -From bar@example.com		送信元メールアドレス
+#   -Subject 'Mail Title'		メールサブジェクト
 #========================================================================
 Param(
 	[String]$To = $Env:DEFAULT_EMAIL_TO,
+	[String]$Cc = "",
+	[String]$Bcc = "",
 	[String]$From = $Env:DEFAULT_EMAIL_FROM,
 	[String]$Subject = "Windowsシステムクリップボード"
 )
@@ -79,8 +83,16 @@ if ($body.Length -gt $bodycharlimit) {
 }
 
 #========================================================================
+# To、Cc、BccをThunberbirdで指定できる形へ展開
+#========================================================================
+$to=$to.Replace(' ',',')
+$cc=$cc.Replace(' ',',')
+$bcc=$bcc.Replace(' ',',')
+
+#========================================================================
 # メールを作成
 #========================================================================
+"to='$To',$ccc,from='$From',subject='$Subject',body='$body'"
 & $mailer 								`
 	-compose 							`
-	"to='$To',from='$From',subject='$Subject',body='$body'"
+	"to='$To',cc='$Cc',bcc='$Bcc',from='$From',subject='$Subject',body='$body'"
