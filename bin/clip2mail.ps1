@@ -92,7 +92,6 @@ $bcc=$bcc.Replace(' ',',')
 #========================================================================
 # メールを作成
 #========================================================================
-"to='$To',$ccc,from='$From',subject='$Subject',body='$body'"
 & $mailer 								`
 	-compose 							`
 	"to='$To',cc='$Cc',bcc='$Bcc',from='$From',subject='$Subject',body='$body'"
