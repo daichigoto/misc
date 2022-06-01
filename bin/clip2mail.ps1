@@ -11,13 +11,15 @@
 #   -Bcc a@example.com,b@example.com	Bcccメールアドレス
 #   -From bar@example.com		送信元メールアドレス
 #   -Subject 'Mail Title'		メールサブジェクト
+#   -Attachment file1.jpg,fil2.png	添付ファイル
 #========================================================================
 Param(
 	[String]$To = $Env:DEFAULT_EMAIL_TO,
 	[String]$Cc = "",
 	[String]$Bcc = "",
 	[String]$From = $Env:DEFAULT_EMAIL_FROM,
-	[String]$Subject = "Windowsシステムクリップボード"
+	[String]$Subject = "Windowsシステムクリップボード",
+	[String]$Attachment = ""
 )
 
 #========================================================================
@@ -90,8 +92,29 @@ $cc=$cc.Replace(' ',',')
 $bcc=$bcc.Replace(' ',',')
 
 #========================================================================
+# 添付ファイルのパスを絶対パスへ変換
+#========================================================================
+# 「,」区切りで最初のファイルを調べ、このファイルが存在しなかった場合には
+# 「 」区切りで渡されていると判断し、分割処理を行う
+$AttachmentFiles = $Attachment -Split ','
+if (-not (Test-Path $AttachmentFiles[0])) {
+	$Attachment=$Attachment.Replace(' ',',')
+	$AttachmentFiles = $Attachment -Split ','
+}
+
+# パスを相対パスから絶対パスへ変換する
+$len = $AttachmentFiles.Length
+$AttachmentPaths = ""
+for ($i = 0; $i -lt $len; $i++) {
+	$AttachmentPaths += Convert-Path $AttachmentFiles[$i]
+	if ($i -ne $len - 1) {
+		$AttachmentPaths += ","
+	}
+}
+
+#========================================================================
 # メールを作成
 #========================================================================
 & $mailer 								`
 	-compose 							`
-	"to='$To',cc='$Cc',bcc='$Bcc',from='$From',subject='$Subject',body='$body'"
+	"to='$To',cc='$Cc',bcc='$Bcc',from='$From',subject='$Subject',attachment='$AttachmentPaths',body='$Body'"
