@@ -106,9 +106,11 @@ if (-not (Test-Path $AttachmentFiles[0])) {
 $len = $AttachmentFiles.Length
 $AttachmentPaths = ""
 for ($i = 0; $i -lt $len; $i++) {
-	$AttachmentPaths += Convert-Path $AttachmentFiles[$i]
-	if ($i -ne $len - 1) {
-		$AttachmentPaths += ","
+	if ($AttachmentFiles[$i]) {
+		$AttachmentPaths += Convert-Path $AttachmentFiles[$i]
+		if ($i -ne $len - 1) {
+			$AttachmentPaths += ","
+		}
 	}
 }
 
