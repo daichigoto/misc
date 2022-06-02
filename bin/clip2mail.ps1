@@ -98,8 +98,7 @@ $bcc=$bcc.Replace(' ',',')
 # 「 」区切りで渡されていると判断し、分割処理を行う
 $AttachmentFiles = $Attachment -Split ','
 if (-not (Test-Path $AttachmentFiles[0])) {
-	$Attachment=$Attachment.Replace(' ',',')
-	$AttachmentFiles = $Attachment -Split ','
+	$AttachmentFiles = $Attachment -Split ' '
 }
 
 # パスを相対パスから絶対パスへ変換する
