@@ -37,7 +37,7 @@ $bodycharlimit = 24000
 # システムクリップボードのテキストをThunderbirdのコンポーザに貼り付け
 # できるフォーマットへ変換
 #========================================================================
-$body=$(Get-Clipboard | Out-String)
+$body=Get-Clipboard | Out-String
 
 $body=$body -replace " ","&nbsp;"
 $body=$body -replace "<","&lt;"
