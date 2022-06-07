@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 
 #========================================================================
-# システムクリップボードのテキストでメールを作成
+# メールコンポーザ起動スクリプト
 #========================================================================
 
 #========================================================================
@@ -11,6 +11,9 @@
 #   -Bcc a@example.com,b@example.com	Bcccメールアドレス
 #   -From bar@example.com		送信元メールアドレス
 #   -Subject 'Mail Title'		メールサブジェクト
+#   -Body 'Mail body'			メール本文(引数で指定)
+#   -BodyFromFile file1.txt		メール本文(ファイルで指定)
+#   -BodyFromClip			メール本文(クリップボードからコピー)
 #   -Attachment file1.jpg,fil2.png	添付ファイル
 #========================================================================
 Param(
@@ -19,8 +22,12 @@ Param(
 	[String]$Bcc = "",
 	[String]$From = $Env:DEFAULT_EMAIL_FROM,
 	[String]$Subject = "Windowsシステムクリップボード",
+	[String]$Body = "",
+	[String]$BodyFromFile = $null,
+	[Switch]$BodyFromClip,
 	[String]$Attachment = ""
 )
+
 
 #========================================================================
 # Thunderbirdアプリケーションパス
@@ -34,10 +41,17 @@ $mailer='C:\Program Files\Mozilla Thunderbird\thunderbird.exe'
 $bodycharlimit = 24000
 
 #========================================================================
-# システムクリップボードのテキストをThunderbirdのコンポーザに貼り付け
-# できるフォーマットへ変換
+# メール本文を取得するとともに、Thunderbirdのコンポーザに貼り付けできる
+# フォーマットへ変換
 #========================================================================
-$body=$(Get-Clipboard | Out-String)
+if ($BodyFromClip) {
+	# システムクリップボードから本文をコピーする場合
+	$body=$(Get-Clipboard | Out-String)
+}
+elseif ($BodyFromFile) {
+	# ファイルから本文を持ってくる場合
+	$body=Get-Gontent -Path $BodyFromFile -Raw
+}
 
 $body=$body -replace " ","&nbsp;"
 $body=$body -replace "<","&lt;"
