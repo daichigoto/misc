@@ -49,7 +49,7 @@ if ($BodyFromClip) {
 }
 elseif ($BodyFromFile) {
 	# ファイルから本文を持ってくる場合
-	$body=Get-Gontent -Path $BodyFromFile -Raw
+	$body=Get-Content -Path $BodyFromFile -Raw
 }
 
 $body=$body -replace " ","&nbsp;"
