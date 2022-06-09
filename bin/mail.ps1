@@ -45,7 +45,7 @@ $bodycharlimit = 24000
 #========================================================================
 if ($BodyFromClip) {
 	# システムクリップボードから本文をコピーする場合
-	$body=$(Get-Clipboard | Out-String)
+	$body=Get-Clipboard | Out-String
 }
 elseif ($BodyFromFile) {
 	# ファイルから本文を持ってくる場合
