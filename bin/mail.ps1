@@ -31,7 +31,7 @@ Param(
 #========================================================================
 # Thunderbirdアプリケーションパス
 #========================================================================
-$mailer='C:\Program Files\Mozilla Thunderbird\thunderbird.exe'
+$mailer = 'C:\Program Files\Mozilla Thunderbird\thunderbird.exe'
 
 #========================================================================
 # 本文の上限文字数
@@ -45,18 +45,18 @@ $bodycharlimit = 24000
 #========================================================================
 if ($BodyFromClip) {
 	# システムクリップボードから本文をコピーする場合
-	$body=Get-Clipboard | Out-String
+	$body = Get-Clipboard | Out-String
 }
 elseif ($BodyFromFile) {
 	# ファイルから本文を持ってくる場合
-	$body=Get-Content -Path $BodyFromFile -Raw
+	$body = Get-Content -Path $BodyFromFile -Raw
 }
 
-$body=$body -replace " ","&nbsp;"
-$body=$body -replace "<","&lt;"
-$body=$body -replace ">","&gt;"
-$body=$body -replace "	","<pre style='display:inline'>&#009;</pre>"
-$body=$body -replace ",","&#044;"
+$body = $body -replace " ","&nbsp;"
+$body = $body -replace "<","&lt;"
+$body = $body -replace ">","&gt;"
+$body = $body -replace "	","<pre style='display:inline'>&#009;</pre>"
+$body = $body -replace ",","&#044;"
 
 #========================================================================
 # 引数で指定できる文字列長には上限がある。上限を超えている場合には、上限
@@ -100,9 +100,9 @@ if ($body.Length -gt $bodycharlimit) {
 #========================================================================
 # To、Cc、BccをThunberbirdで指定できる形へ展開
 #========================================================================
-$to=$to.Replace(' ',',')
-$cc=$cc.Replace(' ',',')
-$bcc=$bcc.Replace(' ',',')
+$to = $to.Replace(' ',',')
+$cc = $cc.Replace(' ',',')
+$bcc = $bcc.Replace(' ',',')
 
 #========================================================================
 # 添付ファイルのパスを絶対パスへ変換
