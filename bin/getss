@@ -83,7 +83,7 @@ web)
 		# Microsoft Edgeを使って取得 (Windows)
 		#================================================================
 		"$msedge"	--headless					\
-				--virtual-time-budget=10000			\
+				--virtual-time-budget=20000			\
 				--window-size=$width,$height			\
 				--screenshot="$outfile"				\
 				--hide-scrollbars				\
@@ -94,7 +94,7 @@ web)
 		# Google Chromeを使って取得 (Mac)
 		#================================================================
 		"$chrome"	--headless					\
-				--virtual-time-budget=10000			\
+				--virtual-time-budget=20000			\
 				--window-size=$width,$height			\
 				--screenshot="$outfile"				\
 				--hide-scrollbars				\
