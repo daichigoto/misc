@@ -64,6 +64,7 @@ msedge)
 	"$msedge"	--headless					\
 			--dump-dom					\
 			--enable-logging 				\
+			--virtual-time-budget=10000			\
 			${@}
 	;;
 chrome)
@@ -72,6 +73,7 @@ chrome)
 	#================================================================
 	"$chrome"	--headless					\
 			--dump-dom					\
+			--virtual-time-budget=10000			\
 			${@}
 	;;
 curl)
