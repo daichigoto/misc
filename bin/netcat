@@ -73,7 +73,7 @@ chrome)
 	#================================================================
 	"$chrome"	--headless					\
 			--dump-dom					\
-			--virtual-time-budget=10000			\
+			--virtual-time-budget=20000			\
 			${@}
 	;;
 curl)
