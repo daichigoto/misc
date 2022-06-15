@@ -86,6 +86,7 @@ web)
 				--virtual-time-budget=10000			\
 				--window-size=$width,$height			\
 				--screenshot="$outfile"				\
+				--hide-scrollbars				\
 				${@}
 		;;
 	chrome)
@@ -96,6 +97,7 @@ web)
 				--virtual-time-budget=10000			\
 				--window-size=$width,$height			\
 				--screenshot="$outfile"				\
+				--hide-scrollbars				\
 				${@}
 		;;
 	esac
