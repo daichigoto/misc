@@ -21,7 +21,7 @@ Param(
 	[String]$Cc = "",
 	[String]$Bcc = "",
 	[String]$From = $Env:DEFAULT_EMAIL_FROM,
-	[String]$Subject = "Windowsシステムクリップボード",
+	[String]$Subject = "メール送付",
 	[String]$Body = "",
 	[String]$BodyFromFile = $null,
 	[Switch]$BodyFromClip,
