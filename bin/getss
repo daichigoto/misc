@@ -96,7 +96,7 @@ web)
 				--window-size=$width,$height			\
 				--screenshot="$outfile"				\
 				--hide-scrollbars				\
-				${@}
+				"${url}"
 		;;
 	chrome)
 		#================================================================
@@ -107,7 +107,7 @@ web)
 				--window-size=$width,$height			\
 				--screenshot="$outfile"				\
 				--hide-scrollbars				\
-				${@}
+				"${url}"
 		;;
 	esac
 	;;
