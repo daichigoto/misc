@@ -7,15 +7,35 @@
 #=========================================================================
 # コマンドセットをセットアップ
 #=========================================================================
-if	[ ! -e /usr/bin/pip ]
-then
-	pacman -S --noconfirm python-pip
-fi
+case "$(uname)" in
+Darwin)
+	#=================================================================
+	# Apple Silicon Mac
+	#=================================================================
+	d=~/Library/Python
+	if	[ -z $(find "$d" -name deepl -type f 2> /dev/null) ]
+	then
+		pip3	install deepl-translate
+	fi
 
-if	[ ! -e /usr/bin/deepl ]
-then
-	pip install deepl-translate
-fi
+	pth=$(find "$d" -name deepl -type f 2> /dev/null | head -1)
+	PATH="${pth%/*}:${PATH}"
+	;;
+*)
+	#=================================================================
+	# Windows MSYS2
+	#=================================================================
+	if	[ ! -e /usr/bin/pip ]
+	then
+		pacman -S --noconfirm python-pip
+	fi
+	
+	if	[ ! -e /usr/bin/deepl ]
+	then
+		pip install deepl-translate
+	fi
+	;;
+esac
 
 #=========================================================================
 # 指定されたファイルまたはパイプラインから受けとるテキストデータを翻訳
