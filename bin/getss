@@ -103,11 +103,12 @@ web)
 		# Google Chromeを使って取得 (Mac)
 		#================================================================
 		"$chrome"	--headless					\
-				--virtual-time-budget=20000			\
 				--window-size=$width,$height			\
 				--screenshot="$outfile"				\
 				--hide-scrollbars				\
 				"${url}"
+		# Mac Google Chrome は --virtual-time-budget を指定すると動作が
+		# 停止することが多いので、指定を行わない
 		;;
 	esac
 	;;
