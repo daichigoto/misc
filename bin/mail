@@ -1,34 +1,33 @@
 #!/bin/sh
 
-exit
-
 #========================================================================
 # メールコンポーザ起動スクリプト
 #========================================================================
 
 #========================================================================
 # 引数を処理
-#   -To	a@example.com,b@example.com	宛先メールアドレス
-#   -Cc a@example.com,b@example.com	Ccメールアドレス
-#   -Bcc a@example.com,b@example.com	Bcccメールアドレス
-#   -From bar@example.com		送信元メールアドレス
-#   -Subject 'Mail Title'		メールサブジェクト
-#   -Body 'Mail body'			メール本文(引数で指定)
-#   -BodyFromFile file1.txt		メール本文(ファイルで指定)
-#   -BodyFromClip			メール本文(クリップボードからコピー)
-#   -Attachment file1.jpg,fil2.png	添付ファイル
+#   -t a@example.com,b@example.com	宛先メールアドレス
+#   -c a@example.com,b@example.com	Ccメールアドレス
+#   -b a@example.com,b@example.com	Bcccメールアドレス
+#   -f bar@example.com			送信元メールアドレス
+#   -s 'Mail Title'			メールサブジェクト
+#   -b 'Mail body'			メール本文(引数で指定)
+#   -F file1.txt			メール本文(ファイルで指定)
+#   -C					メール本文(クリップボードからコピー)
+#   -A file1.jpg,fil2.png		添付ファイル
 #========================================================================
-Param(
-	[String]$To = $Env:DEFAULT_EMAIL_TO,
-	[String]$Cc = "",
-	[String]$Bcc = "",
-	[String]$From = $Env:DEFAULT_EMAIL_FROM,
-	[String]$Subject = "メール送付",
-	[String]$Body = "",
-	[String]$BodyFromFile = $null,
-	[Switch]$BodyFromClip,
-	[String]$Attachment = ""
-)
+
+To=${DEFAULT_EMAIL_TO}
+Cc=""
+Bcc=""
+From=${DEFAULT_EMAIL_FROM}
+Subject="メール送付"
+Body=""
+BodyFromFile=""
+BodyFromClip=false
+Attachment= ""
+
+exit
 
 #========================================================================
 # Thunderbirdアプリケーションパス
