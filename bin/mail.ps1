@@ -6,7 +6,7 @@
 
 #========================================================================
 # 引数を処理
-#   -To	a@example.com,b@example.com	宛先メールアドレス
+#   -To a@example.com,b@example.com	宛先メールアドレス
 #   -Cc a@example.com,b@example.com	Ccメールアドレス
 #   -Bcc a@example.com,b@example.com	Bcccメールアドレス
 #   -From bar@example.com		送信元メールアドレス
