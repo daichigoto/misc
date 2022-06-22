@@ -88,27 +88,27 @@ case "${type}" in
 web)
 	case "${method}" in
 	msedge)
-		#================================================================
+		#========================================================
 		# Microsoft Edgeを使って取得 (Windows)
-		#================================================================
-		"$msedge"	--headless					\
-				--virtual-time-budget=20000			\
-				--window-size=$width,$height			\
-				--screenshot="$outfile"				\
-				--hide-scrollbars				\
+		#========================================================
+		"$msedge"	--headless				\
+				--virtual-time-budget=20000		\
+				--window-size=$width,$height		\
+				--screenshot="$outfile"			\
+				--hide-scrollbars			\
 				"${url}"
 		;;
 	chrome)
-		#================================================================
+		#========================================================
 		# Google Chromeを使って取得 (Mac)
-		#================================================================
-		"$chrome"	--headless					\
-				--window-size=$width,$height			\
-				--screenshot="$outfile"				\
-				--hide-scrollbars				\
+		#========================================================
+		"$chrome"	--headless				\
+				--window-size=$width,$height		\
+				--screenshot="$outfile"			\
+				--hide-scrollbars			\
 				"${url}"
-		# Mac Google Chrome は --virtual-time-budget を指定すると動作が
-		# 停止することが多いので、指定を行わない
+		# Mac Google Chrome は --virtual-time-budget を指定すると
+		# 動作が停止することが多いので、指定を行わない
 		;;
 	esac
 	;;
