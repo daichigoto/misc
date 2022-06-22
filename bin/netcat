@@ -7,10 +7,10 @@
 #========================================================================
 # 作業用ディレクトリの作成と削除トラップの設定
 #========================================================================
-tmp=/tmp/$$
-rm	-rf $tmp 
-mkdir	-p $tmp
-trap	"[ -d $tmp ] && chmod -R u+w $tmp; rm -rf $tmp" EXIT
+tmpd=/tmp/$$
+rm	-rf $tmpd 
+mkdir	-p $tmpd
+trap	"[ -d $tmpd ] && chmod -R u+w $tmpd; rm -rf $tmpd" EXIT
 
 #========================================================================
 # Webリソース取得に利用するアプリケーション
@@ -89,12 +89,12 @@ chrome)
 	"$chrome"	--headless					\
 			--dump-dom					\
 			--virtual-time-budget=20000			\
-			${@}						> $tmp-out
+			${@}						> $tmpd/out
 	# Mac Google Chrome は取得に失敗することがあるので、失敗した場合は
 	# curlでの取得を試みる
-	if [ -s $tmp-out ]
+	if [ -s $tmpd/out ]
 	then
-		cat	$tmp-out
+		cat	$tmpd/out
 	else
 		method=curl
 	fi
