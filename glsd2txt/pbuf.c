@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2022 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 
 #include "glsd2txt.h"
 
-#define PBUF_SIZE	1024 * 64
+#define PBUF_SIZE	1024 * 64 * 10
 
 static void pbuf_entitycompaction(void);
 

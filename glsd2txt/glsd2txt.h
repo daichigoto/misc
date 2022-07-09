@@ -36,7 +36,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20171206"
+#define VERSION			"20220709"
 
 typedef enum el {
 	ELEMENT_DOCUMENT,
