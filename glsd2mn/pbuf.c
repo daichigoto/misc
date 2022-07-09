@@ -27,7 +27,7 @@
 
 #include "glsd2mn.h"
 
-#define PBUF_SIZE	1024 * 64
+#define PBUF_SIZE	1024 * 64 * 10
 
 static void pbuf_entitycompaction(void);
 static void pbuf_escaped_prints(char *);
