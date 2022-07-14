@@ -18,6 +18,7 @@ trap	"[ -d $tmpd ] && chmod -R u+w $tmpd; rm -rf $tmpd" EXIT
 msedge='/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
 chrome='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 curl='curl'
+agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
 
 #========================================================================
 # どの方法でWebリソースを取得するかを判断
@@ -64,14 +65,15 @@ esac
 #========================================================================
 # Webブラウザ系のヘッドレスモードでは取得できないサイトかどうかを判断
 #========================================================================
-case "${1}" in
+case	"${1}" in
 https://*sucuri*/*)	method="curl" ;;
+#https://*adobe*/*)	method="curl" ;;
 esac
 
 #========================================================================
 # Webリソースを取得
 #========================================================================
-case "${method}" in
+case	"${method}" in
 msedge)
 	#================================================================
 	# Microsoft Edgeを使って取得 (Windows)
@@ -79,6 +81,8 @@ msedge)
 	"$msedge"	--headless					\
 			--dump-dom					\
 			--enable-logging 				\
+			--lang=en-US					\
+			--user-agent="$agent"				\
 			--virtual-time-budget=10000			\
 			${@}
 	;;
@@ -88,6 +92,8 @@ chrome)
 	#================================================================
 	"$chrome"	--headless					\
 			--dump-dom					\
+			--lang=en-US					\
+			--user-agent="$agent"				\
 			--virtual-time-budget=20000			\
 			${@}						> $tmpd/out
 	# Mac Google Chrome は取得に失敗することがあるので、失敗した場合は
@@ -101,13 +107,13 @@ chrome)
 	;;
 esac
 
-case "${method}" in
+case	"${method}" in
 curl)
 	#================================================================
 	# curl を使って取得する方法
 	#================================================================
 	"$curl"		--insecure 					\
-			-A Mozilla/5.0 					\
+			-A "$agent" 					\
 			--location 					\
 			--compressed 					\
 			-get ${@}

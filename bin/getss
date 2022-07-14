@@ -14,7 +14,7 @@ outfile=${HOME}/ss.png
 #========================================================================
 # オプションを処理
 #========================================================================
-while getopts f:Lw:h: OPT
+while	getopts f:Lw:h: OPT
 do
 	case $OPT in
 	f)
@@ -28,7 +28,7 @@ do
 		;;
 	esac
 done
-shift $((OPTIND - 1))
+shift	$((OPTIND - 1))
 url="$(eval echo '$'{$#})"
 
 #========================================================================
@@ -36,12 +36,13 @@ url="$(eval echo '$'{$#})"
 #========================================================================
 msedge='/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
 chrome='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
 
 #========================================================================
 # どの方法でスクリーンショットを取得するかを判断
 #========================================================================
 method="none"
-case "${url}" in
+case	"${url}" in
 http*)
 	#================================================================
 	# Webページのスクリーンショットを取得する
@@ -85,7 +86,7 @@ esac
 #========================================================================
 # Webページのスクリーンショットを取得
 #========================================================================
-case "${type}" in
+case	"${type}" in
 web)
 	case "${method}" in
 	msedge)
@@ -94,6 +95,8 @@ web)
 		#========================================================
 		"$msedge"	--headless				\
 				--virtual-time-budget=20000		\
+				--lang=en-US				\
+				--user-agent="$agent"			\
 				--window-size=$width,$height		\
 				--screenshot="$outfile"			\
 				--hide-scrollbars			\
@@ -104,6 +107,8 @@ web)
 		# Google Chromeを使って取得 (Mac)
 		#========================================================
 		"$chrome"	--headless				\
+				--lang=en-US				\
+				--user-agent="$agent"			\
 				--window-size=$width,$height		\
 				--screenshot="$outfile"			\
 				--hide-scrollbars			\
