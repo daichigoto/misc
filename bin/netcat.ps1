@@ -16,11 +16,40 @@ Param(
 #========================================================================
 # Webリソース取得に利用するアプリケーション
 #========================================================================
+$msedge='C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
 $curl='C:\Windows\System32\curl.exe'
 
 #========================================================================
-# curl を使って取得する
+# どの方法でWebリソースを取得するかを判断
 #========================================================================
-& $curl	--location 						`
-	-A $Agent						`
-	-get $URL
+if (Test-Path $msedge) {
+	$method='msedge'
+}
+elseif (Test-Path $curl) {
+	$method='curl'
+}
+else {
+	$method='none'
+}
+
+#========================================================================
+# Webリソースを取得
+#========================================================================
+switch ($method)
+{
+	'msedge'
+	{
+		$o1='--headless'
+		$o2='--dump-dom'
+		$o3='--enable-logging'
+		Start-Process	-FilePath $msedge			`
+				-ArgumentList $o1,$o2,$o3,$URL		`
+				-Wait
+	}
+	'curl'
+	{
+		& $curl		--location 				`
+				-A $Agent				`
+				-get $URL
+	}
+}
