@@ -70,8 +70,9 @@ http*)
 	# http://example.com/のスクリーンショットを取っておく
 	#================================================================
 	case "${url}" in
-	https://*sucuri*/*)	url="http://example.com/" ;;
+	https://*sucuri*/*)		url="http://example.com/" ;;
 	https://*arstechnica.com/*)	url="http://example.com/" ;;
+	*[pP][dD][fF])			url="http://example.com/" ;;
 	esac
 	;;
 *)
