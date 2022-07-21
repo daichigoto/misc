@@ -58,6 +58,7 @@ switch ($method)
 
 		Start-Process	-FilePath $msedge			`
 				-ArgumentList $o1,$o2,$o3,$o4,$URL	`
+				-Wait
 
 		# $o1='--headless'
 		# $o2='--dump-dom'
