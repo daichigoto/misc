@@ -54,8 +54,9 @@ switch ($method)
 		$o1='--headless'
 		$o2='--dump-dom'
 		$o3='--enable-logging'
+		$o4='--user-agent="$agent"'
 		Start-Process	-FilePath $msedge			`
-				-ArgumentList $o1,$o2,$o3,$URL		`
+				-ArgumentList $o1,$o2,$o3,$o4,$URL	`
 				-Wait
 	}
 
