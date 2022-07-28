@@ -56,22 +56,13 @@ switch ($method)
 		$o3='--enable-logging'
 		$o4='--user-agent="$agent"'
 
+		$tmpf=New-TemporaryFile
 		Start-Process	-FilePath $msedge			`
+				-RedirectStandardOutput $tmpf		`
 				-ArgumentList $o1,$o2,$o3,$o4,$URL	`
 				-Wait
-
-		# $o1='--headless'
-		# $o2='--dump-dom'
-		# $o3='--enable-logging'
-		# $o4='--user-agent="$agent"'
-
-		# $tmpf=New-TemporaryFile
-		# Start-Process	-FilePath $msedge			`
-		# 		-RedirectStandardOutput $tmpf		`
-		# 		-ArgumentList $o1,$o2,$o3,$o4,$URL	`
-		# 		-Wait
-		# Get-Content	$tmpf
-		# Remove-Item	$tmpf
+		Get-Content	$tmpf
+		Remove-Item	$tmpf
 	}
 
 	#================================================================
