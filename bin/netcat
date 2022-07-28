@@ -42,14 +42,14 @@ case "${1}" in
 	#================================================================
 	# Microsoft Edgeを使って取得 (Windows)
 	#================================================================
-	if [ -e "$msedge" ]
+	if	[ -e "$msedge" ]
 	then
 		method="msedge"
 	
 	#================================================================
 	# Google Chromeを使って取得 (Mac)
 	#================================================================
-	elif [ -e "$chrome" ]
+	elif	[ -e "$chrome" ]
 	then
 		method="chrome"
 	
@@ -95,9 +95,10 @@ chrome)
 			--user-agent="$agent"				\
 			--virtual-time-budget=20000			\
 			${@}						> $tmpd/out
+
 	# Mac Google Chrome は取得に失敗することがあるので、失敗した場合は
 	# curlでの取得を試みる
-	if [ -s $tmpd/out ]
+	if	[ -s $tmpd/out ]
 	then
 		cat	$tmpd/out
 	else
