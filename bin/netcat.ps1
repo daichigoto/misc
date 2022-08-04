@@ -27,7 +27,7 @@ $ContentType=(&	$curl		--location 				`
 				-A $Agent				`
 				-Ss -I 					`
 				$URL					|
-		Select-String	"Content-Type:")
+		Select-String	"^Content-Type:")
 
 #========================================================================
 # どの方法でWebリソースを取得するかを判断
@@ -88,5 +88,3 @@ switch ($method)
 				-get $URL
 	}
 }
-
-$method
