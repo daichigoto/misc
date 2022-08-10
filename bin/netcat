@@ -3,6 +3,7 @@
 #========================================================================
 # URLで指定されたリソースを取得
 #========================================================================
+url=${@}
 
 #========================================================================
 # 作業用ディレクトリの作成と削除トラップの設定
@@ -23,8 +24,27 @@ agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
 #========================================================================
 # Webリソースの種類を取得
 #========================================================================
-getrs="$curl --insecure --location --compressed -Ss -I"
-ct=$($getrs -A "$agent" ${@} | grep -i '^content-type: ')
+case "$url" in
+*.html|*.htm|*.shtml)	
+	ct="text/html"
+	;;
+*.txt)
+	ct="text/plain"
+	;;
+ *.csv|*csv=1)
+ 	ct="text/csv"
+ 	;;
+*.pdf)
+	ct="application/pdf"
+	;;
+*.zip)
+	ct="application/zip"
+	;;
+*)
+	getrs="$curl --insecure --location --compressed -Ss -I"
+	ct=$($getrs -A "$agent" ${@} | grep -i '^content-type: ')
+	;;
+esac
 
 #========================================================================
 # Webリソースを取得する方法を選択
@@ -84,7 +104,7 @@ msedge)
 			--enable-logging 				\
 			--lang=en-US					\
 			--user-agent="$agent"				\
-			${@}
+			"$url"
 # --virtual-time-budget=10000 を指定すると取得できないサイトが出てくる
 	;;
 chrome)
@@ -95,7 +115,7 @@ chrome)
 			--dump-dom					\
 			--lang=en-US					\
 			--user-agent="$agent"				\
-			${@}						> $tmpd/out
+			"$url"						> $tmpd/out
 
 # --virtual-time-budget=10000 を指定すると取得できないサイトが出てくる
 
@@ -119,6 +139,6 @@ curl)
 			-A "$agent" 					\
 			--location 					\
 			--compressed 					\
-			-get ${@}
+			-get "$url" 
 	;;
 esac
