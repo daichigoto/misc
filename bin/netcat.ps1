@@ -23,11 +23,49 @@ $curl='C:\Windows\System32\curl.exe'
 #========================================================================
 # Webリソースの種類を取得
 #========================================================================
-$ContentType=(&	$curl		--location 				`
-				-A $Agent				`
-				-Ss -I 					`
-				$URL					|
-		Select-String	"^Content-Type:")
+switch -Wildcard ($URL)
+{
+	'*.html' {
+		$ContentType='text/html'
+		break
+	}
+	'*.htm' {
+		$ContentType='text/html'
+		break
+	}
+	'*.shtml' {
+		$ContentType='text/html'
+		break
+	}
+	'*.txt' {
+		$ContentType='text/plain'
+		break
+	}
+	'*.csv' {
+		$ContentType='text/csv'
+		break
+	}
+	'*csv=1' {
+		$ContentType='text/csv'
+		break
+	}
+	'*.pdf' {
+		$ContentType='application/pdf'
+		break
+	}
+	'*.zip' {
+		$ContentType='application/zip'
+		break
+	}
+	default {
+		$ContentType=(&	$curl		--location 		`
+						-A $Agent		`
+						-Ss -I 			`
+						$URL			|
+				Select-String	"^Content-Type:")
+		break
+	}
+}
 
 #========================================================================
 # どの方法でWebリソースを取得するかを判断
@@ -35,13 +73,15 @@ $ContentType=(&	$curl		--location 				`
 switch -Wildcard ($ContentType)
 {
 	#================================================================
-	# HTMLコンテンツ: なるべくWebブラウザのヘッドレスモードを使用
+	# HTMLコンテンツ: JavaScriptでコンテンツを表示するタイプのページ
+	# にも対応するため、なるべくWebブラウザのヘッドレスモードを使用
 	#================================================================
 	'*text/html*' {
 		#========================================================
 		# Microsoft Edgeを使って取得
 		#========================================================
 		$method='msedge'
+		break
 	}
 	#================================================================
 	# それ以外のコンテンツは curl を使って取得
@@ -51,6 +91,7 @@ switch -Wildcard ($ContentType)
 		# curlを使って取得
 		#========================================================
 		$method='curl'
+		break
 	}
 }
 
@@ -76,6 +117,7 @@ switch ($method)
 				-Wait
 		Get-Content	$tmpf
 		Remove-Item	$tmpf
+		break
 	}
 
 	#================================================================
@@ -86,5 +128,6 @@ switch ($method)
 		& $curl		--location 				`
 				-A $Agent				`
 				-get $URL
+		break
 	}
 }
