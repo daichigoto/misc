@@ -37,6 +37,10 @@ switch -Wildcard ($URL)
 		$ContentType='text/html'
 		break
 	}
+	'*/' {
+		$ContentType='text/html'
+		break
+	}
 	'*.txt' {
 		$ContentType='text/plain'
 		break
