@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2022 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,10 @@ static char *p_access_chardata;
 static char access_chardata[BUFSIZ];
 static char access_ref[BUFSIZ];
 static char quote_ref[BUFSIZ];
+
+static int accesslist_count = 0;
+static char accesslist_ref[100][BUFSIZ];
+static char accesslist_title[100][BUFSIZ];
 
 static int in_item = 0;
 static int in_access = 0;
@@ -162,6 +166,12 @@ el_end_handler(void *data, const XML_Char *name)
 				newline();
 				printf("関連リンク\n");
 
+				for (int i=0; i < accesslist_count; i++) {
+					printf("<url>%s\n", accesslist_ref[i]);
+					printf("<title>%s\n", accesslist_title[i]);
+					newline();
+				}
+
 				printf("<url>");
 				char *purl = pbuf_getcopied();
 				purl += 6;
@@ -247,6 +257,11 @@ el_end_handler(void *data, const XML_Char *name)
 		pbuf_add(access_chardata, strlen(access_chardata));
 		pbuf_add("■", 3);
 		in_access = 0;
+
+		strcpy(accesslist_ref[accesslist_count], access_ref);
+		strcpy(accesslist_title[accesslist_count], access_chardata);
+		++accesslist_count;
+
 		break;
 	case ELEMENT_LIST:
 		in_item = 0;
