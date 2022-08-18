@@ -29,6 +29,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <sys/stat.h>
 #include <err.h>
 #include <errno.h>
@@ -36,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20220816"
+#define VERSION			"20220818"
 
 typedef enum el {
 	ELEMENT_DOCUMENT,

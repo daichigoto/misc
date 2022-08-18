@@ -166,29 +166,58 @@ el_end_handler(void *data, const XML_Char *name)
 				newline();
 				printf("関連リンク\n");
 
+				//=====================================
+				// [LINK:][]からURLを取得
+				//=====================================
+				char ref[BUFSIZ], *p_ref;
+				memset(ref, 0, BUFSIZ);
+				p_ref = ref;
+
+				char *purl = pbuf_getcopied();
+				purl += 6;
+				while (']' != *purl) {
+					*p_ref = *purl;
+					++p_ref;
+					++purl;
+				}
+
+				//=====================================
+				// [LINK:][]からタイトルを取得
+				//=====================================
+				char title[BUFSIZ], *p_title;
+				memset(title, 0, BUFSIZ);
+				p_title = title;
+
+				++purl;
+				++purl;
+				while (']' != *purl) {
+					*p_title = *purl;
+					++p_title;
+					++purl;
+				}
+
+				//=====================================
+				// 本文中access要素のURLとタイトルを関連リンクとして出力
+				//=====================================
+				bool sameurl = false;
 				for (int i=0; i < accesslist_count; i++) {
 					printf("<url>%s\n", accesslist_ref[i]);
 					printf("<title>%s\n", accesslist_title[i]);
 					newline();
+
+					if (0 == strcmp(accesslist_ref[i], ref)) {
+						sameurl = true;
+					}
 				}
 
-				printf("<url>");
-				char *purl = pbuf_getcopied();
-				purl += 6;
-				while (']' != *purl) {
-					putchar(*purl);
-					++purl;
+				//=====================================
+				// [LINK:][]のURLがまだ出力されていない場合は出力する
+				//=====================================
+				if (!sameurl) {
+					printf("<url>%s\n",ref);
+					printf("<title>%s\n",ref);
 				}
-				newline();
 
-				printf("<title>");
-				++purl;
-				++purl;
-				while (']' != *purl) {
-					putchar(*purl);
-					++purl;
-				}
-				newline();
 				break;
 			}
 			if (pbuf_startwith("[URL:")) {
@@ -258,9 +287,20 @@ el_end_handler(void *data, const XML_Char *name)
 		pbuf_add("■", 3);
 		in_access = 0;
 
-		strcpy(accesslist_ref[accesslist_count], access_ref);
-		strcpy(accesslist_title[accesslist_count], access_chardata);
-		++accesslist_count;
+		//======================================================
+		// まだ関連リスト用にURLが追加されていない場合には追加する
+		//======================================================
+		bool sameurl = false;
+		for (int i=0; i < accesslist_count; i++) {
+			if (0 == strcmp(accesslist_ref[i], access_ref)) {
+				sameurl = true;
+			}
+		}
+		if (!sameurl) {
+			strcpy(accesslist_ref[accesslist_count], access_ref);
+			strcpy(accesslist_title[accesslist_count], access_chardata);
+			++accesslist_count;
+		}
 
 		break;
 	case ELEMENT_LIST:
