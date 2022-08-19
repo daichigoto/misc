@@ -215,7 +215,7 @@ el_end_handler(void *data, const XML_Char *name)
 				//=====================================
 				if (!sameurl) {
 					printf("<url>%s\n",ref);
-					printf("<title>%s\n",ref);
+					printf("<title>%s\n",title);
 				}
 
 				break;
