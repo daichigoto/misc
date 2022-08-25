@@ -51,7 +51,10 @@ else
 fi
 
 # 翻訳サービスで翻訳
-deepl	English Japanese --file $tmp-src
+if	[ -s $tmp-src ]
+then
+	deepl	English Japanese --file $tmp-src
+fi
 
 # 一時ファイルを削除
 rm	-f $tmp-*
