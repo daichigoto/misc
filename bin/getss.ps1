@@ -7,10 +7,14 @@
 #========================================================================
 # 引数を処理
 #   -URL url		WebリソースのURL
+#   -Width width	スクリーンショットの幅
+#   -Height height	スクリーンショットの高さ
 #   -Agent agent	リクエストで使うエージェントを指定
 #========================================================================
 Param(
-	[Parameter(Mandatory=$true)][String]$URL = ""
+	[Parameter(Mandatory=$true)][String]$URL = "",
+	[Int]$Width = 1200,
+	[Int]$Height = 800
 )
 
 #========================================================================
@@ -40,9 +44,10 @@ switch ($method)
 	{
 		$o1='--headless'
 		$o2='--screenshot="' + ${outfile} + '"'
+		$o3="--window-size=${Width},${Height}"
 
 		Start-Process	-FilePath $msedge			`
-				-ArgumentList $o1,$o2,$URL		`
+				-ArgumentList $o1,$o2,$o3,$URL		`
 				-Wait
 		break
 	}
