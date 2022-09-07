@@ -39,41 +39,46 @@ done
 shift	$((OPTIND - 1))
 
 #========================================================================
-# スクリーンショット取得対象
+# スクリーンショット取得対象URI
 #========================================================================
-uri="$(eval echo '$'{$#})"
+uri="$*"
 
 #========================================================================
 # リソースの種類を特定
 #========================================================================
 case	"$uri" in
 http*)
+	#================================================================
+	# コンテンツの種類を特定
+	#================================================================
+	case	"${uri}" in
+	*.html|*.htm|*.shtml|*/)
+		ct="text/html"
+		;;
+	*.txt|*.TXT)
+		ct="text/plain"
+		;;
+	*.csv|*.CSV|http*csv=1)
+	 	ct="text/csv"
+	 	;;
+	*.pdf|*.PDF)
+		ct="application/pdf"
+		;;
+	*.zip|*.ZIP)
+		ct="application/zip"
+		;;
+	*)
+		getrs="$curl --insecure --location --compressed -Ss -I"
+		ct=$($getrs -A "$agent" ${uri} | grep -i '^content-type: ')
+		;;
+	esac
 	url="${uri}"
 	;;
-*)
-	ct="none"
-	;;
-esac
-
-case "${url:-none}" in
-*.html|*.htm|*.shtml|*/)
-	ct="text/html"
-	;;
-*.txt)
-	ct="text/plain"
-	;;
-*.csv|http*csv=1)
- 	ct="text/csv"
- 	;;
-*.pdf)
-	ct="application/pdf"
-	;;
-*.zip)
-	ct="application/zip"
+"")
+	uri="desktop:"
 	;;
 *)
-	getrs="$curl --insecure --location --compressed -Ss -I"
-	ct=$($getrs -A "$agent" ${@} | grep -i '^content-type: ')
+	uri=none:
 	;;
 esac
 
@@ -85,14 +90,14 @@ case	"${ct}" in
 	#================================================================
 	# Microsoft Edgeを使って取得 (Windows)
 	#================================================================
-	if [ -e "$msedge" ]
+	if	[ -e "$msedge" ]
 	then
 		method="msedge"
 	
 	#================================================================
 	# Google Chromeを使って取得 (Mac)
 	#================================================================
-	elif [ -e "$chrome" ]
+	elif	[ -e "$chrome" ]
 	then
 		method="chrome"
 
@@ -102,12 +107,6 @@ case	"${ct}" in
 	else
 		method="none"
 	fi
-	;;
-none)
-	#================================================================
-	# デスクトップのスクリーンショットを取得する
-	# XXX OSごとに画面のスクリーンショットを取る処理をそのうち実装
-	#================================================================
 	;;
 esac
 
@@ -128,43 +127,56 @@ esac
 #========================================================================
 # Webページのスクリーンショットを取得
 #========================================================================
-case	"${ct}" in
-*/*)
-	case	"${method}" in
-	msedge)
-		#========================================================
-		# Microsoft Edgeを使って取得 (Windows)
-		#========================================================
-		"$msedge"	--headless				\
-				--lang=en-US				\
-				--user-agent="$agent"			\
-				--window-size=$width,$height		\
-				--screenshot="$outfile"			\
-				--hide-scrollbars			\
-				"${url}"
-		;;
-#				--virtual-time-budget=20000		\
-	chrome)
-		#========================================================
-		# Google Chromeを使って取得 (Mac)
-		#========================================================
-		"$chrome"	--headless				\
-				--lang=en-US				\
-				--user-agent="$agent"			\
-				--window-size=$width,$height		\
-				--screenshot="$outfile"			\
-				--hide-scrollbars			\
-				"${url}"
-		# Mac Google Chrome は --virtual-time-budget を指定すると
-		# 動作が停止することが多いので、指定を行わない
+case	"$uri" in
+http*)
+	case	"${ct}" in
+	*/*)
+		case	"${method}" in
+		msedge)
+			#================================================
+			# Microsoft Edgeを使って取得 (Windows)
+			#================================================
+			"$msedge"	--headless			\
+					--lang=en-US			\
+					--user-agent="$agent"		\
+					--window-size=$width,$height	\
+					--screenshot="$outfile"		\
+					--hide-scrollbars		\
+					"${url}"
+			;;
+	#				--virtual-time-budget=20000	\
+		chrome)
+			#================================================
+			# Google Chromeを使って取得 (Mac)
+			#================================================
+			"$chrome"	--headless			\
+					--lang=en-US			\
+					--user-agent="$agent"		\
+					--window-size=$width,$height	\
+					--screenshot="$outfile"		\
+					--hide-scrollbars		\
+					"${url}"
+			# Mac Google Chrome は --virtual-time-budget を
+			# 指定すると動作が停止することが多いので、指定を
+			# 行わない
+			;;
+		esac
 		;;
 	esac
 	;;
+esac
 
 #========================================================================
 # デスクトップのスクリーンショットを取得
 #========================================================================
-*)
-	# XXX OSごとに画面のスクリーンショットを取る処理をそのうち実装
+case	"$uri" in
+desktop:*)
+	#================================================================
+	# Windowsでスクリーンショットを撮る
+	#================================================================
+	if	type SnippingTool.exe					> /dev/null
+	then
+		SnippingTool.exe
+	fi
 	;;
 esac
