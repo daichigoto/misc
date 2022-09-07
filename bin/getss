@@ -17,7 +17,7 @@ outfile=${HOME}/ss.png
 curl='curl'
 msedge='/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
 chrome='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+webagent='Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
 
 snippingtool='SnippingTool.exe'
 
@@ -71,7 +71,7 @@ http*)
 		;;
 	*)
 		getrs="$curl --insecure --location --compressed -Ss -I"
-		ct=$($getrs -A "$agent" ${uri} | grep -i '^content-type: ')
+		ct=$($getrs -A "$webagent" ${uri} | grep -i '^content-type: ')
 		;;
 	esac
 	;;
@@ -79,9 +79,6 @@ desktop:*)
 	;;
 "")
 	uri="desktop:"
-	;;
-*)
-	uri=none:
 	;;
 esac
 
@@ -120,9 +117,6 @@ desktop:*)
 		method="snippingtool"
 	fi
 	;;
-*)
-	uri=none:
-	;;
 esac
 
 #========================================================================
@@ -149,7 +143,7 @@ msedge)
 	#================================================
 	"$msedge"	--headless			\
 			--lang=en-US			\
-			--user-agent="$agent"		\
+			--user-agent="$webagent"	\
 			--window-size=$width,$height	\
 			--screenshot="$outfile"		\
 			--hide-scrollbars		\
@@ -161,7 +155,7 @@ chrome)
 	#================================================
 	"$chrome"	--headless			\
 			--lang=en-US			\
-			--user-agent="$agent"		\
+			--user-agent="$webagent"	\
 			--window-size=$width,$height	\
 			--screenshot="$outfile"		\
 			--hide-scrollbars		\
