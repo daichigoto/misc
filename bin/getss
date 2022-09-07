@@ -17,6 +17,7 @@ outfile=${HOME}/ss.png
 curl='curl'
 msedge='/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
 chrome='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+snippingtool='SnippingTool.exe'
 agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
 
 #========================================================================
@@ -173,9 +174,9 @@ desktop:*)
 	#================================================================
 	# Windowsでスクリーンショットを撮る
 	#================================================================
-	if	type SnippingTool.exe					> /dev/null
+	if	type "$snippingtool"					> /dev/null
 	then
-		SnippingTool.exe
+		"$snippingtool"
 	fi
 	;;
 esac
