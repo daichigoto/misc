@@ -72,7 +72,6 @@ http*)
 		ct=$($getrs -A "$agent" ${uri} | grep -i '^content-type: ')
 		;;
 	esac
-	url="${uri}"
 	;;
 "")
 	uri="desktop:"
@@ -114,14 +113,14 @@ esac
 # スクリーンショットが取れないページの場合、代わりに http://example.com/
 # のスクリーンショットを取っておく
 #========================================================================
-case	"${ct}" in
+case	"$ct" in
 *text/html*|*text/plain*)
-	case	"${url}" in
-	# https://*foo.bar.com/*)		url="http://example.com/" ;;
+	case	"$uri" in
+	# https://*foo.bar.com/*)		uri="http://example.com/" ;;
 	esac
 	;;
 */*)
-	url="http://example.com/"
+	uri="http://example.com/"
 esac
 
 #========================================================================
@@ -142,7 +141,7 @@ http*)
 					--window-size=$width,$height	\
 					--screenshot="$outfile"		\
 					--hide-scrollbars		\
-					"${url}"
+					"$uri"
 			;;
 	#				--virtual-time-budget=20000	\
 		chrome)
@@ -155,7 +154,7 @@ http*)
 					--window-size=$width,$height	\
 					--screenshot="$outfile"		\
 					--hide-scrollbars		\
-					"${url}"
+					"$uri"
 			# Mac Google Chrome は --virtual-time-budget を
 			# 指定すると動作が停止することが多いので、指定を
 			# 行わない
