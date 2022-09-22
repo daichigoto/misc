@@ -158,9 +158,10 @@ switch	($method)
 		$o2='--screenshot="' + $OutputFilePath + '"'
 		$o3="--window-size=$Width,$Height"
 		$o4='--user-agent="$Agent"'
+		$o5='--hide-scrollbars'
 
 		Start-Process	-FilePath $msedge			`
-				-ArgumentList $o1,$o2,$o3,$o4,$URI	`
+				-ArgumentList $o1,$o2,$o3,$o4,$o5,$URI	`
 				-Wait
 		break
 	}
