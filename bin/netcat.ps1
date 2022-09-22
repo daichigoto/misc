@@ -112,7 +112,7 @@ switch	($method)
 		$o1='--headless'
 		$o2='--dump-dom'
 		$o3='--enable-logging'
-		$o4='--user-agent="$agent"'
+		$o4='--user-agent="$Agent"'
 
 		$tmpf=New-TemporaryFile
 		Start-Process	-FilePath $msedge			`

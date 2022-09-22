@@ -9,17 +9,15 @@
 #   -URI uri		スクリーンショットを取得するリソースのURI
 #   -Width width	スクリーンショットの幅
 #   -Height height	スクリーンショットの高さ
+#   -OutputFilePath path スクリーンショットを保存するファイル
 #========================================================================
 Param(
 	[Parameter(Mandatory=$false)][String]$URI = "desktop:",
 	[Int]$Width = 1200,
-	[Int]$Height = 800
+	[Int]$Height = 800,
+	[String]$OutputFilePath = "${env:HOME}/ss.png",
+	[String]$Agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 )
-
-#========================================================================
-# デフォルトのスクリーンショットファイル
-#========================================================================
-$outfile="${env:HOME}/ss.png"
 
 #========================================================================
 # スクリーンショットの取得に利用するアプリケーションほか
@@ -114,6 +112,7 @@ switch	-Wildcard ($URI)
 	default
 	{
 		$contenttype=(	& $curl		--location		`
+						-A $Agent		`
 						-Ss -I			`
 						$URI			|
 				Select-String	"^Content-Type:"	)
@@ -156,11 +155,12 @@ switch	($method)
 	'msedge'
 	{
 		$o1='--headless'
-		$o2='--screenshot="' + ${outfile} + '"'
-		$o3="--window-size=${Width},${Height}"
+		$o2='--screenshot="' + $OutputFilePath + '"'
+		$o3="--window-size=$Width,$Height"
+		$o4='--user-agent="$Agent"'
 
 		Start-Process	-FilePath $msedge			`
-				-ArgumentList $o1,$o2,$o3,$URI		`
+				-ArgumentList $o1,$o2,$o3,$o4,$URI	`
 				-Wait
 		break
 	}
