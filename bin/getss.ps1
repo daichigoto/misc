@@ -10,6 +10,7 @@
 #   -Width width	スクリーンショットの幅
 #   -Height height	スクリーンショットの高さ
 #   -OutputFilePath path スクリーンショットを保存するファイル
+#   -Agent		Webサーバへ送るUser-Agent文字列を指定
 #========================================================================
 Param(
 	[Parameter(Mandatory=$false)][String]$URI = "desktop:",
