@@ -18,7 +18,6 @@ curl='curl'
 msedge='/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
 chrome='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 webagent='Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-
 snippingtool='SnippingTool.exe'
 
 #========================================================================
@@ -93,7 +92,7 @@ http*)
 	#================================================================
 	# コンテンツの種類を特定
 	#================================================================
-	case	"${uri}" in
+	case	"$uri" in
 	*.html|*.htm|*.shtml|*/)
 		ct="text/html"
 		;;
