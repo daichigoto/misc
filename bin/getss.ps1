@@ -28,6 +28,17 @@ $snippingtool='SnippingTool.exe'
 $curl='C:\Windows\System32\curl.exe'
 
 #========================================================================
+# スクリーンショットを保存するファイルのパスを絶対パスへ変換
+#========================================================================
+if	(-not (Split-Path -IsAbsolute $OutputFilePath))
+{
+	$OutputFilePath = [System.IO.Path]::GetFullPath(
+		$OutputFilePath, (Get-Location))
+	Write-Warning 							`
+		"スクリーンショット保存先として $OutputFilePath を使用。"
+}
+
+#========================================================================
 # どの方法でスクリーンショットを取得するか判断
 #========================================================================
 switch	-Wildcard ($URI)
