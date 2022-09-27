@@ -32,8 +32,7 @@ $curl='C:\Windows\System32\curl.exe'
 #========================================================================
 if	(-not (Split-Path -IsAbsolute $OutputFilePath))
 {
-	$OutputFilePath = [System.IO.Path]::GetFullPath(
-		$OutputFilePath, (Get-Location))
+	$OutputFilePath = [System.IO.Path]::GetFullPath($OutputFilePath)
 	Write-Warning 							`
 		"スクリーンショット保存先として $OutputFilePath を使用。"
 }
