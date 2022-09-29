@@ -9,6 +9,7 @@
 #   -URI uri		スクリーンショットを取得するリソースのURI
 #   -Width width	スクリーンショットの幅
 #   -Height height	スクリーンショットの高さ
+#   -HeightFull		スクリーンショットの高さをページ全体に設定
 #   -OutputFilePath path スクリーンショットを保存するファイル
 #   -Agent		Webサーバへ送るUser-Agent文字列を指定
 #========================================================================
@@ -16,6 +17,7 @@ Param(
 	[Parameter(Mandatory=$false)][String]$URI = "desktop:",
 	[Int]$Width = 1200,
 	[Int]$Height = 800,
+	[Switch]$HeightFull,
 	[String]$OutputFilePath = "${env:HOME}/ss.png",
 	[String]$Agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 )
@@ -153,6 +155,37 @@ switch	-Wildcard ($contenttype)
 		$URI='http://example.com/'
 		break
 	}
+}
+
+#========================================================================
+# ページ全体を取得する指定になっている場合にページ高さを取得
+#========================================================================
+if	($HeightFull)
+{
+	#================================================================
+	# Seleniumモジュールがない場合にはインストールする
+	#================================================================
+	if (-Not (Get-InstalledModule -Name Selenium 2> $Null)) {
+		"Seleniumモジュールをインストールします。"
+		Install-Module -Name Selenium -AllowPrerelease -Force
+	}
+
+	#================================================================
+	# Firefoxをヘッドレスモードで起動してページ長を計測する
+	#================================================================
+	Start-SeDriver	-Browser Firefox				`
+			-StartURL $URI					`
+			-PrivateBrowsing				`
+			-Size "$Width,800"				`
+			-State Headless					`
+			-UserAgent $Agent				> $Null
+	$Height	= Invoke-SeJavascript 					`
+			-Script 'return document.body.clientHeight'
+	Stop-SeDriver
+
+	# ※ Seleniumモジュール経由でEdgeを起動する場合、ヘッドレスモードが
+	# 使用できないため代わりにFirefoxを使っている。Edgeがヘッドレス
+	# モードで起動できるのであればEdgeへ実装を置き換えることも可能。
 }
 
 #========================================================================
