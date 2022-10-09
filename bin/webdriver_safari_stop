@@ -1,0 +1,33 @@
+#!/bin/sh
+
+#========================================================================
+# Apple Safari WebDriverを終了する
+#========================================================================
+
+#========================================================================
+# WebDriverプロセスを終了
+#========================================================================
+info=$(	ps auxww | grep -i safaridriver | grep -v grep)
+
+if	[ -n "$info" ]
+then
+	echo	"Apple Safari WebDriverを終了します。"
+
+	# 動作しているWebDriver情報を表示
+	echo	"-----------------------------------------------"
+	ps	auxww						|
+	grep	-i safaridriver					|
+	grep	-v grep
+	echo	"-----------------------------------------------"
+
+	pids=$(	ps	auxww					|
+		grep	-i safaridriver				|
+		grep	-v grep					|
+		awk	'{print $2}'				)
+
+	kill	${pids}
+
+	echo	"Apple Safari WebDriverを終了しました。"
+else
+	echo	"Apple Safari WebDriverは動作していません。"
+fi
