@@ -1,11 +1,11 @@
 #!/usr/bin/env pwsh
 
 #========================================================================
-# Microsoft Edge Webドライバを起動する
+# Microsoft Edge WebDriverを起動する
 #========================================================================
 
 #========================================================================
-# 動作しているMicrosoft Edge Webドライバをすべて終了
+# 動作しているMicrosoft Edge WebDriverをすべて終了
 #========================================================================
 webdriver_edge_stop.ps1
 
@@ -19,14 +19,14 @@ if (-Not (Get-InstalledModule -Name Selenium 2> $Null)) {
 }
 
 #========================================================================
-# Microsoft Edge Webドライバを起動
+# Microsoft Edge WebDriverを起動
 #========================================================================
-'Microsoft Edge Webドライバを起動します。'
+'Microsoft Edge WebDriverを起動します。'
 $Size = '1200,800'
 if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 {
 	#================================================================
-	# Microsoft EdgeとMicrosoft Edge Webドライバのバージョンが一致して
+	# Microsoft EdgeとMicrosoft Edge WebDriverのバージョンが一致して
 	# いないためにドライバが動作しなかった可能性がある。
 	#================================================================
 
@@ -43,7 +43,7 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 			Where-Object { $_ -NotMatch "[a-zA-Z]+" }	)
 
 	#================================================================
-	# Microsoft Edge WebドライバダウンロードURLとデプロイ先パス
+	# Microsoft Edge WebDriverダウンロードURLとデプロイ先パス
 	#================================================================
 	$DriverURL="https://msedgedriver.azureedge.net/$EdgeVersion/edgedriver_win64.zip"
 
@@ -52,12 +52,12 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 	$DriverDownloadDir="$DriverDir\_download"
 
 	#================================================================
-	# Webドライバダウンロード用の一時ディレクトリを作成
+	# WebDriverダウンロード用の一時ディレクトリを作成
 	#================================================================
 	New-Item	$DriverDownloadDir -ItemType Directory -Force
 
 	#================================================================
-	# Microsoft Edgeと同じバージョンのMicrosoft Edge Webドライバを
+	# Microsoft Edgeと同じバージョンのMicrosoft Edge WebDriverを
 	# ダウンロード
 	#================================================================
 	"Microsoft Edge WebDriver version $EdgeVersion をダウンロードします。"
@@ -66,7 +66,7 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 	 		$DriverURL
 
 	#================================================================
-	# Microsoft Edge Webドライバをデプロイ
+	# Microsoft Edge WebDriverをデプロイ
 	#================================================================
 	"Microsoft Edge WebDriver version $EdgeVersion をインストールします。"
 
@@ -79,12 +79,12 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 			-Force
 
 	#================================================================
-	# Webドライバダウンロード用の一時ディレクトリを削除
+	# WebDriverダウンロード用の一時ディレクトリを削除
 	#================================================================
 	Remove-Item	$DriverDownloadDir -Recurse -Force
 
 	#================================================================
-	# Microsoft Edge Webドライバを起動する
+	# Microsoft Edge WebDriverを起動する
 	#================================================================
 	if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null)) 
 	{
@@ -101,4 +101,4 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 		Exit
 	}
 }
-'Microsoft Edge Webドライバの起動処理完了。'
+'Microsoft Edge WebDriverの起動処理完了。'
