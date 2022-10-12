@@ -203,9 +203,13 @@ switch	($method)
 		$o3="--window-size=$Width,$Height"
 		$o4='--user-agent="$Agent"'
 		$o5='--hide-scrollbars'
+		$o6='--virtual-time-budget=10000'
+		# ページ読み込み後にコンテンツをロードするタイプの
+		# Webページはしばらく待つ必要があるため、そのために
+		# --virtual-time-budget= で待機時間を指定している。
 
 		Start-Process	-FilePath $msedge			`
-				-ArgumentList $o1,$o2,$o3,$o4,$o5,$URI	`
+				-ArgumentList $o1,$o2,$o3,$o4,$o5,$o6,$URI `
 				-Wait
 		break
 	}
@@ -219,4 +223,4 @@ switch	($method)
 		# ※ -Waitは指定しても機能しない
 		break
 	}
-}
+
