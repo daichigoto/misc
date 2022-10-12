@@ -203,7 +203,7 @@ switch	($method)
 		$o3="--window-size=$Width,$Height"
 		$o4='--user-agent="$Agent"'
 		$o5='--hide-scrollbars'
-		$o6='--virtual-time-budget=10000'
+		$o6='--virtual-time-budget=2000'
 		# ページ読み込み後にコンテンツをロードするタイプの
 		# Webページはしばらく待つ必要があるため、そのために
 		# --virtual-time-budget= で待機時間を指定している。

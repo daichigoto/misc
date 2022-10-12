@@ -144,7 +144,7 @@ msedge)
 			--window-size=$width,$height	\
 			--screenshot="$outfile"		\
 			--hide-scrollbars		\
-			--virtual-time-budget=10000	\
+			--virtual-time-budget=2000	\
 			"$uri"
 	# ページ読み込み後にコンテンツをロードするタイプの
 	# Webページはしばらく待つ必要があるため、そのために
