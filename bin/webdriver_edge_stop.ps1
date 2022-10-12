@@ -1,25 +1,25 @@
 #!/usr/bin/env pwsh
 
 #========================================================================
-# Microsoft Edge Webドライバを終了する
+# Microsoft Edge WebDriverを終了する
 #========================================================================
 
 #========================================================================
-# Webドライバプロセスを終了
+# WebDriverプロセスを終了
 #========================================================================
 if	(Get-Process -Name msedgedriver 2> $Null) 
 {
-	'動作しているMicrosoft Edge Webドライバを終了します。'
+	'動作しているMicrosoft Edge WebDriverを終了します。'
 	Get-Process -Name msedgedriver 2> $Null
 
-	# Microsoft Edge Webドライバを終了
+	# Microsoft Edge WebDriverを終了
 	Stop-SeDriver 2> $Null
 
-	# まだ動作しているほかのMicrosoft Edge Webドライバを終了
+	# まだ動作しているほかのMicrosoft Edge WebDriverを終了
 	if	(Get-Process -Name msedgedriver 2> $Null) 
 	{
 		Get-Process -Name msedgedriver 2> $Null | Stop-Process
 	}
 
-	'動作しているMicrosoft Edge Webドライバの終了処理完了。'
+	'動作しているMicrosoft Edge WebDriverの終了処理完了。'
 }
