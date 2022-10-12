@@ -112,8 +112,8 @@ msedge)
 			--enable-logging 				\
 			--lang=en-US					\
 			--user-agent="$agent"				\
+			--virtual-time-budget=10000			\
 			"$url"
-# --virtual-time-budget=10000 を指定すると取得できないサイトが出てくる
 	;;
 chrome)
 	#================================================================
@@ -125,7 +125,8 @@ chrome)
 			--user-agent="$agent"				\
 			"$url"						> $tmpd/out
 
-# --virtual-time-budget=10000 を指定すると取得できないサイトが出てくる
+	# MacのChromeは--virtual-time-budget=10000を指定すると取得でき
+	# ないサイトが出てくるため、いったんコメントアウト
 
 	# Mac Google Chrome は取得に失敗することがあるので、失敗した場合は
 	# curlでの取得を試みる

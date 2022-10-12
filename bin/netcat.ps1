@@ -113,11 +113,12 @@ switch	($method)
 		$o2='--dump-dom'
 		$o3='--enable-logging'
 		$o4='--user-agent="$Agent"'
+		$o5='--virtual-time-budget=10000'
 
 		$tmpf=New-TemporaryFile
 		Start-Process	-FilePath $msedge			`
 				-RedirectStandardOutput $tmpf		`
-				-ArgumentList $o1,$o2,$o3,$o4,$URL	`
+				-ArgumentList $o1,$o2,$o3,$o4,$o5,$URL	`
 				-Wait
 		Get-Content	$tmpf
 		Remove-Item	$tmpf
