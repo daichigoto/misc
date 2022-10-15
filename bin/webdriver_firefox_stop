@@ -1,0 +1,33 @@
+#!/bin/sh
+
+#========================================================================
+# Mozilla Firefox WebDriverを終了する
+#========================================================================
+
+#========================================================================
+# WebDriverプロセスを終了
+#========================================================================
+info=$(	ps auxww | grep -i geckodriver | grep -v grep)
+
+if	[ -n "$info" ]
+then
+	echo	"Mozilla Firefox WebDriverを終了します。"
+
+	# 動作しているWebDriver情報を表示
+	echo	"-----------------------------------------------"
+	ps	auxww						|
+	grep	-i geckodriver					|
+	grep	-v grep
+	echo	"-----------------------------------------------"
+
+	pids=$(	ps	auxww					|
+		grep	-i geckodriver				|
+		grep	-v grep					|
+		awk	'{print $2}'				)
+
+	kill	${pids}
+
+	echo	"Mozilla Firefox WebDriverを終了しました。"
+else
+	echo	"Mozilla Firefox WebDriverは動作していません。"
+fi
