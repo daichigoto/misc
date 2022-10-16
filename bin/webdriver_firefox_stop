@@ -35,7 +35,8 @@ then
 	pids=$(	ps	auxww					|
 	grep	-i firefox-bin					|
 	grep	-- '--marionette'				|
-	grep	-v grep						)
+	grep	-v grep						|
+		awk	'{print $2}'				)
 	kill	${pids}
 
 	echo	"Mozilla Firefox WebDriverを終了しました。"
