@@ -30,14 +30,20 @@ then
 		grep	-i geckodriver				|
 		grep	-v grep					|
 		awk	'{print $2}'				)
-	kill	${pids}
+	if	[ -n "$pids" ]
+	then
+		kill	${pids}
+	fi
 
 	pids=$(	ps	auxww					|
-	grep	-i firefox-bin					|
-	grep	-- '--marionette'				|
-	grep	-v grep						|
+		grep	-i firefox-bin				|
+		grep	-- '--marionette'			|
+		grep	-v grep					|
 		awk	'{print $2}'				)
-	kill	${pids}
+	if	[ -n "$pids" ]
+	then
+		kill	${pids}
+	fi
 
 	echo	"Mozilla Firefox WebDriverを終了しました。"
 else
