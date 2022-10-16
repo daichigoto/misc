@@ -7,21 +7,31 @@
 #========================================================================
 # WebDriverプロセスを終了
 #========================================================================
-info=$(ps auxww | grep -i chromedriver | grep -v grep)
+info1=$(ps auxww | grep chromedriver | grep -v grep)
+info2=$(ps auxww | grep test-type=webdriver | grep -v grep)
 
-if	[ -n "$info" ]
+if	[ -n "${info1}${info2}" ]
 then
 	echo	"Google Chrome WebDriverを終了します。"
 
 	# 動作しているWebDriver情報を表示
 	echo	"-----------------------------------------------"
 	ps	auxww						|
-	grep	-i chromedriver					|
+	grep	chromedriver					|
 	grep	-v grep
 	echo	"-----------------------------------------------"
 
 	pids=$(	ps	auxww					|
 		grep	-i chromedriver				|
+		grep	-v grep					|
+		awk	'{print $2}'				)
+	if	[ -n "$pids" ]
+	then
+		kill	${pids}
+	fi
+
+	pids=$(	ps	auxww					|
+		grep	test-type=webdriver			|
 		grep	-v grep					|
 		awk	'{print $2}'				)
 	if	[ -n "$pids" ]
