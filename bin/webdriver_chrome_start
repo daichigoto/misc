@@ -1,13 +1,15 @@
 #!/bin/sh
 
 #========================================================================
-# Mozilla Firefox WebDriverを起動する
+# Google Chrome WebDriverを起動する
 #========================================================================
+# chromedriverをインストールするパス
+bindir="$HOME/Documents/misc/bin/"
 
 #========================================================================
-# 動作しているMozilla Firefox WebDriverをすべて終了
+# 動作しているGoogle Chrome WebDriverをすべて終了
 #========================================================================
-webdriver_firefox_stop
+webdriver_chrome_stop
 
 #========================================================================
 # Seleniumモジュールがない場合にはインストールする
@@ -22,9 +24,44 @@ then
 fi
 
 #========================================================================
-# geckodriverがない場合にはインストールする
+# chromedriverがない場合にはインストールする
 #========================================================================
-if	! which geckodriver > /dev/null
+chromeversion=$(/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version | awk '{print $3}')
+chromemajorversion=$(echo $chromeversion | echo $chromeversion | cut -f1 -d.)
+
+if	! which chromedriver > /dev/null
 then
-	brew	install geckodriver
+	driverversion=$(curl --get https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$chromemajorversion 2> /dev/null)
+
+	echo 	'chromedriverをインストールします。'
+	cd	/tmp/
+	curl	--get -O https://chromedriver.storage.googleapis.com/"$driverversion"/chromedriver_mac64.zip
+	unzip	chromedriver_mac64.zip
+	cp	chromedriver						\
+		"$bindir"
+	rm	chromedriver_mac64.zip 					\
+		chromedriver
+	cd	-
+fi
+
+driverversion=$(chromedriver --version | awk '{print $2}')
+drivermajorversion=$(echo $driverversion | cut -f1 -d.)
+
+#========================================================================
+# chromedriverとChromeのメジャーバージョンが一致しない場合には
+# chromedriverを上書きインストールする
+#========================================================================
+if 	[ "$chromemajorversion" != "$drivermajorversion" ]
+then
+	echo 	'chromedriverをアップデートします。'
+	cd	/tmp/
+	curl	--get -O https://chromedriver.storage.googleapis.com/"$driverversion"/chromedriver_mac64.zip
+	unzip	chromedriver_mac64.zip
+	cp	chromedriver						\
+		"$bindir"
+	rm	chromedriver_mac64.zip 					\
+		chromedriver
+	cd	-
+else
+	echo 	'chromedriverは適切なバージョンがインストールされています。'
 fi
