@@ -7,9 +7,10 @@
 #========================================================================
 # WebDriverプロセスを終了
 #========================================================================
-info=$(	ps auxww | grep -i geckodriver | grep -v grep)
+info1=$(ps auxww | grep -i geckodriver | grep -v grep)
+info2=$(ps auxww | grep -i firefox-bin | grep -- '--marionette' | grep -v grep | awk '{print $2}')
 
-if	[ -n "$info" ]
+if	[ -n "${info1}${info2}" ]
 then
 	echo	"Mozilla Firefox WebDriverを終了します。"
 
@@ -19,12 +20,22 @@ then
 	grep	-i geckodriver					|
 	grep	-v grep
 	echo	"-----------------------------------------------"
+	ps	auxww						|
+	grep	-i firefox-bin					|
+	grep	-- '--marionette'				|
+	grep	-v grep
+	echo	"-----------------------------------------------"
 
 	pids=$(	ps	auxww					|
 		grep	-i geckodriver				|
 		grep	-v grep					|
 		awk	'{print $2}'				)
+	kill	${pids}
 
+	pids=$(	ps	auxww					|
+	grep	-i firefox-bin					|
+	grep	-- '--marionette'				|
+	grep	-v grep						)
 	kill	${pids}
 
 	echo	"Mozilla Firefox WebDriverを終了しました。"
