@@ -33,7 +33,7 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 	#================================================================
 	# 不要なドライバプロセスを終了
 	#================================================================
-	Get-Process -Name msedgedriver | Stop-Process
+	webdriver_edge_stop.ps1
 
 	#================================================================
 	# Microsoft Edgeのバージョン番号
@@ -95,8 +95,7 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 		#========================================================
 		# 不要なドライバプロセスを終了
 		#========================================================
-		Get-Process -Name msedgedriver				|
-		Stop-Process
+		webdriver_edge_stop.ps1
 
 		Exit
 	}
