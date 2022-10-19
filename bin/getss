@@ -123,7 +123,8 @@ esac
 case	"$ct" in
 *text/html*|*text/plain*)
 	case	"$uri" in
-	# https://*foo.bar.com/*)		uri="http://example.com/" ;;
+	https://www.kyndryl.com/*)	uri="http://example.com/" ;;
+	# https://*foo.bar.com/*)	uri="http://example.com/" ;;
 	esac
 	;;
 */*)
