@@ -124,11 +124,22 @@ case	"$ct" in
 *text/html*|*text/plain*)
 	case	"$uri" in
 	https://www.kyndryl.com/*)	uri="http://example.com/" ;;
-	# https://*foo.bar.com/*)	uri="http://example.com/" ;;
 	esac
 	;;
 */*)
 	uri="http://example.com/"
+esac
+
+#========================================================================
+# --virtual-time-budget= を指定するとスクリーンショットが取得できない
+# Webページの場合にはそのオプションを使わないようにする
+#========================================================================
+case	"$ct" in
+*text/html*|*text/plain*)
+	case	"$uri" in
+	https://www.bleepingcomputer.com/*)	method="msedge-novtb" ;;
+	esac
+	;;
 esac
 
 #========================================================================
@@ -150,6 +161,20 @@ msedge)
 	# ページ読み込み後にコンテンツをロードするタイプの
 	# Webページはしばらく待つ必要があるため、そのために
 	# --virtual-time-budget= で待機時間を指定している。
+	;;
+msedge-novtb)
+	#================================================
+	# Microsoft Edgeを使って取得 (Windows)
+	#================================================
+	"$msedge"	--headless			\
+			--lang=en-US			\
+			--user-agent="$webagent"	\
+			--window-size=$width,$height	\
+			--screenshot="$outfile"		\
+			--hide-scrollbars		\
+			"$uri"
+	# --virtual-time-budget= を指定するとスクリーン
+	# ショットが取得できないWebページ向けの処理
 	;;
 chrome)
 	#================================================
