@@ -105,6 +105,9 @@ http*)
 	*.pdf|*.PDF)
 		ct="application/pdf"
 		;;
+	*.ashx)
+		ct="application/pdf"
+		;;
 	*.zip|*.ZIP)
 		ct="application/zip"
 		;;
