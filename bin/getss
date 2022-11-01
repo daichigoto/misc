@@ -125,9 +125,9 @@ esac
 #========================================================================
 case	"$ct" in
 *text/html*|*text/plain*)
-	case	"$uri" in
-	https://www.kyndryl.com/*)	uri="http://example.com/" ;;
-	esac
+	# case	"$uri" in
+	# https://www.kyndryl.com/*)	uri="http://example.com/" ;;
+	# esac
 	;;
 */*)
 	uri="http://example.com/"
@@ -141,6 +141,8 @@ case	"$ct" in
 *text/html*|*text/plain*)
 	case	"$uri" in
 	https://www.bleepingcomputer.com/*)	method="msedge-novtb" ;;
+	https://gs.statcounter.com/*)		method="msedge-novtb" ;;
+	https://www.kyndryl.com/*)		method="msedge-novtb" ;;
 	esac
 	;;
 esac
