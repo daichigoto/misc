@@ -223,4 +223,4 @@ switch	($method)
 		# ※ -Waitは指定しても機能しない
 		break
 	}
-
+}
