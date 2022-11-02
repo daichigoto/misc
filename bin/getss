@@ -143,6 +143,7 @@ case	"$ct" in
 	https://www.bleepingcomputer.com/*)	method="msedge-novtb" ;;
 	https://gs.statcounter.com/*)		method="msedge-novtb" ;;
 	https://www.kyndryl.com/*)		method="msedge-novtb" ;;
+	https://www.backblaze.com/*)		method="msedge-novtb" ;;
 	esac
 	;;
 esac
