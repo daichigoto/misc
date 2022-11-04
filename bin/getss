@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/smethodh
 
 #========================================================================
 # スクリーンショットを取得する
@@ -139,11 +139,15 @@ esac
 #========================================================================
 case	"$ct" in
 *text/html*|*text/plain*)
-	case	"$uri" in
-	https://www.bleepingcomputer.com/*)	method="msedge-novtb" ;;
-	https://gs.statcounter.com/*)		method="msedge-novtb" ;;
-	https://www.kyndryl.com/*)		method="msedge-novtb" ;;
-	https://www.backblaze.com/*)		method="msedge-novtb" ;;
+	case	"$method" in
+	msedge)
+		case	"$uri" in
+		https://www.bleepingcomputer.com/*)	method="msedge-novtb" ;;
+		https://gs.statcounter.com/*)		method="msedge-novtb" ;;
+		https://www.kyndryl.com/*)		method="msedge-novtb" ;;
+		https://www.backblaze.com/*)		method="msedge-novtb" ;;
+		esac
+		;;
 	esac
 	;;
 esac
