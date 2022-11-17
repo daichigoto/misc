@@ -147,6 +147,7 @@ case	"$ct" in
 		https://www.kyndryl.com/*)		method="msedge-novtb" ;;
 		https://www.backblaze.com/*)		method="msedge-novtb" ;;
 		https://devblogs.microsoft.com/*)	method="msedge-novtb" ;;
+		https://betanews.com/*)			method="msedge-novtb" ;;
 		esac
 		;;
 	esac
