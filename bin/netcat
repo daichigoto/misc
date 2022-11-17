@@ -97,7 +97,6 @@ esac
 case	"${1}" in
 https://www.kyndryl.com/*)		method="curl" ;;
 https://devblogs.microsoft.com/*)	method="curl" ;;
-# 取得できるものの、時間がかかる。しかし取得はできるので様子見。
 https://*360.com/*)			method="curl" ;;
 esac
 
