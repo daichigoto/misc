@@ -69,7 +69,6 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 	# Microsoft Edge WebDriverをデプロイ
 	#================================================================
 	"Microsoft Edge WebDriver version $EdgeVersion をインストールします。"
-
 	Expand-Archive	-Path $DriverDownloadDir\edgedriver_win64.zip	`
 			-Destination $DriverDownloadDir			`
 			-Force
