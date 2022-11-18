@@ -148,6 +148,7 @@ case	"$ct" in
 		https://www.backblaze.com/*)		method="msedge-novtb" ;;
 		https://devblogs.microsoft.com/*)	method="msedge-novtb" ;;
 		https://betanews.com/*)			method="msedge-novtb" ;;
+		https://www.intel.com/*)		method="msedge-novtb" ;;
 		esac
 		;;
 	esac
