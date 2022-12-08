@@ -40,7 +40,8 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 	#================================================================
 	$EdgeDir='C:\Program Files (x86)\Microsoft\Edge\Application\'
 	$EdgeVersion=(	Get-ChildItem -Name $EdgeDir			| 
-			Where-Object { $_ -NotMatch "[a-zA-Z]+" }	)
+			Where-Object { $_ -NotMatch "[a-zA-Z]+" }	|
+			Select-Object -First 1				)
 
 	#================================================================
 	# Microsoft Edge WebDriverダウンロードURLとデプロイ先パス
