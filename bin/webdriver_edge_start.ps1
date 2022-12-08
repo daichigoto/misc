@@ -42,6 +42,10 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 	$EdgeVersion=(	Get-ChildItem -Name $EdgeDir			| 
 			Where-Object { $_ -NotMatch "[a-zA-Z]+" }	|
 			Select-Object -First 1				)
+			# ↑ 【Select-Object -First 1の理由】
+			# 更新前のバージョンと更新後のバージョンが同時に
+			# 存在するタイミングがあるので、更新後のバージョン
+			# のみを取得するためにSelect-Objectを実行している。
 
 	#================================================================
 	# Microsoft Edge WebDriverダウンロードURLとデプロイ先パス
