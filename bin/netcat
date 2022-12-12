@@ -98,6 +98,8 @@ case	"${1}" in
 https://www.kyndryl.com/*)		method="curl" ;;
 https://devblogs.microsoft.com/*)	method="curl" ;;
 https://*360.com/*)			method="curl" ;;
+https://*sucuri.net/*)			method="curl" ;;
+https://www.trendmicro.com/*)		method="curl" ;;
 esac
 
 #========================================================================
