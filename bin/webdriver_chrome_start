@@ -51,14 +51,22 @@ drivermajorversion=$(echo $driverversion | cut -f1 -d.)
 # chromedriverとChromeのメジャーバージョンが一致しない場合には
 # chromedriverを上書きインストールする
 #========================================================================
+echo 	chromemajorversion == $chromemajorversion
+echo	drivermajorversion == $drivermajorversion
 if 	[ "$chromemajorversion" != "$drivermajorversion" ]
 then
 	echo 	'chromedriverをアップデートします。'
 	cd	/tmp/
+	driverversion=$(curl --get https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$chromemajorversion 2> /dev/null)
 	curl	--get -O https://chromedriver.storage.googleapis.com/"$driverversion"/chromedriver_mac64.zip
+
+	echo 	unzip chromedriver_mac64.zip
 	unzip	chromedriver_mac64.zip
+
+	echo 	cp chromedriver "$bindir"
 	cp	chromedriver						\
 		"$bindir"
+
 	rm	chromedriver_mac64.zip 					\
 		chromedriver
 	cd	-
