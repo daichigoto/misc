@@ -50,7 +50,8 @@ esac
 #================================================================
 # api.geoiplookup.netでIPアドレスを地理情報に変換
 #================================================================
-curl --get "http://api.geoiplookup.net/?query=$ip"	> $tmpd/DATA 2> /dev/null
+curl	--location						\
+	--get "http://api.geoiplookup.net/?query=$ip"		> $tmpd/DATA 2> /dev/null
 
 isocode=$(grep -o '<countrycode>.*</countrycode>' $tmpd/DATA | sed 's/<[^>]*>//g')
 name=$(grep -o '<countryname>.*</countryname>' $tmpd/DATA | sed 's/<[^>]*>//g')
