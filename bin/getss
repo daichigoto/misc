@@ -148,6 +148,7 @@ case	"$ct" in
 		https://www.intel.com/*)		method="msedge-novtb" ;;
 		https://*.sucuri.net/*)			method="msedge-novtb" ;;
 		https://www.trendmicro.com/*)		method="msedge-novtb" ;;
+		https://blog.group-ib.com/*)		method="msedge-novtb" ;;
 		esac
 		;;
 	esac
