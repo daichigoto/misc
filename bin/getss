@@ -125,9 +125,6 @@ esac
 #========================================================================
 case	"$ct" in
 *text/html*|*text/plain*)
-#	case	"$uri" in
-#	https://www.trendmicro.com/*)		method="msedge-novtb" ;;
-#	esac
 	;;
 */*)
 	uri="http://example.com/"
@@ -150,6 +147,7 @@ case	"$ct" in
 		https://betanews.com/*)			method="msedge-novtb" ;;
 		https://www.intel.com/*)		method="msedge-novtb" ;;
 		https://*.sucuri.net/*)			method="msedge-novtb" ;;
+		https://www.trendmicro.com/*)		method="msedge-novtb" ;;
 		esac
 		;;
 	esac
