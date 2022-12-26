@@ -101,6 +101,7 @@ https://*360.com/*)			method="curl" ;;
 https://*sucuri.net/*)			method="curl" ;;
 https://www.trendmicro.com/*)		method="curl" ;;
 https://www.bleepingcomputer.com/*)	method="curl" ;;
+https://www.windowscentral.com/*)	method="curl" ;;
 esac
 
 #========================================================================

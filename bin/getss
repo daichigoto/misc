@@ -149,6 +149,8 @@ case	"$ct" in
 		https://*.sucuri.net/*)			method="msedge-novtb" ;;
 		https://www.trendmicro.com/*)		method="msedge-novtb" ;;
 		https://blog.group-ib.com/*)		method="msedge-novtb" ;;
+		https://www.windowscentral.com/*)	method="msedge-novtb" ;;
+		https://securityaffairs.co/*)		method="msedge-novtb" ;;
 		esac
 		;;
 	esac
