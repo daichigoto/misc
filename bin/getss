@@ -152,6 +152,7 @@ case	"$ct" in
 		https://www.windowscentral.com/*)	method="msedge-novtb" ;;
 		https://securityaffairs.co/*)		method="msedge-novtb" ;;
 		https://blog.bitkeep.com/*)		method="msedge-novtb" ;;
+		https://www.maketecheasier.com/*)	method="msedge-novtb" ;;
 		esac
 		;;
 	esac
