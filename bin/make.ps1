@@ -3,7 +3,7 @@
 #========================================================================
 # BSD MakefileとWindows GNU Makefileを共存させるためのラッパースクリプト
 #========================================================================
-
+#
 # 必要になるプラットフォームとパッケージをセットアップ
 setup_msys2
 
@@ -13,6 +13,10 @@ $make = "C:\msys64\usr\bin\make.exe"
 # Makefile.winがある場合にはこれを指定してmake.exeを実行
 if (Test-Path -PathType Leaf Makefile.win) {
 	$cmd = $make + " -f Makefile.win " + $Args
+	Invoke-Expression $cmd
+}
+elseif (Test-Path -PathType Leaf Makefile.gnu) {
+	$cmd = $make + " -f Makefile.gnu " + $Args
 	Invoke-Expression $cmd
 }
 else {
