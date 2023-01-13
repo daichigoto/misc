@@ -155,6 +155,7 @@ case	"$ct" in
 		https://www.maketecheasier.com/*)	method="msedge-novtb" ;;
 		https://support.lenovo.com/*)		method="msedge-novtb" ;;
 		https://helpx.adobe.com/*)		method="msedge-novtb" ;;
+		https://thehackernews.com/*)		method="msedge-novtb" ;;
 		esac
 		;;
 	esac
