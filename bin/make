@@ -4,53 +4,56 @@ case "$(uname)" in
 # FreeBSD
 FreeBSD)
 	# BSDmake
-	exec /usr/bin/make "${@}"
+	exec	/usr/bin/make "${@}"
 	;;
 # Mac
 Darwin)
 	setup_mac
 
-	if [ -z "$(which bsdmake)" ]
+	if	[ -z "$(which bsdmake)" ]
 	then
-		brew install bsdmake
+		brew	install bsdmake
 	fi
 
-	case "$(pwd)" in
+	case	"$(pwd)" in
 	${HOME}/Documents/*)
 		# BSDmake
-		exec $(which bsdmake | head -1) "${@}"
+		exec	$(which bsdmake | head -1) "${@}"
 		;;
 	*)
 		# GNUmake
-		exec /usr/bin/make "${@}"
+		exec	/usr/bin/make "${@}"
 		;;
 	esac
 	;;
 # MSYS2
 MSYS*)
 	make=$(which -a make | grep -v ${0} | head -1)
-	if [ -z "$make" ]
+	if	[ -z "$make" ]
 	then
-		echo "misc/bin/make: no such command: make" 1>&2
-		exit 1
+		echo	"misc/bin/make: no such command: make" 1>&2
+		exit	1
 	else
 		# BSDmakeとGNUmakeを共存させる処理
-		if [ -f Makefile.win ]
+		if	[ -f Makefile.win ]
 		then
-			exec "$make" -f Makefile.win "${@}"
+			exec	"$make" -f Makefile.win "${@}"
+		elif	[ -f Makefile.gnu ]
+		then
+			exec	"$make" -f Makefile.gnu "${@}"
 		else
-			exec "$make" "${@}"
+			exec	"$make" "${@}"
 		fi
 	fi
 	;;
 *)
 	make=$(which -a make | grep -v ${0} | head -1)
-	if [ -z "$make" ]
+	if	[ -z "$make" ]
 	then
-		echo "misc/bin/make: no such command: make" 1>&2
-		exit 1
+		echo	"misc/bin/make: no such command: make" 1>&2
+		exit	1
 	else
-		exec "$make" "${@}"
+		exec	"$make" "${@}"
 	fi
 	;;
 esac
