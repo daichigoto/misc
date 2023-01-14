@@ -106,6 +106,7 @@ https://blog.bitkeep.com/*)		method="curl" ;;
 https://www.maketecheasier.com/*)	method="curl" ;;
 https://support.lenovo.com/*)		method="curl" ;;
 https://helpx.adobe.com/*)		method="curl" ;;
+https://blog.checkpoint.com/*)		method="curl" ;;
 esac
 
 #========================================================================
