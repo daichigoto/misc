@@ -230,10 +230,10 @@ el_end_handler(void *data, const XML_Char *name)
 				break;
 			}
 			if (pbuf_startwith("[LEAD:")) {
-				output("<p class=\"lead\" ");
-				output("style=\"font-size: 18px;\">");
+				output("<p class=\"\" ");
+				output("style=\"\">[LEAD:");
 				pbuf_trimoutput(6, 1);
-				outputln("</p>");
+				outputln("]</p>");
 				newline();
 				break;
 			}
