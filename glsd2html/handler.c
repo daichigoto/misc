@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -255,6 +255,14 @@ el_end_handler(void *data, const XML_Char *name)
 				break;
 			}
 			if (pbuf_startwith("[POST:")) {
+				newline();
+				output("<p>");
+				pbuf_output();
+				outputln("</p>");
+				newline();
+				break;
+			}
+			if (pbuf_startwith("[LINK:")) {
 				newline();
 				output("<p>");
 				pbuf_output();
