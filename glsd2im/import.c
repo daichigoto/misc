@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -85,9 +85,9 @@ static void
 import_image(const XML_Char **attr, char *img_type)
 {
 	pbuf_add("↓l_", 5);
-	pbuf_add(filename+7, strlen(filename)-7); // exclude 'images'
+	pbuf_add(filename+7, strlen(filename)-7-4); // exclude 'images'
+	pbuf_add("_MASK.jpg", 9);
 	pbuf_add(",", 1);
-	pbuf_add(caption, strlen(caption));
 	pbuf_add(",", 1);
 	pbuf_add(caption, strlen(caption));
 }

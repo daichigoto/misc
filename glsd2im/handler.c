@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Daichi GOTO
+ * Copyright (c) 2022,2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
 
 static ELEMENT cur_element;
 static ELEMENT pre_element;
-static int listtype_order = 0;
+static bool listtype_order = false;
 static int listtype_order_index = 1;
 static int docgroup_depth = 0;
 
@@ -42,12 +42,13 @@ static int accesslist_count = 0;
 static char accesslist_ref[100][BUFSIZ];
 static char accesslist_title[100][BUFSIZ];
 
-static int in_item = 0;
-static int in_access = 0;
-static int in_quote = 0;
-static int in_import = 0;
+static bool in_item = false;
+static bool in_access = false;
+static bool in_quote = false;
+static bool in_import = false;
 
-static int doc_started = 0;
+static bool doc_started = false;
+static bool sub_started = false;
 
 void
 el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
@@ -60,7 +61,7 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		pbuf_reset();
 		break;
 	case ELEMENT_ACCESS:
-		in_access = 1;
+		in_access = true;
 		memset(access_chardata, '\0', sizeof(access_chardata));
 		p_access_chardata = access_chardata;
 
@@ -74,19 +75,19 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		}
 		break;
 	case ELEMENT_IMPORT:
-		in_import = 1;
+		in_import = true;
 		import(attr);
 		break;
 	case ELEMENT_ITEM:
-		in_item = 1;
+		in_item = true;
 		break;
 	case ELEMENT_LIST:
-		newline();
-		listtype_order = 0;
+		printf("\n％リスト\n\n");
+		listtype_order = false;
 		for (int i = 0; attr[i]; i += 2) {
 			if (0 == strcmp(attr[i], "type") &&
 			    0 == strcmp(attr[i+1], "order")) {
-				listtype_order = 1;
+				listtype_order = true;
 				listtype_order_index = 1;
 				break;
 			}
@@ -98,7 +99,7 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		docgroup_depth++;	
 		break;
 	case ELEMENT_QUOTE:
-		in_quote = 1;
+		in_quote = true;
 		newline();
 		for (int i = 0; attr[i]; i += 2)
 			if (0 == strcmp(attr[i], "ref")) {
@@ -119,37 +120,65 @@ el_end_handler(void *data, const XML_Char *name)
 	switch((int)cur_element) {
 	case ELEMENT_P:
 		if (in_quote) {
-			output("引用: ");
-			if ('\0' != quote_ref[0])
-				outputln(quote_ref);
-			else
-				newline();
-			output("　　  ");
+			printf("▼□\n");
 			pbuf_flushln();
-			memset(quote_ref, '\0', sizeof(quote_ref));
-			in_quote = 0;
+
+			// 引用元がある場合には引用元を表示
+			if ('\0' != quote_ref[0]) {
+				output("<br>（");
+				output(quote_ref);
+				output("より）");
+				newline();
+				memset(quote_ref, '\0', sizeof(quote_ref));
+			}
+			else {
+				newline();
+			}
+			printf("▼□□\n");
+
+			in_quote = false;
 			return;
 		}
 
 		switch((int)pre_element) {
 		case ELEMENT_ITEM:
-			if (listtype_order)
-				printf("%d. ", listtype_order_index++);
-			else
-				output("● ");
+			if (listtype_order) {
+				printf("＃");
+				++listtype_order_index;
+			}
+			else {
+				output("・");
+			}
+			// 列挙および枚挙の末尾の「。」は削除する
+			pbuf_trimlastdot();
+
 			pbuf_outputln();
 			break;
 		case ELEMENT_TITLE:
 			switch(docgroup_depth) {
 			case 1:
-				output("＜タイトル＞");
+				output("##タイトル\n\n");
+				// タイトルの「、」は「　」に変換されている
+				// ことが多いので、自動変換しておく。
+				pbuf_swap("、","　",3);
+
 				pbuf_outputln();
 				newline();
 				break;
 			default:
-				for (int i = 0; i < docgroup_depth; i++)
-					putchar('#');
+				if (2 >= docgroup_depth) {
+					printf("●");
+				}
+				else {
+					printf("○");
+				}
 				pbuf_output();
+				putchar('\n');
+
+				if (! sub_started) {
+					printf("\nsubscription\n");
+					sub_started = true;
+				}
 				break;
 			}
 			break;
@@ -163,9 +192,6 @@ el_end_handler(void *data, const XML_Char *name)
 			break;
 		default:
 			if (pbuf_startwith("[LINK:")) {
-				newline();
-				printf("関連リンク\n");
-
 				//=====================================
 				// [LINK:][]からURLを取得
 				//=====================================
@@ -196,26 +222,63 @@ el_end_handler(void *data, const XML_Char *name)
 					++purl;
 				}
 
-				//=====================================
+				//===========================================
+				// 関連記事を出力(ITmedia記事リンク)
+				//===========================================
+				newline();
+				printf("関連記事\n");
+
+				//-------------------------------------------
 				// 本文中access要素のURLとタイトルを関連リンクとして出力
-				//=====================================
+				//-------------------------------------------
 				bool sameurl = false;
 				for (int i=0; i < accesslist_count; i++) {
-					printf("<url>%s\n", accesslist_ref[i]);
-					printf("<title>%s\n", accesslist_title[i]);
-					newline();
+					if (0 == strncmp("https://www.itmedia.co.jp/",accesslist_ref[i],26)) {
+						printf("%s,i\n", accesslist_ref[i]);
+					}
 
 					if (0 == strcmp(accesslist_ref[i], ref)) {
 						sameurl = true;
 					}
 				}
 
-				//=====================================
+				//-------------------------------------------
 				// [LINK:][]のURLがまだ出力されていない場合は出力する
-				//=====================================
+				//-------------------------------------------
 				if (!sameurl) {
-					printf("<url>%s\n",ref);
-					printf("<title>%s\n",title);
+					if (0 == strncmp("https://www.itmedia.co.jp/",ref,26)) {
+						printf("%s,i\n",ref);
+					}
+				}
+
+				//===========================================
+				// 関連リンクを出力
+				//===========================================
+				newline();
+				printf("関連リンク\n");
+
+				//-------------------------------------------
+				// 本文中access要素のURLとタイトルを関連リンクとして出力
+				//-------------------------------------------
+				for (int i=0; i < accesslist_count; i++) {
+					if (0 != strncmp("https://www.itmedia.co.jp/",accesslist_ref[i],26)) {
+						printf("%s\n", accesslist_ref[i]);
+						printf("%s\n", accesslist_title[i]);
+					}
+
+					if (0 == strcmp(accesslist_ref[i], ref)) {
+						sameurl = true;
+					}
+				}
+
+				//-------------------------------------------
+				// [LINK:][]のURLがまだ出力されていない場合は出力する
+				//-------------------------------------------
+				if (!sameurl) {
+					if (0 != strncmp("https://www.itmedia.co.jp/",ref,26)) {
+						printf("%s\n",ref);
+						printf("%s\n",title);
+					}
 				}
 
 				break;
@@ -224,7 +287,7 @@ el_end_handler(void *data, const XML_Char *name)
 				break;
 			}
 			if (pbuf_startwith("[LEAD:")) {
-				output("＜リード＞");
+				output("##リード\n\n");
 				pbuf_trimoutputln(6, 1);
 				newline();
 				break;
@@ -248,14 +311,14 @@ el_end_handler(void *data, const XML_Char *name)
 				else
 					output("・");
 				pbuf_outputln();
-				in_item = 0;
+				in_item = false;
 			}
 			else {
 				if (doc_started) {
 					if (in_import) {
 						newline();
 						pbuf_flushln();
-						in_import = 0;
+						in_import = false;
 					}
 					else {
 						newline();
@@ -264,16 +327,16 @@ el_end_handler(void *data, const XML_Char *name)
 					}
 				}
 				else {
-					printf("＜本文＞\n"); // paragraph indent
+					printf("##本文\n\n"); // paragraph indent
 					if (in_import) {
 						pbuf_flushln();
-						in_import = 0;
+						in_import = false;
 					}
 					else {
 						printf("　"); // paragraph indent
 						pbuf_flushln();
 					}
-					doc_started = 1;
+					doc_started = true;
 				}
 			}
 			break;
@@ -285,7 +348,7 @@ el_end_handler(void *data, const XML_Char *name)
 		pbuf_add("□", 3);
 		pbuf_add(access_chardata, strlen(access_chardata));
 		pbuf_add("■", 3);
-		in_access = 0;
+		in_access = false;
 
 		//======================================================
 		// まだ関連リスト用にURLが追加されていない場合には追加する
@@ -304,7 +367,7 @@ el_end_handler(void *data, const XML_Char *name)
 
 		break;
 	case ELEMENT_LIST:
-		in_item = 0;
+		in_item = false;
 		break;
 	case ELEMENT_DOCGROUP:
 		docgroup_depth--;	

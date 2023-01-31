@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2020 Daichi GOTO
+ * Copyright (c) 2017,2020,2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -55,6 +55,33 @@ pbuf_add(const XML_Char *cdata, int len)
 	
 	memcpy(pbuf + pbuf_offset, cdata, len);
 	pbuf_offset += len;
+}
+
+void
+pbuf_swap(char *pre, char *post, int len)
+{
+	int s_i = 0;
+	int e_i = pbuf_offset - len;
+
+	char *p_pbuf = pbuf;
+	for (int i = s_i; i <= e_i; i++) {
+		if (0 == strncmp(p_pbuf, pre, len)) {
+			strncpy(p_pbuf, post, 3);
+		}
+		++p_pbuf;
+	}
+}
+
+void
+pbuf_trimlastdot()
+{
+	char *p_pbuf = pbuf + pbuf_offset - 3;
+
+	if (0 == strncmp(p_pbuf, "。", 3)) {
+		*p_pbuf++ = '\0';
+		*p_pbuf++ = '\0';
+		*p_pbuf = '\0';
+	}
 }
 
 void

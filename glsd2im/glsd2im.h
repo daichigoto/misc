@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2020,2022 Daichi GOTO
+ * Copyright (c) 2017,2020,2022,2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20220819"
+#define VERSION			"20230131"
 
 typedef enum el {
 	ELEMENT_DOCUMENT,
@@ -65,6 +65,8 @@ int element_is(const XML_Char *);
 
 void pbuf_add(const XML_Char *, int);
 void pbuf_addln(const XML_Char *, int);
+void pbuf_swap(char *, char *, int);
+void pbuf_trimlastdot();
 void pbuf_output(void);
 void pbuf_outputln(void);
 void pbuf_trimoutput(int, int);
