@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019,2021,2022 Daichi GOTO
+ * Copyright (c) 2017-2019,2021-2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20220709"
+#define VERSION			"20230201"
 #define IMAGE_ZIPFILE		"images.zip"
 
 typedef enum el {
@@ -75,6 +75,7 @@ int element_is(const XML_Char *);
 void pbuf_add(const XML_Char *, int);
 void pbuf_addln(const XML_Char *, int);
 void pbuf_newline(void);
+void pbuf_trimlastdot(void);
 void pbuf_output(void);
 void pbuf_outputln(void);
 void pbuf_trimoutput(int, int);

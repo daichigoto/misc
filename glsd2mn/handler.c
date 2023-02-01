@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2022 Daichi GOTO
+ * Copyright (c) 2017,2022,2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -99,6 +99,8 @@ el_end_handler(void *data, const XML_Char *name)
 				output("1. ");
 			else
 				output("- ");
+			// 列挙・枚挙の最後の「。」を削除
+			pbuf_trimlastdot();
 			pbuf_outputln();
 			in_item = 0;
 			return;

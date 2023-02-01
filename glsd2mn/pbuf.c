@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019,2022 Daichi GOTO
+ * Copyright (c) 2017-2019,2022,2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -72,6 +72,18 @@ pbuf_newline()
 	
 	*(pbuf + pbuf_offset) = '\n';
 	++pbuf_offset;
+}
+
+void
+pbuf_trimlastdot()
+{
+	char *p_pbuf = pbuf + pbuf_offset - 3;
+
+	if (0 == strncmp(p_pbuf, "。", 3)) {
+		*p_pbuf++ = '\0';
+		*p_pbuf++ = '\0';
+		*p_pbuf = '\0';
+	}
 }
 
 void
