@@ -254,6 +254,51 @@ el_end_handler(void *data, const XML_Char *name)
 				break;
 			}
 			if (pbuf_startwith("[SRC:")) {
+				//=====================================
+				// [SRC:][]からURLを取得
+				//=====================================
+				char ref[BUFSIZ], *p_ref;
+				memset(ref, 0, BUFSIZ);
+				p_ref = ref;
+
+				char *purl = pbuf_getcopied();
+				purl += 5;
+				while (']' != *purl) {
+					*p_ref = *purl;
+					++p_ref;
+					++purl;
+				}
+
+				//=====================================
+				// [SRC:][]からタイトルを取得
+				//=====================================
+				char title[BUFSIZ], *p_title;
+				memset(title, 0, BUFSIZ);
+				p_title = title;
+
+				++purl;
+				++purl;
+				while (']' != *purl) {
+					*p_title = *purl;
+					++p_title;
+					++purl;
+				}
+
+				//=====================================
+				// アクセスリンクデータセットにリンクを追加
+				//=====================================
+				bool sameurl = false;
+				for (int i=0; i < accesslist_count; i++) {
+					if (0 == strcmp(accesslist_ref[i], ref)) {
+						sameurl = true;
+					}
+				}
+				if (!sameurl) {
+					strcpy(accesslist_ref[accesslist_count], ref);
+					strcpy(accesslist_title[accesslist_count], title);
+					++accesslist_count;
+				}
+
 				//===========================================
 				// 関連記事を出力(ITmedia記事リンク)
 				//===========================================
