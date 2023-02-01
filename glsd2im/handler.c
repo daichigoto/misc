@@ -222,65 +222,20 @@ el_end_handler(void *data, const XML_Char *name)
 					++purl;
 				}
 
-				//===========================================
-				// 関連記事を出力(ITmedia記事リンク)
-				//===========================================
-				newline();
-				printf("関連記事\n");
-
-				//-------------------------------------------
-				// 本文中access要素のURLとタイトルを関連リンクとして出力
-				//-------------------------------------------
+				//=====================================
+				// アクセスリンクデータセットにリンクを追加
+				//=====================================
 				bool sameurl = false;
 				for (int i=0; i < accesslist_count; i++) {
-					if (0 == strncmp("https://www.itmedia.co.jp/",accesslist_ref[i],26)) {
-						printf("%s,i\n", accesslist_ref[i]);
-					}
-
 					if (0 == strcmp(accesslist_ref[i], ref)) {
 						sameurl = true;
 					}
 				}
-
-				//-------------------------------------------
-				// [LINK:][]のURLがまだ出力されていない場合は出力する
-				//-------------------------------------------
 				if (!sameurl) {
-					if (0 == strncmp("https://www.itmedia.co.jp/",ref,26)) {
-						printf("%s,i\n",ref);
-					}
+					strcpy(accesslist_ref[accesslist_count], ref);
+					strcpy(accesslist_title[accesslist_count], title);
+					++accesslist_count;
 				}
-
-				//===========================================
-				// 関連リンクを出力
-				//===========================================
-				newline();
-				printf("関連リンク\n");
-
-				//-------------------------------------------
-				// 本文中access要素のURLとタイトルを関連リンクとして出力
-				//-------------------------------------------
-				for (int i=0; i < accesslist_count; i++) {
-					if (0 != strncmp("https://www.itmedia.co.jp/",accesslist_ref[i],26)) {
-						printf("%s\n", accesslist_ref[i]);
-						printf("%s\n", accesslist_title[i]);
-					}
-
-					if (0 == strcmp(accesslist_ref[i], ref)) {
-						sameurl = true;
-					}
-				}
-
-				//-------------------------------------------
-				// [LINK:][]のURLがまだ出力されていない場合は出力する
-				//-------------------------------------------
-				if (!sameurl) {
-					if (0 != strncmp("https://www.itmedia.co.jp/",ref,26)) {
-						printf("%s\n",ref);
-						printf("%s\n",title);
-					}
-				}
-
 				break;
 			}
 			if (pbuf_startwith("[URL:")) {
@@ -299,6 +254,36 @@ el_end_handler(void *data, const XML_Char *name)
 				break;
 			}
 			if (pbuf_startwith("[SRC:")) {
+				//===========================================
+				// 関連記事を出力(ITmedia記事リンク)
+				//===========================================
+				newline();
+				printf("関連記事\n");
+
+				//-------------------------------------------
+				// 本文中access要素のURLとタイトルを関連リンクとして出力
+				//-------------------------------------------
+				for (int i=0; i < accesslist_count; i++) {
+					if (0 == strncmp("https://www.itmedia.co.jp/",accesslist_ref[i],26)) {
+						printf("%s,i\n", accesslist_ref[i]);
+					}
+				}
+
+				//===========================================
+				// 関連リンクを出力
+				//===========================================
+				newline();
+				printf("関連リンク\n");
+
+				//-------------------------------------------
+				// 本文中access要素のURLとタイトルを関連リンクとして出力
+				//-------------------------------------------
+				for (int i=0; i < accesslist_count; i++) {
+					if (0 != strncmp("https://www.itmedia.co.jp/",accesslist_ref[i],26)) {
+						printf("%s\n", accesslist_ref[i]);
+						printf("%s\n", accesslist_title[i]);
+					}
+				}
 				break;
 			}
 			if (pbuf_startwith("[POST:")) {
@@ -351,7 +336,7 @@ el_end_handler(void *data, const XML_Char *name)
 		in_access = false;
 
 		//======================================================
-		// まだ関連リスト用にURLが追加されていない場合には追加する
+		// アクセスリンクデータセットにリンクを追加
 		//======================================================
 		bool sameurl = false;
 		for (int i=0; i < accesslist_count; i++) {
