@@ -157,6 +157,7 @@ case	"$ct" in
 		https://helpx.adobe.com/*)		method="msedge-novtb" ;;
 		https://thehackernews.com/*)		method="msedge-novtb" ;;
 		https://blog.checkpoint.com/*)		method="msedge-novtb" ;;
+		https://www.microsoft.com/ja-jp/*)	method="msedge-novtb" ;;
 		esac
 		;;
 	esac
