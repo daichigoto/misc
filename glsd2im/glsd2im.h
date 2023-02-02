@@ -37,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20230201"
+#define VERSION			"20230202"
 
 typedef enum el {
 	ELEMENT_DOCUMENT,
@@ -85,3 +85,5 @@ void newline(void);
 
 void usage(void);
 void version(void);
+
+void swap(char *, char *, char *);
