@@ -326,8 +326,12 @@ el_end_handler(void *data, const XML_Char *name)
 				for (int i=0; i < accesslist_count; i++) {
 					if (0 != strncmp("https://www.itmedia.co.jp/",accesslist_ref[i],26)) {
 					 	// 関連リンクの「·」が不適切な変換を受けるので
-						// 全角の類似記号へ置き換える
+						// 類似記号へ置き換える
 						swap(accesslist_title[i], "·", "・");
+
+					 	// 関連リンクの「–」が不適切な変換を受けるので
+						// 類似記号へ置き換える
+						swap(accesslist_title[i], "–", "-");
 
 						printf("%s\n", accesslist_ref[i]);
 						printf("%s\n", accesslist_title[i]);
