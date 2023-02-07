@@ -102,6 +102,7 @@ el_end_handler(void *data, const XML_Char *name)
 			// 列挙・枚挙の最後の「。」を削除
 			pbuf_trimlastdot();
 			pbuf_outputln();
+
 			in_item = 0;
 			return;
 		}

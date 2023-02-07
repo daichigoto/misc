@@ -37,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20230201"
+#define VERSION			"20230207"
 #define IMAGE_ZIPFILE		"images.zip"
 
 typedef enum el {
