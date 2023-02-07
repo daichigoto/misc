@@ -81,6 +81,8 @@ pbuf_trimlastdot()
 		*p_pbuf++ = '\0';
 		*p_pbuf++ = '\0';
 		*p_pbuf = '\0';
+		
+		pbuf_offset -= 3;
 	}
 }
 
