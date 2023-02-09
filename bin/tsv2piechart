@@ -70,21 +70,20 @@ cat<<EOF							> $tmpd/html2
         ]);
 
         var options = {
-          title: ''
         };
 
 	// チャートを生成
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        var chart = new google.visualization.PieChart(document.getElementById('chart'));
         chart.draw(data, options);
 
 	// チャートを組み込みPNG画像文字列データ(Base64)として表示
-	var e = document.getElementById('piechartdata').innerHTML = chart.getImageURI();
+	var e = document.getElementById('chartdata').innerHTML = chart.getImageURI();
       }
     </script>
   </head>
   <body>
-    <div id="piechart" style="width: 1200px; height: 800px;"></div>
-    <p id="piechartdata"></p>
+    <div id="chart" style="width: 1200px; height: 800px;"></div>
+    <p id="chartdata"></p>
   </body>
 </html>
 EOF
@@ -128,12 +127,12 @@ esac
 #========================================================================
 # Google Charts用グラフHTMLファイルからチャート画像のBase64データを取得
 #========================================================================
-# 理由は不明だが、「///*[@id="piechartdata"]」でPowerShellには
-# 「//*[@id="piechartdata"]」として渡ってくるためそのように指定
+# 理由は不明だが、「///*[@id="chartdata"]」でPowerShellには
+# 「//*[@id="chartdata"]」として渡ってくるためそのように指定
 # してある。「//」が「/」に変換されているように見える。
 gettext_fromhtml.ps1						\
 	"$charthtmlpath"					\
-	'///*[@id="piechartdata"]'				|
+	'///*[@id="chartdata"]'				|
 #
 # PowerShell $PROFILEが原因でエラーが出力されることがあり、
 # これがデータとして含まれることがあるため、そうしたデータは
@@ -158,6 +157,7 @@ png)
 	;;
 *)
 	gm	convert						\
+		-quality 100					\
 		$tmpd/chart.png					\
 		$tmpd/out."$type"
 	;;
