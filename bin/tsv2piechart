@@ -17,7 +17,8 @@ trap	"[ -d $tmpd ] && chmod -R u+w $tmpd; rm -rf $tmpd" EXIT
 #========================================================================
 outfile=chart.png
 type=png
-while	getopts o:t: OPT
+debug=off
+while	getopts o:t:D OPT
 do
 	case $OPT in
 	# 出力ファイルパスを指定
@@ -27,6 +28,9 @@ do
 	# 画像形式を指定
 	t) 
 		type="$OPTARG"
+		;;
+	D)
+		debug="on"
 		;;
 	esac
 done
@@ -168,3 +172,12 @@ esac
 #========================================================================
 cp	$tmpd/out."$type"					\
 	"$outfile"
+
+#========================================================================
+# デバッグ用機能
+#========================================================================
+if	[ "on" == "$debug" ]
+then
+	cp	$charthtmlpath					\
+		chart.html
+fi
