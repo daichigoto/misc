@@ -149,7 +149,7 @@ sed	's|data:image/png;base64,||'				> $tmpd/chart.b64
 #========================================================================
 # チャート画像のBase64データを画像データをデコードする
 #========================================================================
-base64	-d $tmpd/chart.b64					> $tmpd/chart.png 2> /dev/null
+base64	-d $tmpd/chart.b64					> $tmpd/chart.png
 
 #========================================================================
 # 画像形式を変換
@@ -179,5 +179,7 @@ cp	$tmpd/out."$type"					\
 if	[ "on" == "$debug" ]
 then
 	cp	$charthtmlpath					\
-		chart.html
+		~/Desktop/chart.html
+	cp	$tmpd/chart.b64					\
+		~/Desktop/chart.b64.txt
 fi
