@@ -74,14 +74,21 @@ cat<<EOF							> $tmpd/html2
         ]);
 
         var options = {
+	  width: 1200,
+	  height: 800,
+	  chartArea: {width: '70%'},
         };
 
 	// チャートを生成
         var chart = new google.visualization.PieChart(document.getElementById('chart'));
-        chart.draw(data, options);
 
-	// チャートを組み込みPNG画像文字列データ(Base64)として表示
-	var e = document.getElementById('chartdata').innerHTML = chart.getImageURI();
+	// チャートの描画完了後に組み込みPNG画像文字列データ(Base64)として表示
+	google.visualization.events.addListener(chart, 'ready', function () {
+	  document.getElementById('chartdata').innerHTML = chart.getImageURI();
+	});
+
+        // チャートを描画
+        chart.draw(data, options);
       }
     </script>
   </head>

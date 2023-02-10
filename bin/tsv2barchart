@@ -72,16 +72,28 @@ EOF
 cat<<EOF							> $tmpd/html2
         ]);
 
+	// 2023-02-10 後藤
+	// 縦棒グラフ(ColumnChart)はY軸のラベル表示が一部消えるため、比較的
+	// そこが崩れない横棒グラフ(BarChart)を使う。ただし、横棒グラフでも
+	// Y軸のラベルは崩れる。ただ、chartArea: {width: '60%'} を指定すると
+	// 表示がかなりましになるので、下記オプションを使っている。
         var options = {
+	  width: 1200,
+	  height: 800,
+	  chartArea: {width: '60%'},
 	  legend: { position: 'none' }
         };
 
 	// チャートを生成
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
-        chart.draw(data, options);
+        var chart = new google.visualization.BarChart(document.getElementById('chart'));
 
-	// チャートを組み込みPNG画像文字列データ(Base64)として表示
-	var e = document.getElementById('chartdata').innerHTML = chart.getImageURI();
+	// チャートの描画完了後に組み込みPNG画像文字列データ(Base64)として表示
+	google.visualization.events.addListener(chart, 'ready', function () {
+	  document.getElementById('chartdata').innerHTML = chart.getImageURI();
+	});
+
+        // チャートを描画
+	chart.draw(data, options);
       }
     </script>
   </head>
