@@ -52,7 +52,15 @@ static char quote_ref[BUFSIZ];
 	"<script src=\"https://maxcdn.bootstrapcdn.com/" \
 	               "bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n" \
 	"<script>\n" \
-	"window.addEventListener('focus', ()=>{window.location.reload()})\n" \
+        "  // ウィンドウフォーカス時にリロード\n" \
+	"  window.addEventListener('focus', ()=>{\n" \
+	"    window.location.reload()\n" \
+	"  });\n" \
+        "  \n" \
+        "  // 2秒ごとにリロード\n" \
+        "  // window.addEventListener('load', ()=>{\n" \
+        "  //  setTimeout(()=>{window.location.reload()}, 2000);\n" \
+        "  //});\n" \
 	"</script>\n" \
 	"<title>Generated from GLSD</title>\n" \
 	"</head>\n" \
