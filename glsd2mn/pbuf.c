@@ -41,6 +41,14 @@ static char pbuf_temp[PBUF_SIZE];
 static int link_outputed = 0;
 static int site_outputed = 0;
 
+static ELEMENT parent_element;
+
+void
+pbuf_set_parent_element(const ELEMENT ele)
+{
+	parent_element = ele;
+}
+
 void
 pbuf_add(const XML_Char *cdata, int len)
 {
@@ -170,10 +178,19 @@ pbuf_get_escaped_string(char *s)
 	for (int i = 0; i < s_len; i++, p++) {
 		switch (*p) {
 		case '_':
-			*n = '\\';
-			++n;
-			*n = '_';
-			++n;
+			switch (parent_element) {
+			case ELEMENT_TITLE:
+				// タイトルでは「_」はそのまま出力
+				*n = *p;
+				++n;
+			 	break;
+			default:
+				*n = '\\';
+				++n;
+				*n = '_';
+				++n;
+				break;
+			}
 			break;
 		case '*':
 			*n = '\\';
@@ -307,8 +324,16 @@ pbuf_escaped_printc(char c)
 	if (escaped_output) {
 		switch (c) {
 		case '_':
-			putchar('\\');
-			putchar('_');
+			switch (parent_element) {
+			case ELEMENT_TITLE:
+				// タイトルでは「_」はそのまま出力
+				putchar('_');
+			 	break;
+			default:
+				putchar('\\');
+				putchar('_');
+				break;
+			}
 			break;
 		case '*':
 			putchar('\\');

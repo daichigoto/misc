@@ -123,6 +123,7 @@ el_end_handler(void *data, const XML_Char *name)
 			break;
 		case ELEMENT_TITLE:
 			escaped_output = 1;
+			pbuf_set_parent_element(ELEMENT_TITLE);
 			switch(docgroup_depth) {
 			case 1:
 				pbuf_outputln();
@@ -136,6 +137,7 @@ el_end_handler(void *data, const XML_Char *name)
 				pbuf_outputln();
 				break;
 			}
+			pbuf_set_parent_element(ELEMENT_DOCUMENT);
 			break;
 		case ELEMENT_SHORTTITLE:
 			escaped_output = 0;

@@ -37,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20230207"
+#define VERSION			"20230214"
 #define IMAGE_ZIPFILE		"images.zip"
 
 typedef enum el {
@@ -85,6 +85,7 @@ void pbuf_flushln(void);
 void pbuf_reset(void);
 char* pbuf_get_escaped_string(char *);
 int pbuf_startwith(char *);
+void pbuf_set_parent_element(const ELEMENT);
 
 void pbuf_xxx_linkoutput(void);
 void pbuf_xxx_linkoutputln(void);
