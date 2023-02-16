@@ -47,6 +47,9 @@ static bool in_access = false;
 static bool in_quote = false;
 static bool in_import = false;
 
+static bool in_note = false;
+static int note_count = 0;
+
 static bool doc_started = false;
 static bool sub_started = false;
 
@@ -108,6 +111,11 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 				break;
 			}
 		break;
+	case ELEMENT_NOTE:
+		in_note = true;
+		note_count = 1;
+		printf("\n□□noborder\n▼▲");
+		break;
 	default:
 		break;
 	}
@@ -137,6 +145,19 @@ el_end_handler(void *data, const XML_Char *name)
 			printf("▼□□\n");
 
 			in_quote = false;
+			return;
+		}
+
+		if (in_note) {
+			if (1 == note_count) {
+				printf("（注%d）", note_count);
+				pbuf_flush();
+			}
+			else {
+				printf("◆br◆（注%d）", note_count);
+				pbuf_flush();
+			}
+			++note_count;
 			return;
 		}
 
@@ -409,6 +430,11 @@ el_end_handler(void *data, const XML_Char *name)
 		break;
 	case ELEMENT_DOCGROUP:
 		docgroup_depth--;	
+		break;
+	case ELEMENT_NOTE:
+		printf("\n□□□\n");
+		in_note = false;
+		note_count = 0;
 		break;
 	}
 }
