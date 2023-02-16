@@ -32,9 +32,12 @@ static ELEMENT pre_element;
 static int listtype_order = 0;
 static int docgroup_depth = 0;
 
-static int in_import = 0;
-static int in_item = 0;
-static int in_quote = 0;
+static bool in_import = false;
+static bool in_item = false;
+static bool in_quote = false;
+
+static bool in_note = false;
+static int note_count = 0;
 
 static char quote_ref[BUFSIZ];
 
@@ -90,11 +93,11 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		pbuf_add("\">", 2);
 		break;
 	case ELEMENT_IMPORT:
-		in_import = 1;
+		in_import = true;
 		import(attr);
 		break;
 	case ELEMENT_ITEM:
-		in_item = 1;
+		in_item = true;
 		output("<li>");
 		break;
 	case ELEMENT_LIST:
@@ -121,7 +124,7 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		newline();
 		break;
 	case ELEMENT_QUOTE:
-		in_quote = 1;
+		in_quote = true;
 		newline();
 		for (int i = 0; attr[i]; i += 2)
 			if (0 == strcmp(attr[i], "ref")) {
@@ -129,6 +132,10 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 					sizeof(quote_ref));
 				break;
 			}
+		break;
+	case ELEMENT_NOTE:
+		in_note = true;
+		note_count = 1;
 		break;
 	default:
 		break;
@@ -142,7 +149,7 @@ el_end_handler(void *data, const XML_Char *name)
 	switch((int)cur_element) {
 	case ELEMENT_P:
 		if (in_import) {
-			in_import = 0;
+			in_import = false;
 			newline();
 			pbuf_flushln();
 			return;
@@ -151,7 +158,7 @@ el_end_handler(void *data, const XML_Char *name)
 			output("<p style=\"font-size: 18px;\">");
 			pbuf_flush();
 			output("</p>");
-			in_item = 0;
+			in_item = false;
 			return;
 		}
 		if (in_quote) {
@@ -166,8 +173,15 @@ el_end_handler(void *data, const XML_Char *name)
 			pbuf_flush();
 			outputln("</blockquote>");
 			memset(quote_ref, '\0', sizeof(quote_ref));
-			in_quote = 0;
+			in_quote = false;
 			return;
+		}
+		if (in_note) {
+			printf("<p style=\"font-size: 14px;\">(注%d) ",note_count);
+			pbuf_flush();
+			output("</p>");
+			++note_count;
+		 	return;
 		}
 
 		switch((int)pre_element) {
@@ -299,6 +313,10 @@ el_end_handler(void *data, const XML_Char *name)
 			outputln("</ol>");
 		else
 			outputln("</ul>");
+		break;
+	case ELEMENT_NOTE:
+		in_note = false;
+		note_count = 0;
 		break;
 	case ELEMENT_DOCGROUP:
 		docgroup_depth--;	

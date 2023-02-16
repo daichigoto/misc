@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Daichi GOTO
+ * Copyright (c) 2017,2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -56,6 +56,8 @@ element_is(const XML_Char *name)
 		return ELEMENT_DOCGROUP;
 	if (0 == strcmp(name, "quote"))
 		return ELEMENT_QUOTE;
+	if (0 == strcmp(name, "note"))
+		return ELEMENT_NOTE;
 	if (0 == strcmp(name, "document"))
 		return ELEMENT_DOCUMENT;
 
