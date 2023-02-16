@@ -114,7 +114,7 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 	case ELEMENT_NOTE:
 		in_note = true;
 		note_count = 1;
-		printf("\n□□noborder\n▼▲");
+		printf("\n□noborder\n▼▲");
 		break;
 	default:
 		break;
@@ -150,7 +150,8 @@ el_end_handler(void *data, const XML_Char *name)
 
 		if (in_note) {
 			if (1 == note_count) {
-				printf("（注%d）", note_count);
+				//printf("（注%d）", note_count);
+				printf("（注）");
 				pbuf_flush();
 			}
 			else {
@@ -432,7 +433,7 @@ el_end_handler(void *data, const XML_Char *name)
 		docgroup_depth--;	
 		break;
 	case ELEMENT_NOTE:
-		printf("\n□□□\n");
+		printf("\n□□\n");
 		in_note = false;
 		note_count = 0;
 		break;
