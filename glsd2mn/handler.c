@@ -35,8 +35,11 @@ static char access_ref[BUFSIZ];
 static int listtype_order = 0;
 static int docgroup_depth = 0;
 
-static int in_item = 0;
-static int in_quote = 0;
+static bool in_item = false;
+static bool in_quote = false;
+
+static bool in_note = false;
+static int note_count = 0;
 
 void
 el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
@@ -63,7 +66,7 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		import(attr);
 		break;
 	case ELEMENT_ITEM:
-		in_item = 1;
+		in_item = true;
 		break;
 	case ELEMENT_LIST:
 		newline();
@@ -82,7 +85,12 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		docgroup_depth++;	
 		break;
 	case ELEMENT_QUOTE:
-		in_quote = 1;
+		in_quote = true;
+		newline();
+		break;
+	case ELEMENT_NOTE:
+		in_note = true;
+		note_count = 1;
 		newline();
 		break;
 	}
@@ -103,13 +111,22 @@ el_end_handler(void *data, const XML_Char *name)
 			pbuf_trimlastdot();
 			pbuf_outputln();
 
-			in_item = 0;
+			in_item = false;
 			return;
 		}
 		if (in_quote) {
 			output("> ");
 			pbuf_outputln();
-			in_quote = 0;
+			in_quote = false;
+			return;
+		}
+		if (in_note) {
+			if (1 < note_count) {
+				printf("\n");
+			}
+			printf("(注%d) ", note_count);
+			pbuf_outputln();
+			++note_count;
 			return;
 		}
 
@@ -188,7 +205,11 @@ el_end_handler(void *data, const XML_Char *name)
 		pbuf_add(")", 1);
 		break;
 	case ELEMENT_LIST:
-		in_item = 0;
+		in_item = false;
+		break;
+	case ELEMENT_NOTE:
+		in_note = false;
+		note_count = 0;
 		break;
 	case ELEMENT_DOCGROUP:
 		docgroup_depth--;	
