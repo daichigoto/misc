@@ -4,20 +4,20 @@
 # PID recorded
 #====================================================================
 pidfile=".build.pid"
-echo "$$" > "$pidfile"
-trap "rm -f \"$pidfile\" .timestamp; exit" INT
+echo	"$$"                                            > "$pidfile"
+trap	"rm -f \"$pidfile\" .timestamp; exit" INT
 
 #====================================================================
 # Waiting for target file generation
 #====================================================================
 while :
 do
-    if [ ! -e typescript.xml ]
-    then
-        sleep 0.1
-    else
-        break
-    fi
+	if [ ! -e typescript.xml ]
+	then	
+		sleep 0.1
+	else
+		break
+	fi
 done
 
 #====================================================================
@@ -37,10 +37,10 @@ esac
 #====================================================================
 XXX_debug()
 {
-    mtimepre=$($statcmd images/001raw.jpg 2> /dev/null)
-    mtimepred=$($statcmd images 2> /dev/null)
-    echo "$1: [$mtimepred] - images"
-    echo "$1: [$mtimepre] - images/001raw.jpg"
+	mtimepre=$($statcmd images/001raw.jpg 2> /dev/null)
+	mtimepred=$($statcmd images 2> /dev/null)
+	echo	"$1: [$mtimepred] - images"
+	echo	"$1: [$mtimepre] - images/001raw.jpg"
 }
 
 # A file that indicates that images were automatically acquired 
@@ -50,111 +50,111 @@ confirmationfile="images/.got-by-ydmklp"
 # Function to retrieve images.
 getimg()
 {
-    # Get the images.
-    mtimepre=$($statcmd images/001raw.jpg 2> /dev/null)
-    make getimg 2> /dev/null
-    mtimepst=$($statcmd images/001raw.jpg 2> /dev/null)
+	# Get the images.
+	mtimepre=$($statcmd images/001raw.jpg 2> /dev/null)
+	make	getimg 2> /dev/null
+	mtimepst=$($statcmd images/001raw.jpg 2> /dev/null)
 
-    if [ -n "$mtimepst" ]
-        then
-        if [ "$mtimepre" != "$mtimepst" ]
-        then
-            # Record that the images were automatically acquired from 
-            # this script.
-            touch "$confirmationfile"
+	if [ -n "$mtimepst" ]
+	then
+		if [ "$mtimepre" != "$mtimepst" ]
+		then
+			# Record that the images were automatically acquired from 
+			# this script.
+			touch "$confirmationfile"
 
-            # Stagger the modification times of the images directory 
-            # and the files under it to indicate that they are not 
-            # the default image files.
-            touch -r .. images
-	else
-	    # On macOS, make getimg updates the last modified time of 
-	    # the images directory even if no image files are being 
-	    # acquired. Therefore, the last modified time is synchronized 
-	    # here to indicate that no image files have been acquired.
-            touch -r images images/0*
-        fi
-    fi
+			# Stagger the modification times of the images directory 
+			# and the files under it to indicate that they are not 
+			# the default image files.
+			touch -r .. images
+		else
+			# On macOS, make getimg updates the last modified time of 
+			# the images directory even if no image files are being 
+			# acquired. Therefore, the last modified time is synchronized 
+			# here to indicate that no image files have been acquired.
+			touch -r images images/0*
+		fi
+	fi
 }
 
 while :
 do
-    #----------------------------------------------------------------
-    # waiting for one of the files to be updated
-    #----------------------------------------------------------------
-    case "$(uname)" in
-    Darwin)
-        wait_filechanges typescript.xml
-        ;;
-    *)
-        wait_filechanges .
-        ;;
-    esac
+	#----------------------------------------------------------------
+	# waiting for one of the files to be updated
+	#----------------------------------------------------------------
+	case "$(uname)" in
+	Darwin)
+		wait_filechanges typescript.xml
+		;;
+	*)
+		wait_filechanges .
+		;;
+	esac
 
-    #----------------------------------------------------------------
-    # adapting to vi/vim save behavior
-    #----------------------------------------------------------------
-    sleep 0.2
+	#----------------------------------------------------------------
+	# adapting to vi/vim save behavior
+	#----------------------------------------------------------------
+	sleep	0.2
 
-    #----------------------------------------------------------------
-    # Avoid processing during build lock mode
-    #----------------------------------------------------------------
-    if [ -e .build-lock ]
-    then
-        continue
-    fi
+	#----------------------------------------------------------------
+	# Avoid processing during build lock mode
+	#----------------------------------------------------------------
+	if	[ -e .build-lock ]
+	then
+		continue
+	fi
 
-    #----------------------------------------------------------------
-    # HTML is generated first for web browser view
-    #----------------------------------------------------------------
-    ( unset REMOVE_AFTER_GETIMG; make clean )
-    errormsg=$(make html)
+	#----------------------------------------------------------------
+	# HTML is generated first for web browser view
+	#----------------------------------------------------------------
+	( unset REMOVE_AFTER_GETIMG; make clean )
+	errormsg=$(make html)
 
-    #----------------------------------------------------------------
-    # Automatic acquisition of image files
-    #----------------------------------------------------------------
+	#----------------------------------------------------------------
+	# Automatic acquisition of image files
+	#----------------------------------------------------------------
 
-    # Number of files under the images directory
-    nofs=$(find images -name "0[0-9]*raw.jpg" -type f -maxdepth 1 2> /dev/null | awk 'END{print NR}')
+	# Number of files under the images directory
+	nofs=$(find images -name "0[0-9]*raw.jpg" -type f -maxdepth 1 2> /dev/null | awk 'END{print NR}')
 
-    # Whether the modification time of the images directory and the 
-    # files under it are all the same or not.
-    case $($statcmd images images/0* 2> /dev/null | sort | uniq | awk 'END{print NR}') in
-    1) allthesametime="yes"; ;;
-    *) allthesametime="no"; ;;
-    esac
+	# Whether the modification time of the images directory and the 
+	# files under it are all the same or not.
+	case $($statcmd images images/0* 2> /dev/null | sort | uniq | awk 'END{print NR}') in
+	1)	allthesametime="yes"; ;;
+	*)	allthesametime="no"; ;;
+	esac
 
-    # If there are no files in the images directory, attempt to
-    # retrieve the image files.
-    if [ 0 -eq $nofs ]
-    then
-        getimg
-    else
-        # If the confirmation file exists, the file will not be 
-        # automatically retrieved. And if the modification time of
-        # the images directory and all files under it are not the same, 
-        # the image files will not be retrieved automatically because 
-        # this is a case where the user is retrieving them manually.
-        if [ ! -f "$confirmationfile" -a $allthesametime = "yes" ]
-        then
-            getimg
-        fi
-    fi
+	# If there are no files in the images directory, attempt to
+	# retrieve the image files.
+	if	[ 0 -eq $nofs ]
+	then
+		getimg
+	else
+		# If the confirmation file exists, the file will not be 
+		# automatically retrieved. And if the modification time of
+		# the images directory and all files under it are not the same, 
+		# the image files will not be retrieved automatically because 
+		# this is a case where the user is retrieving them manually.
+		if	[ ! -f "$confirmationfile" -a $allthesametime = "yes" ]
+		then
+			getimg
+		fi
+	fi
 
-    #----------------------------------------------------------------
-    # Build process
-    #----------------------------------------------------------------
-    errormsg=$(make)
+	#----------------------------------------------------------------
+	# Build process
+	#----------------------------------------------------------------
+	errormsg=$(make)
 
-    #----------------------------------------------------------------
-    # Upload the required files
-    #----------------------------------------------------------------
-    case $? in
-    0)
-        make upload
-        ;;
-    1)
-        echo "${errormsg}"
-        ;;
-    esac
+	#----------------------------------------------------------------
+	# Upload the required files
+	#----------------------------------------------------------------
+	case $? in
+	0)
+		make	upload
+		;;
+	1)
+		echo	"${errormsg}"
+		;;
+	esac
 done
