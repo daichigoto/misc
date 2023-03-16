@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018,2019-2022 Daichi GOTO
+ * Copyright (c) 2017,2018,2019-2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -332,7 +332,7 @@ static void
 import_text_sourcecode(const XML_Char **attr)
 {
 	FILE *fp;
-	char buf[BUFSIZ] = {'\0'};
+	char buf[BUFSIZ * 100] = {'\0'};
 	int depth;
 
 	escaped_output = 0;
@@ -372,7 +372,7 @@ static void
 import_text_Xsv(const XML_Char **attr, const char delim)
 {
 	FILE *fp;
-	char buf[BUFSIZ * 10] = {'\0'};
+	char buf[BUFSIZ * 100] = {'\0'};
 	char *p;
 	bool emptycell;
 
