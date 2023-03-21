@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018,2021,2022 Daichi GOTO
+ * Copyright (c) 2017,2018,2021-2023 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -172,7 +172,7 @@ static void
 import_text_sourcecode(const XML_Char **attr)
 {
 	FILE *fp;
-	char buf[BUFSIZ], numbuf[BUFSIZ], *buf_p;
+	char buf[BUFSIZ*100], numbuf[BUFSIZ], *buf_p;
 
 	fp = fopen(filename, "r");
 	if (NULL == fp)
