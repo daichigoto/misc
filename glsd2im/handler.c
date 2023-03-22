@@ -355,6 +355,10 @@ el_end_handler(void *data, const XML_Char *name)
 						// 類似記号へ置き換える
 						swap(accesslist_title[i], "–", "-");
 
+					 	// 関連リンクの「2c a0」(&nbsp;)が不適切な変換を受けるので
+						// 類似記号へ置き換える
+						swap(accesslist_title[i], " ", " ");
+
 						printf("%s\n", accesslist_ref[i]);
 						printf("%s\n", accesslist_title[i]);
 					}
