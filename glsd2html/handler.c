@@ -55,10 +55,16 @@ static char quote_ref[BUFSIZ];
 	"<script src=\"https://maxcdn.bootstrapcdn.com/" \
 	               "bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n" \
 	"<script>\n" \
-        "  // ウィンドウフォーカス時にリロード\n" \
-	"  window.addEventListener('focus', ()=>{\n" \
-	"    window.location.reload()\n" \
-	"  });\n" \
+        "  // Firefoxは想定通りに機能しないため除外する\n" \
+        "  var agent = window.navigator.userAgent.toLowerCase();\n" \
+        "  if (-1 == agent.indexOf(\"firefox\")) {\n" \
+        "    // Firefox以外でフォーカス＆リロード\n" \
+        "    \n" \
+        "    // ウィンドウフォーカス時にリロード\n" \
+	"    window.addEventListener('focus', ()=>{\n" \
+	"      window.location.reload();\n" \
+	"    });\n" \
+        "  }\n" \
         "  \n" \
         "  // 2秒ごとにリロード\n" \
         "  // window.addEventListener('load', ()=>{\n" \
