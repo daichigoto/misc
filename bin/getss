@@ -172,6 +172,7 @@ case	"$ct" in
 		https://thehackernews.com/*)		method="msedge-novtb" ;;
 		https://blog.checkpoint.com/*)		method="msedge-novtb" ;;
 		https://www.microsoft.com/ja-jp/*)	method="msedge-novtb" ;;
+		https://www.crowdstrike.com/*)		method="msedge-novtb" ;;
 		esac
 		;;
 	esac
