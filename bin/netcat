@@ -108,6 +108,7 @@ https://support.lenovo.com/*)		method="curl" ;;
 https://helpx.adobe.com/*)		method="curl" ;;
 https://blog.checkpoint.com/*)		method="curl" ;;
 https://support.hp.com/*)		method="curl" ;;
+https://www.ibm.com/*)			method="curl" ;;
 esac
 
 #========================================================================
