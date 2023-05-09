@@ -175,6 +175,7 @@ case	"$ct" in
 		https://www.crowdstrike.com/*)		method="msedge-novtb" ;;
 		https://support.hp.com/*)		method="msedge-novtb" ;;
 		https://www.ibm.com/*)			method="msedge-novtb" ;;
+		https://www.cnbc.com/*)			method="msedge-novtb" ;;
 		esac
 		;;
 	esac
