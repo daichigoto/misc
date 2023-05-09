@@ -20,6 +20,10 @@ Darwin)
 		# BSDmake
 		exec	$(which bsdmake | head -1) "${@}"
 		;;
+	${HOME}/articles/*)
+		# BSDmake
+		exec	$(which bsdmake | head -1) "${@}"
+		;;
 	*)
 		# GNUmake
 		exec	/usr/bin/make "${@}"
