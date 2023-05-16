@@ -176,6 +176,7 @@ case	"$ct" in
 		https://support.hp.com/*)		method="msedge-novtb" ;;
 		https://www.ibm.com/*)			method="msedge-novtb" ;;
 		https://www.cnbc.com/*)			method="msedge-novtb" ;;
+		https://www.atpress.ne.jp/*)		method="msedge-novtb" ;;
 		esac
 		;;
 	esac
