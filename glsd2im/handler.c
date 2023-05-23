@@ -369,9 +369,10 @@ el_end_handler(void *data, const XML_Char *name)
 				break;
 			}
 			if (in_item) {
-				if (listtype_order)
-					printf("%d. ", 
-						listtype_order_index++);
+				if (listtype_order) {
+					printf("＃");
+					listtype_order_index++;
+				}
 				else
 					output("・");
 				pbuf_outputln();
