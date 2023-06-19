@@ -179,6 +179,7 @@ case	"$ct" in
 		https://www.atpress.ne.jp/*)		method="msedge-novtb" ;;
 		https://www.group-ib.com/*)		method="msedge-novtb" ;;
 		https://code.visualstudio.com/*)	method="msedge-novtb" ;;
+		https://hothardware.com/*)		method="msedge-novtb" ;;
 		esac
 		;;
 	esac
