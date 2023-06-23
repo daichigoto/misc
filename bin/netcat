@@ -12,16 +12,22 @@ then
 fi
 
 #========================================================================
-# Windowsで実行している場合でnetcat_webdriverが存在する場合にはそちらに
-# 処理を譲渡する
+# Windowsで実行している場合でnetcat_webdriverが存在する場合で、
+# netcat_webdriverで処理すべき場合には処理を譲渡する
 #========================================================================
-case	"$(uname)" in
-MSYS*)
-	if	which netcat_webdriver.ps1				> /dev/null 2>&1
-	then
-		netcat_webdriver.ps1 "$url"
-		exit
-	fi
+case	"$url" in
+*.csv|*csv=1)
+ 	;;
+*)
+	case	"$(uname)" in
+	MSYS*)
+		if	which netcat_webdriver.ps1		> /dev/null 2>&1
+		then
+			netcat_webdriver.ps1 "$url"
+			exit
+		fi
+		;;
+	esac
 	;;
 esac
 
