@@ -180,6 +180,7 @@ case	"$ct" in
 		https://www.group-ib.com/*)		method="msedge-novtb" ;;
 		https://code.visualstudio.com/*)	method="msedge-novtb" ;;
 		https://hothardware.com/*)		method="msedge-novtb" ;;
+		https://www.securityjoes.com/*)		method="msedge-novtb" ;;
 		esac
 		;;
 	esac
