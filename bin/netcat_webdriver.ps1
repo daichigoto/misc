@@ -31,7 +31,7 @@ switch  -Wildcard ($URL)
 # Webリソースを取得
 #========================================================================
 # Microsoft Edge WebDriverを起動
-webdriver_edge_start.ps1
+webdriver_edge_start.ps1					> $null
 
 # WebDriver経由でURLをオープン
 Set-SeUrl	-Url $URL
@@ -43,4 +43,4 @@ Start-Sleep	$WTime
 Get-SeHtml
 
 # Microsoft Edge WebDriverを終了
-webdriver_edge_stop.ps1
+webdriver_edge_stop.ps1						> $null
