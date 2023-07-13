@@ -195,14 +195,14 @@ msedge)
 	#================================================
 	# Microsoft Edgeを使って取得 (Windows)
 	#================================================
-	echo "$msedge"	--headless			\
-			--lang=en-US			\
-			--user-agent="$webagent"	\
-			--window-size=$width,$height	\
-			--screenshot="$outfile"		\
-			--hide-scrollbars		\
-			--virtual-time-budget=10000	\
-			"$uri"
+	#echo "$msedge"	--headless			\
+	#		--lang=en-US			\
+	#		--user-agent="$webagent"	\
+	#		--window-size=$width,$height	\
+	#		--screenshot="$outfile"		\
+	#		--hide-scrollbars		\
+	#		--virtual-time-budget=10000	\
+	#		"$uri"
 	"$msedge"	--headless			\
 			--lang=en-US			\
 			--user-agent="$webagent"	\
