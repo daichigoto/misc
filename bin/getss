@@ -182,7 +182,7 @@ case	"$ct" in
 		https://www.securityweek.com/*)		method="msedge-novtb" ;;
 		https://www.trendmicro.com/*)		method="msedge-novtb" ;;
 		https://www.windowscentral.com/*)	method="msedge-novtb" ;;
-		https://www.centurebeat.com/*)		method="msedge-novtb" ;;
+		https://www.venturebeat.com/*)		method="msedge-novtb" ;;
 		esac
 		;;
 	esac
