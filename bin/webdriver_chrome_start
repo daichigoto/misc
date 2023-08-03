@@ -37,8 +37,8 @@ then
 		grep	-o -E '[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+'	|
 		sort							|
 		uniq							|
-		grep ^$chromemajorversion				|
-		tail -1)
+		grep	^$chromemajorversion				|
+		tail	-1)
 
 	echo 	'chromedriverをインストールします。'
 	cd	/tmp/
@@ -60,16 +60,28 @@ fi
 driverversion=$(chromedriver --version | awk '{print $2}')
 drivermajorversion=$(echo $driverversion | cut -f1 -d.)
 
-if 	[ "$chromemajorversion" != "$drivermajorversion" ]
+if 	[ "$chromeversion" != "$driverversion" ]
 then
-	# 最新のドライババージョンを取得
+	#----------------------------------------------------------------
+	# ドライババージョンを取得
+	#----------------------------------------------------------------
 	driverversion=$(
 		curl	--get https://googlechromelabs.github.io/chrome-for-testing/ 2> /dev/null |
 		grep	-o -E '[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+'	|
 		sort							|
 		uniq							|
-		grep ^$chromemajorversion				|
-		tail -1)
+		grep	^$chromemajorversion				|
+		tail	-1)
+
+	#----------------------------------------------------------------
+	# ドライババージョンが一致しない場合には操作できないため処理を
+	# 終了する
+	#----------------------------------------------------------------
+	if 	[ "$chromeversion" != "$driverversion" ]
+	then
+		echo	'対応するchromedriverが存在しません。手動で操作してください。' 1>&2
+		exit	1
+	fi
 
 	echo 	'chromedriverをアップデートします。'
 	cd	/tmp/
