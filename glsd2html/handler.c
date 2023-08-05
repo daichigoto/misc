@@ -29,12 +29,15 @@
 
 static ELEMENT cur_element;
 static ELEMENT pre_element;
-static int listtype_order = 0;
+
 static int docgroup_depth = 0;
 
 static bool in_import = false;
 static bool in_item = false;
 static bool in_quote = false;
+
+static int list_depth = -1;
+static bool listtype_order[10] = {false};
 
 static bool in_note = false;
 static int note_count = 0;
@@ -108,16 +111,17 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		break;
 	case ELEMENT_LIST:
 		newline();
-		listtype_order = 0;
+		++list_depth;
+		listtype_order[list_depth] = false;
 		for (int i = 0; attr[i]; i += 2) {
 			if (0 == strcmp(attr[i], "type") &&
 			    0 == strcmp(attr[i+1], "order")) {
-				listtype_order = 1;
+				listtype_order[list_depth] = true;
 				outputln("<ol>");
 				break;
 			}
 		}
-		if (!listtype_order)
+		if (!listtype_order[list_depth])
 			outputln("<ul>");
 		break;
 	case ELEMENT_DOCGROUP:
@@ -315,10 +319,11 @@ el_end_handler(void *data, const XML_Char *name)
 		outputln("</li>");
 		break;
 	case ELEMENT_LIST:
-		if (listtype_order)
+		if (listtype_order[list_depth])
 			outputln("</ol>");
 		else
 			outputln("</ul>");
+		--list_depth;
 		break;
 	case ELEMENT_NOTE:
 		in_note = false;
