@@ -180,6 +180,7 @@ case	"$ct" in
 		https://www.microsoft.com/ja-jp/*)	method="msedge-novtb" ;;
 		https://www.securityjoes.com/*)		method="msedge-novtb" ;;
 		https://www.securityweek.com/*)		method="msedge-novtb" ;;
+		https://www.thousandeyes.com/*)		method="msedge-novtb" ;;
 		https://www.trendmicro.com/*)		method="msedge-novtb" ;;
 		https://www.windowscentral.com/*)	method="msedge-novtb" ;;
 		https://venturebeat.com/*)		method="msedge-novtb" ;;
