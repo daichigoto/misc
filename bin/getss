@@ -154,6 +154,7 @@ case	"$ct" in
 	msedge)
 		case	"$uri" in
 		https://*.sucuri.net/*)			method="msedge-novtb" ;;
+		https://arstechnica.com/*)		method="msedge-novtb" ;;
 		https://betanews.com/*)			method="msedge-novtb" ;;
 		https://blog.bitkeep.com/*)		method="msedge-novtb" ;;
 		https://blog.checkpoint.com/*)		method="msedge-novtb" ;;
