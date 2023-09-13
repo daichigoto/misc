@@ -159,6 +159,7 @@ case	"$ct" in
 		https://blog.bitkeep.com/*)		method="msedge-novtb" ;;
 		https://blog.checkpoint.com/*)		method="msedge-novtb" ;;
 		https://blog.group-ib.com/*)		method="msedge-novtb" ;;
+		https://blog.sucuri.net/*)		method="msedge-novtb" ;;
 		https://code.visualstudio.com/*)	method="msedge-novtb" ;;
 		https://devblogs.microsoft.com/*)	method="msedge-novtb" ;;
 		https://gs.statcounter.com/*)		method="msedge-novtb" ;;
