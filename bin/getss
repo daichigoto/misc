@@ -182,6 +182,7 @@ case	"$ct" in
 		https://www.kyndryl.com/*)		method="msedge-novtb" ;;
 		https://www.maketecheasier.com/*)	method="msedge-novtb" ;;
 		https://www.microsoft.com/ja-jp/*)	method="msedge-novtb" ;;
+		https://www.reliaquest.com/*)		method="msedge-novtb" ;;
 		https://www.securityjoes.com/*)		method="msedge-novtb" ;;
 		https://www.securityweek.com/*)		method="msedge-novtb" ;;
 		https://www.thousandeyes.com/*)		method="msedge-novtb" ;;
