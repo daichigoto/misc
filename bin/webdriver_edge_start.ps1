@@ -23,8 +23,16 @@ if (-Not (Get-InstalledModule -Name Selenium 2> $Null)) {
 #========================================================================
 'Microsoft Edge WebDriverを起動します。'
 $Size = '1200,800'
-if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
-{
+
+#XXX 後藤 2023-11-07
+# これまでは下記処理で対応するEdge WebDriverを使っているかどうか判断する
+# ことができたが、先日から異なるバージョンでも起動するようになった。
+# このため、起動するものの処理ができない状況が出てきた。そのため、強制的に
+# 最新のバージョンのドライバを使うように処理を変更する。状況が戻る可能性も
+# あるので、コメントアウトでの対応としておく。
+#
+#if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
+#{
 	#================================================================
 	# Microsoft EdgeとMicrosoft Edge WebDriverのバージョンが一致して
 	# いないためにドライバが動作しなかった可能性がある。
@@ -53,7 +61,13 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 	$DriverURL="https://msedgedriver.azureedge.net/$EdgeVersion/edgedriver_win64.zip"
 
 	$SeModVer=(Get-InstalledModule -Name Selenium).Version -replace "-.+$",""
-	$DriverDir="$env:HOME\Documents\powershell\Modules\Selenium\$SeModVer\assemblies"
+
+	# 2023-11-17 後藤
+	# 環境変数USERNAMEが差し替えられると、環境変数HOMEも自動的に変更
+	# される。これではWebDriverのパスまで変わってしまうため、変更を
+	# 受けない環境変数HOMEDRIVEおよび環境変数HOMEPATHを使って表記し
+	# ている。
+	$DriverDir="$env:HOMEDRIVE$env:HOMEPATH\Documents\powershell\Modules\Selenium\$SeModVer\assemblies"
 	$DriverDownloadDir="$DriverDir\_download"
 
 	#================================================================
@@ -103,5 +117,6 @@ if	(-Not (Start-SeDriver -Browser Edge -Size $Size 2> $Null 3> $Null))
 
 		Exit
 	}
-}
+#}
+
 'Microsoft Edge WebDriverの起動処理完了。'

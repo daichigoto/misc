@@ -51,7 +51,13 @@ if	(-Not (Start-SeDriver -Browser Chrome -Size $Size 2> $Null 3> $Null))
 	$DriverURL='https://chromedriver.storage.googleapis.com/' + $DriverVersion + '/' + $DriverZIP
 
 	$SeModVer=(Get-InstalledModule -Name Selenium).Version -replace "-.+$",""
-	$DriverDir="$env:HOME\Documents\powershell\Modules\Selenium\$SeModVer\assemblies"
+
+	# 2023-11-17 後藤
+	# 環境変数USERNAMEが差し替えられると、環境変数HOMEも自動的に変更
+	# される。これではWebDriverのパスまで変わってしまうため、変更を
+	# 受けない環境変数HOMEDRIVEおよび環境変数HOMEPATHを使って表記し
+	# ている。
+	$DriverDir="$env:HOMEDRIVE$env:HOMEPATH\Documents\powershell\Modules\Selenium\$SeModVer\assemblies"
 	$DriverDownloadDir="$DriverDir\_download"
 
 	#================================================================
