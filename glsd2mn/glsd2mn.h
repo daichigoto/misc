@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019,2021-2023 Daichi GOTO
+ * Copyright (c) 2017-2019,2021-2023,2024 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20230822"
+#define VERSION			"20240307"
 #define IMAGE_ZIPFILE		"images.zip"
 
 typedef enum el {
