@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018,2019-2023 Daichi GOTO
+ * Copyright (c) 2017,2018,2019-2024 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -204,10 +204,20 @@ import_image(const XML_Char **attr, char *img_type)
 			image_process(filename, "ogp.jpg",
 					IMAGE_ZIPFILE,
 					IMAGE_WIDTH_UNLIMITED);
-			image_process(filename, namel,
-					IMAGE_ZIPFILE,
-					IMAGE_WIDTH_LARGE);
-			image_process(namel, "index.jpg", 
+			// 2024-03-07のCMS改修でmapping.txt の書き方が
+			// 変わり次のようになった。
+			//
+			//   001.jpg,サンプルオルト,サンプルキャプション,
+			//
+			// 拡大画像ファイルを含めないようになったため、
+			// これに対応するように処理を変更。
+			/* image_process(filename, namel, */
+			/* 		IMAGE_ZIPFILE, */
+			/* 		IMAGE_WIDTH_LARGE); */
+			/* image_process(namel, "index.jpg", */ 
+			/* 		IMAGE_ZIPFILE, */
+			/* 		IMAGE_WIDTH_TOP); */
+			image_process(filename, "index.jpg", 
 					IMAGE_ZIPFILE,
 					IMAGE_WIDTH_TOP);
 			if (iphone_flag)
@@ -218,25 +228,54 @@ import_image(const XML_Char **attr, char *img_type)
 				size = image_process("index.jpg", name,
 					IMAGE_ZIPFILE,
 					IMAGE_WIDTH_TOP);
-			rm(namel);
+			// 2024-03-07のCMS改修でmapping.txt の書き方が
+			// 変わり次のようになった。
+			//
+			//   001.jpg,サンプルオルト,サンプルキャプション,
+			//
+			// 拡大画像ファイルを含めないようになったため、
+			// これに対応するように処理を変更。
+			/* rm(namel); */
 			rm(name);
 			rm("ogp.jpg");
 			rm("index.jpg");
 			index_image_generated = true;
 		}
 		else {
-			image_process(filename, namel, 
-					IMAGE_ZIPFILE,
-					IMAGE_WIDTH_LARGE);
+			// 2024-03-07のCMS改修でmapping.txt の書き方が
+			// 変わり次のようになった。
+			//
+			//   001.jpg,サンプルオルト,サンプルキャプション,
+			//
+			// 拡大画像ファイルを含めないようになったため、
+			// これに対応するように処理を変更。
+			/* image_process(filename, namel, */ 
+			/* 		IMAGE_ZIPFILE, */
+			/* 		IMAGE_WIDTH_LARGE); */
+			/* if (iphone_flag) */
+			/* 	size = image_process(namel, name, */ 
+			/* 		IMAGE_ZIPFILE, */
+			/* 		IMAGE_WIDTH_MOBILE); */
+			/* else */
+			/* 	size = image_process(namel, name, */ 
+			/* 		IMAGE_ZIPFILE, */
+			/* 		IMAGE_WIDTH_NORMAL); */
 			if (iphone_flag)
-				size = image_process(namel, name, 
+				size = image_process(filename, name, 
 					IMAGE_ZIPFILE,
 					IMAGE_WIDTH_MOBILE);
 			else
-				size = image_process(namel, name, 
+				size = image_process(filename, name, 
 					IMAGE_ZIPFILE,
 					IMAGE_WIDTH_NORMAL);
-			rm(namel);
+			// 2024-03-07のCMS改修でmapping.txt の書き方が
+			// 変わり次のようになった。
+			//
+			//   001.jpg,サンプルオルト,サンプルキャプション,
+			//
+			// 拡大画像ファイルを含めないようになったため、
+			// これに対応するように処理を変更。
+			/* rm(namel); */
 			rm(name);
 		}
 	}
@@ -281,18 +320,37 @@ import_image(const XML_Char **attr, char *img_type)
 	}
 
 	if (autogen_flag) {
+		// 2024-03-07のCMS改修でmapping.txt の書き方が
+		// 変わり次のようになった。
+		//
+		//   001.jpg,サンプルオルト,サンプルキャプション,
+		//
+		// 拡大画像ファイル名を書く部分はなくなっている。
+		// これに対応するように出力を変更。
 		mapping_buf_len += snprintf(
 			mapping_buf_p, 
 			sizeof(mapping_buf) - mapping_buf_len, 
-			"%s,,%s,%s,", name,
+			"%s,%s,%s,", name,
 			escaped_caption, escaped_caption);
 	}
 	else {
+		// 2024-03-07のCMS改修でmapping.txt の書き方が
+		// 変わり次のようになった。
+		//
+		//   001.jpg,サンプルオルト,サンプルキャプション,
+		//
+		// 拡大画像ファイル名を書く部分はなくなっている。
+		// これに対応するように出力を変更。
 		mapping_buf_len += snprintf(
 			mapping_buf_p, 
 			sizeof(mapping_buf) - mapping_buf_len, 
-			"%s,%s,%s,%s,", name, namel, 
+			"%s,%s,%s,", name,
 			escaped_caption, escaped_caption);
+		/* mapping_buf_len += snprintf( */
+		/* 	mapping_buf_p, */ 
+		/* 	sizeof(mapping_buf) - mapping_buf_len, */ 
+		/* 	"%s,%s,%s,%s,", name, namel, */ 
+		/* 	escaped_caption, escaped_caption); */
 	}
 	mapping_buf_p = mapping_buf + mapping_buf_len;
 
