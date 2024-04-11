@@ -170,6 +170,7 @@ case	"$ct" in
 		https://support.hp.com/*)		method="msedge-novtb" ;;
 		https://support.lenovo.com/*)		method="msedge-novtb" ;;
 		https://thehackernews.com/*)		method="msedge-novtb" ;;
+		https://www.akamai.com/*)		method="msedge-novtb" ;;
 		https://www.atpress.ne.jp/*)		method="msedge-novtb" ;;
 		https://www.backblaze.com/*)		method="msedge-novtb" ;;
 		https://www.bleepingcomputer.com/*)	method="msedge-novtb" ;;
