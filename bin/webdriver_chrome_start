@@ -85,18 +85,19 @@ then
 		echo	'対応するchromedriverが存在しません。強引に実行します。' 1>&2
 	fi
 
-	echo 	'chromedriverをアップデートします。'
-	cd	/tmp/
-	curl	--get -O https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/"$driverversion"/mac-arm64/chromedriver-mac-arm64.zip
+	#XXX
+	# echo 	'chromedriverをアップデートします。'
+	# cd	/tmp/
+	# curl	--get -O https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/"$driverversion"/mac-arm64/chromedriver-mac-arm64.zip
 
-	echo 	unzip chromedriver-mac-arm64.zip
-	unzip	chromedriver-mac-arm64.zip
-	echo 	cp chromedriver-mac-arm64/chromedriver "$bindir"
-	cp	chromedriver-mac-arm64/chromedriver			\
-		"$bindir"
-	rm	-r chromedriver-mac-arm64.zip				\
-		chromedriver-mac-arm64
-	cd	-
+	# echo 	unzip chromedriver-mac-arm64.zip
+	# unzip	chromedriver-mac-arm64.zip
+	# echo 	cp chromedriver-mac-arm64/chromedriver "$bindir"
+	# cp	chromedriver-mac-arm64/chromedriver			\
+	# 	"$bindir"
+	# rm	-r chromedriver-mac-arm64.zip				\
+	# 	chromedriver-mac-arm64
+	# cd	-
 else
 	echo 	'chromedriverは適切なバージョンがインストールされています。'
 fi
