@@ -27,7 +27,7 @@ fi
 # chromedriverがない場合にはインストールする
 #========================================================================
 chromeversion=$(/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version | awk '{print $3}')
-chromemajorversion=$(echo $chromeversion | echo $chromeversion | cut -f1 -d.)
+chromemajorversion=$(echo $chromeversion | cut -f1 -d.)
 
 if	! which chromedriver > /dev/null
 then
@@ -79,8 +79,9 @@ then
 	#----------------------------------------------------------------
 	if 	[ "$chromeversion" != "$driverversion" ]
 	then
-		echo	'対応するchromedriverが存在しません。手動で操作してください。' 1>&2
-		exit	1
+		#XXX
+		#echo	'対応するchromedriverが存在しません。手動で操作してください。' 1>&2
+		#exit	1
 	fi
 
 	echo 	'chromedriverをアップデートします。'
