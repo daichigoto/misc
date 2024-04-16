@@ -82,6 +82,7 @@ then
 		#XXX
 		#echo	'対応するchromedriverが存在しません。手動で操作してください。' 1>&2
 		#exit	1
+		echo	'対応するchromedriverが存在しません。強引に実行します。' 1>&2
 	fi
 
 	echo 	'chromedriverをアップデートします。'
