@@ -42,7 +42,7 @@ then
 
 	echo 	'chromedriverをインストールします。'
 	cd	/tmp/
-	curl	--get -O https://storage.googleapis.com/chrome-for-testing-public/"$driverversion"/mac-arm64/chrome-mac-arm64.zip
+	curl	--get -O https://storage.googleapis.com/chrome-for-testing-public/"$driverversion"/mac-arm64/chromedriver-mac-arm64.zip
 	echo	unzip chromedriver-mac-arm64.zip
 	unzip	chromedriver-mac-arm64.zip
 	echo	cp chromedriver-mac-arm64/chromedriver "$bindir"
@@ -87,7 +87,7 @@ then
 
 	echo 	'chromedriverをアップデートします。'
 	cd	/tmp/
-	curl	--get -O https://storage.googleapis.com/chrome-for-testing-public/"$driverversion"/mac-arm64/chrome-mac-arm64.zip
+	curl	--get -O https://storage.googleapis.com/chrome-for-testing-public/"$driverversion"/mac-arm64/chromedriver-mac-arm64.zip
 
 	echo 	unzip chromedriver-mac-arm64.zip
 	unzip	chromedriver-mac-arm64.zip
