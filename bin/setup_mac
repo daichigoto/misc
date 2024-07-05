@@ -74,6 +74,7 @@ fi
 cmd="/opt/homebrew/bin/kyua"
 if [ ! -f "${cmd}" ]
 then
+	brew tap freebsd/kyua https://github.com/freebsd/kyua
 	brew install kyua
 fi
 
