@@ -177,6 +177,7 @@ case	"$ct" in
 		https://www.bleepingcomputer.com/*)	method="msedge-novtb" ;;
 		https://www.cnbc.com/*)			method="msedge-novtb" ;;
 		https://www.crowdstrike.*/*)		method="msedge-novtb" ;;
+		https://www.docker.com/*)		method="msedge-novtb" ;;
 		https://www.fortinet.com/*)		method="msedge-novtb" ;;
 		https://www.group-ib.com/*)		method="msedge-novtb" ;;
 		https://www.hpe.com/*)			method="msedge-novtb" ;;
