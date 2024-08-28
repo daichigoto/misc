@@ -30,7 +30,7 @@ then
 fi
 
 cmd="/opt/homebrew/bin/realpath"
-if [ ! -f "${cmd}" ]
+if [ ! -f "${cmd}" -a ! -f "/bin/realpath" ]
 then
 	brew install coreutils
 fi
