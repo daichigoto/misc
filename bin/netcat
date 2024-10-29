@@ -49,6 +49,14 @@ msedge='/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
 chrome='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
 
+# Macの環境ではMac用のエージェントを指定しないとアクセスを弾くサイトが
+# 存在するので、適切に設定する。
+case	$(uname -s) in
+Darwin)
+	agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0.1 Safari/605.1.15'
+	;;
+esac
+
 #========================================================================
 # Webリソースの種類を取得
 #========================================================================
