@@ -4,6 +4,6 @@
 #  Firefoxコンテンツサイズを1200x600にするスクリプト
 #========================================================================
 
-$cmd = ${PSScriptRoot} + "\window_resize.ps1 firefox .* 1206 687"
+$cmd = ${PSScriptRoot} + "\window_resize.ps1 firefox .* 1212 719"
 
 Invoke-Expression $cmd
