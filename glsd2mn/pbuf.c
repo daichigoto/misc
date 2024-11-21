@@ -230,6 +230,16 @@ pbuf_get_escaped_string(char *s)
 			*n = ';';
 			++n;
 			break;
+		case '#':
+			// 行頭が「#」だとタイトルだと解釈されるため、行頭だった
+			// 場合のみ「\#」へとエスケープする。
+			if (0 == i) {
+				*n = '\\';
+				++n;
+				*n = '#';
+				++n;
+			}
+			break;
 		default:
 			*n = *p;
 			++n;

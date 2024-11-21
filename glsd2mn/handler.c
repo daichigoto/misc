@@ -194,10 +194,20 @@ el_end_handler(void *data, const XML_Char *name)
 				break;
 			if (pbuf_startwith("[SRC:"))
 				break;
-			if (pbuf_startwith("[POST:")) {
+			if (pbuf_startwith("[POST:"))
 				break;
-			}
+
 			newline();
+
+			if (pbuf_startwith("#") &&
+			    !pbuf_startwith("###### ") &&
+			    !pbuf_startwith("##### ") &&
+			    !pbuf_startwith("#### ") &&
+			    !pbuf_startwith("### ")) {
+				// 行頭の「#」はタイトル指定と解釈されるため
+				// エスケープする。
+				putchar('\\');
+			}
 			pbuf_flushln();
 			break;
 		}
