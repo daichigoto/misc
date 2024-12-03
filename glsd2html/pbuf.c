@@ -242,7 +242,7 @@ pbuf_entityexpansion_output(void)
 				}
 				else {
 					printf("&lt;");
-					in_element_a = false;
+					//in_element_a = false;
 				}
 				break;
 			case '>':
