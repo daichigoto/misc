@@ -327,10 +327,23 @@ import_image(const XML_Char **attr, char *img_type)
 		//
 		// 拡大画像ファイル名を書く部分はなくなっている。
 		// これに対応するように出力を変更。
+		//mapping_buf_len += snprintf(
+		//	mapping_buf_p, 
+		//	sizeof(mapping_buf) - mapping_buf_len, 
+		//	"%s,%s,%s,", name,
+		//	escaped_caption, escaped_caption);
+		// 2024-12-22
+		// 時期は不明だがフォーマットがいつの間にか次の
+		// 形式に戻っていた。
+		//
+		//   001.jpg,001l.jpg,サンプルオルト,サンプルキャプション,
+		//
+		// 拡大画像の処理は停止してあるので、フォーマット
+		// のみを現状に対応するように変更する。
 		mapping_buf_len += snprintf(
 			mapping_buf_p, 
 			sizeof(mapping_buf) - mapping_buf_len, 
-			"%s,%s,%s,", name,
+			"%s,,%s,%s,", name,
 			escaped_caption, escaped_caption);
 	}
 	else {
@@ -341,16 +354,29 @@ import_image(const XML_Char **attr, char *img_type)
 		//
 		// 拡大画像ファイル名を書く部分はなくなっている。
 		// これに対応するように出力を変更。
-		mapping_buf_len += snprintf(
-			mapping_buf_p, 
-			sizeof(mapping_buf) - mapping_buf_len, 
-			"%s,%s,%s,", name,
-			escaped_caption, escaped_caption);
+		//mapping_buf_len += snprintf(
+		//	mapping_buf_p, 
+		//	sizeof(mapping_buf) - mapping_buf_len, 
+		//	"%s,%s,%s,", name,
+		//	escaped_caption, escaped_caption);
 		/* mapping_buf_len += snprintf( */
 		/* 	mapping_buf_p, */ 
 		/* 	sizeof(mapping_buf) - mapping_buf_len, */ 
 		/* 	"%s,%s,%s,%s,", name, namel, */ 
 		/* 	escaped_caption, escaped_caption); */
+		// 2024-12-22
+		// 時期は不明だがフォーマットがいつの間にか次の
+		// 形式に戻っていた。
+		//
+		//   001.jpg,001l.jpg,サンプルオルト,サンプルキャプション,
+		//
+		// 拡大画像の処理は停止してあるので、フォーマット
+		// のみを現状に対応するように変更する。
+		mapping_buf_len += snprintf(
+			mapping_buf_p, 
+			sizeof(mapping_buf) - mapping_buf_len, 
+			"%s,,%s,%s,", name,
+			escaped_caption, escaped_caption);
 	}
 	mapping_buf_p = mapping_buf + mapping_buf_len;
 
