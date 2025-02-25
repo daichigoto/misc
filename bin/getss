@@ -165,6 +165,7 @@ case	"$ct" in
 		https://gs.statcounter.com/*)		method="msedge-novtb" ;;
 		https://helpx.adobe.com/*)		method="msedge-novtb" ;;
 		https://hothardware.com/*)		method="msedge-novtb" ;;
+		https://www.salesforce.com/*)		method="msedge-novtb" ;;
 		https://securelist.com/*)		method="msedge-novtb" ;;
 		https://securityaffairs.co/*)		method="msedge-novtb" ;;
 		https://support.hp.com/*)		method="msedge-novtb" ;;
