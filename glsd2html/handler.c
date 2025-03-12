@@ -115,7 +115,9 @@ el_start_handler(void *data, const XML_Char *name, const XML_Char **attr)
 		listtype_order[list_depth] = false;
 		for (int i = 0; attr[i]; i += 2) {
 			if (0 == strcmp(attr[i], "type") &&
-			    0 == strcmp(attr[i+1], "order")) {
+			    (0 == strcmp(attr[i+1], "order") || 
+			     0 == strcmp(attr[i+1], "quote,order") ||
+			     0 == strcmp(attr[i+1], "order,quote") )) {
 				listtype_order[list_depth] = true;
 				outputln("<ol>");
 				break;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019,2022-2024 Daichi GOTO
+ * Copyright (c) 2017-2019,2022-2025 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
 #include <sysexits.h>
 #include <expat.h>
 
-#define VERSION			"20241203"
+#define VERSION			"20250312"
 
 typedef enum el {
 	ELEMENT_DOCUMENT,
