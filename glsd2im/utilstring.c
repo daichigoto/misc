@@ -43,3 +43,23 @@ swap(char *src, char *pre, char *post)
 		memcpy(p_pre, post, len_post);
 	}
 }
+
+void
+string_processing_for_itmedia_cms(char *src)
+{
+ 	// 関連リンクの「·」が不適切な変換を受けるので
+	// 類似記号へ置き換える
+	swap(src, "·", "・");
+
+ 	// 関連リンクの「 •」が不適切な変換を受けるので
+	// 類似記号へ置き換える
+	swap(src, " • ", "・");
+
+ 	// 関連リンクの「–」が不適切な変換を受けるので
+	// 類似記号へ置き換える
+	swap(src, "–", "-");
+
+ 	// 関連リンクの「2c a0」(&nbsp;)が不適切な変換を受けるので
+	// 類似記号へ置き換える
+	swap(src, " ", " ");
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Daichi GOTO
+ * Copyright (c) 2022,2023,2025 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -347,17 +347,8 @@ el_end_handler(void *data, const XML_Char *name)
 				//-------------------------------------------
 				for (int i=0; i < accesslist_count; i++) {
 					if (0 != strncmp("https://www.itmedia.co.jp/",accesslist_ref[i],26)) {
-					 	// 関連リンクの「·」が不適切な変換を受けるので
-						// 類似記号へ置き換える
-						swap(accesslist_title[i], "·", "・");
-
-					 	// 関連リンクの「–」が不適切な変換を受けるので
-						// 類似記号へ置き換える
-						swap(accesslist_title[i], "–", "-");
-
-					 	// 関連リンクの「2c a0」(&nbsp;)が不適切な変換を受けるので
-						// 類似記号へ置き換える
-						swap(accesslist_title[i], " ", " ");
+						// ITmedia CMSで扱えない文字列のエスケープ処理
+						string_processing_for_itmedia_cms(accesslist_title[i]);
 
 						printf("%s\n", accesslist_ref[i]);
 						printf("%s\n", accesslist_title[i]);

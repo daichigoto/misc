@@ -89,6 +89,11 @@ import_image(const XML_Char **attr, char *img_type)
 	pbuf_add(".jpg", 4);
 	pbuf_add(",", 1);
 	pbuf_add(",", 1);
+
+	// ITmedia CMSで扱えない文字列のエスケープ処理
+	string_processing_for_itmedia_cms(caption);
+
+	swap(caption, " ", " ");
 	pbuf_add(caption, strlen(caption));
 }
 
