@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2023,2024 Daichi GOTO
+ * Copyright (c) 2017,2023,2024,2025 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -84,7 +84,7 @@ import(const XML_Char **attr)
 static void
 import_image(const XML_Char **attr, char *img_type)
 {
-	pbuf_add("↓l_", 5);
+	pbuf_add("↓", 3);
 	pbuf_add(filename+7, strlen(filename)-7-4); // exclude 'images'
 	pbuf_add(".jpg", 4);
 	pbuf_add(",", 1);
