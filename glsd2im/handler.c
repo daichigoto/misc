@@ -128,8 +128,14 @@ el_end_handler(void *data, const XML_Char *name)
 	switch((int)cur_element) {
 	case ELEMENT_P:
 		if (in_quote) {
-			printf("▼□\n");
-			pbuf_flushln();
+			// 2025-04-14 引用記号ではなくカギカッコによる表記に
+			// 変えてほしいというITmedia編集部の要望に応えて変換を
+			// 変更
+			//printf("▼□\n");
+			//pbuf_flushln();
+			printf("　「");
+			pbuf_flush();
+			printf("」");
 
 			// 引用元がある場合には引用元を表示
 			if ('\0' != quote_ref[0]) {
@@ -142,7 +148,11 @@ el_end_handler(void *data, const XML_Char *name)
 			else {
 				newline();
 			}
-			printf("▼□□\n");
+
+			// 2025-04-14 引用記号ではなくカギカッコによる表記に
+			// 変えてほしいというITmedia編集部の要望に応えて変換を
+			// 変更
+			//printf("▼□□\n");
 
 			in_quote = false;
 			return;

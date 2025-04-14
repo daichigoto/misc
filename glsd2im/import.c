@@ -84,16 +84,26 @@ import(const XML_Char **attr)
 static void
 import_image(const XML_Char **attr, char *img_type)
 {
-	pbuf_add("↓", 3);
+	// ITmedia CMSで扱えない文字列のエスケープ処理
+	string_processing_for_itmedia_cms(caption);
+	swap(caption, " ", " ");
+
+	// ラージ画像用インポート指定
+	pbuf_add("↓l", 4);
 	pbuf_add(filename+7, strlen(filename)-7-4); // exclude 'images'
 	pbuf_add(".jpg", 4);
 	pbuf_add(",", 1);
 	pbuf_add(",", 1);
+	pbuf_add(caption, strlen(caption));
 
-	// ITmedia CMSで扱えない文字列のエスケープ処理
-	string_processing_for_itmedia_cms(caption);
+	pbuf_add("\n\n", 2);
 
-	swap(caption, " ", " ");
+	// スモール画像用インポート指定
+	pbuf_add("↓s", 4);
+	pbuf_add(filename+7, strlen(filename)-7-4); // exclude 'images'
+	pbuf_add(".jpg", 4);
+	pbuf_add(",", 1);
+	pbuf_add(",", 1);
 	pbuf_add(caption, strlen(caption));
 }
 
