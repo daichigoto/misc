@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2019,2022,2023 Daichi GOTO
+ * Copyright (c) 2017-2019,2022,2023,2025 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -193,10 +193,19 @@ pbuf_get_escaped_string(char *s)
 			}
 			break;
 		case '*':
-			*n = '\\';
-			++n;
-			*n = '*';
-			++n;
+			switch (parent_element) {
+			case ELEMENT_TITLE:
+				// タイトルでは「*」はそのまま出力
+				*n = *p;
+				++n;
+			 	break;
+			default:
+				*n = '\\';
+				++n;
+				*n = '*';
+				++n;
+				break;
+			}
 			break;
 		case '<':
 			*n = '&';
@@ -346,8 +355,16 @@ pbuf_escaped_printc(char c)
 			}
 			break;
 		case '*':
-			putchar('\\');
-			putchar('*');
+			switch (parent_element) {
+			case ELEMENT_TITLE:
+				// タイトルでは「*」はそのまま出力
+				putchar('*');
+			 	break;
+			default:
+				putchar('\\');
+				putchar('*');
+				break;
+			}
 			break;
 		case '&':
 			printf("&amp;");
