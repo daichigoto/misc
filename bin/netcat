@@ -142,6 +142,7 @@ https://www.bleepingcomputer.com/*)	method="curl" ;;
 https://www.windowscentral.com/*)	method="curl" ;;
 https://blog.bitkeep.com/*)		method="curl" ;;
 https://www.maketecheasier.com/*)	method="curl" ;;
+https://www.netskope.com/*)		method="curl" ;;
 https://support.lenovo.com/*)		method="curl" ;;
 https://helpx.adobe.com/*)		method="curl" ;;
 https://support.hp.com/*)		method="curl" ;;
