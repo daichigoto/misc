@@ -20,28 +20,6 @@ then
 fi
 
 #========================================================================
-# Windowsで実行している場合でnetcat_webdriverが存在する場合で、
-# netcat_webdriverで処理すべき場合には処理を譲渡する
-#========================================================================
-case	"$url" in
-*.csv|*csv=1)
-	# netcat_webdriver からCSVファイルのダウンロードはできないので
-	# netcat_webdriver へ処理の譲渡は行わない。
- 	;;
-*)
-	case	"$(uname)" in
-	MSYS*)
-		if	which netcat_webdriver.ps1		> /dev/null 2>&1
-		then
-			netcat_webdriver.ps1 "$url"
-			exit
-		fi
-		;;
-	esac
-	;;
-esac
-
-#========================================================================
 # 作業用ディレクトリの作成と削除トラップの設定
 #========================================================================
 tmpd=/tmp/$$
@@ -147,6 +125,32 @@ https://support.lenovo.com/*)		method="curl" ;;
 https://helpx.adobe.com/*)		method="curl" ;;
 https://support.hp.com/*)		method="curl" ;;
 https://www.ibm.com/*)			method="curl" ;;
+esac
+
+#========================================================================
+# Windowsで実行している場合でnetcat_webdriverが存在する場合で、
+# netcat_webdriverで処理すべき場合には処理を譲渡する
+#========================================================================
+case	"$url" in
+*.csv|*csv=1)
+	# netcat_webdriver からCSVファイルのダウンロードはできないので
+	# netcat_webdriver へ処理の譲渡は行わない。
+ 	;;
+*)
+	case	"$(uname)" in
+	MSYS*)
+		case	"$(method)" in
+		msedge)
+			if	which netcat_webdriver.ps1 > /dev/null 2>&1
+			then
+				netcat_webdriver.ps1 "$url"
+				exit
+			fi
+			;;
+		esac
+		;;
+	esac
+	;;
 esac
 
 #========================================================================
