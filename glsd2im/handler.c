@@ -345,6 +345,11 @@ el_end_handler(void *data, const XML_Char *name)
 						printf("%s,i\n", accesslist_ref[i]);
 					}
 				}
+				for (int i=0; i < accesslist_count; i++) {
+					if (0 == strncmp("https://kn.itmedia.co.jp/",accesslist_ref[i],25)) {
+						printf("%s,i\n", accesslist_ref[i]);
+					}
+				}
 
 				//===========================================
 				// 関連リンクを出力
@@ -356,7 +361,8 @@ el_end_handler(void *data, const XML_Char *name)
 				// 本文中access要素のURLとタイトルを関連リンクとして出力
 				//-------------------------------------------
 				for (int i=0; i < accesslist_count; i++) {
-					if (0 != strncmp("https://www.itmedia.co.jp/",accesslist_ref[i],26)) {
+					if (0 != strncmp("https://www.itmedia.co.jp/",accesslist_ref[i],26) &&
+					    0 != strncmp("https://kn.itmedia.co.jp/",accesslist_ref[i],25)) {
 						// ITmedia CMSで扱えない文字列のエスケープ処理
 						string_processing_for_itmedia_cms(accesslist_title[i]);
 
