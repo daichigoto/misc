@@ -139,7 +139,7 @@ case	"$url" in
 *)
 	case	"$(uname)" in
 	MSYS*)
-		case	"$(method)" in
+		case	"${method}" in
 		msedge)
 			if	which netcat_webdriver.ps1 > /dev/null 2>&1
 			then
