@@ -12,6 +12,25 @@ height=800
 outfile=${HOME}/ss.png
 
 #========================================================================
+# オプションを処理
+#========================================================================
+while	getopts f:Lw:h: OPT
+do
+	case $OPT in
+	f)
+		outfile="$OPTARG"
+		;;
+	w) 
+		width="$OPTARG"
+		;;
+	h) 
+		height="$OPTARG"
+		;;
+	esac
+done
+shift	$((OPTIND - 1))
+
+#========================================================================
 # 回避モードが指定されている場合には白い画像を生成して終了
 #========================================================================
 if	[ -n "$GETSS_EMERGENCY_MODE" ]
@@ -31,25 +50,6 @@ msedge='/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
 chrome='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 webagent='Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
 snippingtool='SnippingTool.exe'
-
-#========================================================================
-# オプションを処理
-#========================================================================
-while	getopts f:Lw:h: OPT
-do
-	case $OPT in
-	f)
-		outfile="$OPTARG"
-		;;
-	w) 
-		width="$OPTARG"
-		;;
-	h) 
-		height="$OPTARG"
-		;;
-	esac
-done
-shift	$((OPTIND - 1))
 
 #========================================================================
 # スクリーンショット取得対象URI
