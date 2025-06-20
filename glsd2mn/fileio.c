@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018 Daichi GOTO
+ * Copyright (c) 2017,2018,2025 Daichi GOTO
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
 
 #include "glsd2mn.h"
 
-#define ZIPCMD_ADD	"zip -u %s %s > /dev/null"
-#define ZIPCMD_DEL	"zip -d %s %s > /dev/null"
+#define ZIPCMD_ADD	"zip -0 -u %s %s > /dev/null"
+#define ZIPCMD_DEL	"zip -0 -d %s %s > /dev/null"
 
 void copy(char *, char *);
 void zip(char *, char *);
