@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018,2019-2024 Daichi GOTO
+ * Copyright (c) 2017,2018,2019-2025 Daichi GOTO
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -496,8 +496,16 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 				else {
 					if (emptycell)
 						pbuf_add(" |", 2);
-					else
-						pbuf_add("|", 1);
+					else {
+						if ('-' == *(p+1)) {
+							// セルの最初が「-」だったときは
+							// 空白を入れてエスケープ
+							pbuf_add("| ", 2);
+						}
+						else {
+							pbuf_add("|", 1);
+						}
+					}
 				}
 				emptycell = true;
 			}
