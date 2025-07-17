@@ -165,7 +165,7 @@ import_text_Xsv(const XML_Char **attr, const char delim)
 		if (!firstline)
 			pbuf_add("\n", 1);
 
-		int mode_inbq = 0;	
+		int mode_inbq = 0;
 		p = buf;
 		if (firstline)
 			pbuf_add("    |", 5);
