@@ -58,7 +58,7 @@ $Size = '1200,800'
 	#================================================================
 	# Microsoft Edge WebDriverダウンロードURLとデプロイ先パス
 	#================================================================
-	$DriverURL="https://msedgedriver.azureedge.net/$EdgeVersion/edgedriver_win64.zip"
+	$DriverURL="https://msedgedriver.microsoft.com/$EdgeVersion/edgedriver_win64.zip"
 
 	$SeModVer=(Get-InstalledModule -Name Selenium).Version -replace "-.+$",""
 
