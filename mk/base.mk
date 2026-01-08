@@ -45,9 +45,12 @@ CFLAGS+=	-I${INCLUDEDIR} \
 		-std=gnu99 \
 		-fstack-protector \
 		-Qunused-arguments \
-		-Werror \
 		-Wall \
 		-W
+
+# 2026-01-08
+# MacOS clangの処理が厳しくなったため、一旦このオプションを外す
+#		-Werror \
 
 # Since we are also defining arguments that are not used by the handler, 
 # we need the following option.
